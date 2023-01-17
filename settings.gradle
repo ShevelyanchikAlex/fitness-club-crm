@@ -1,0 +1,5 @@
+rootProject.name = 'fitness-club'
+include 'model'
+include 'persistence'
+include 'service'
+include 'web'

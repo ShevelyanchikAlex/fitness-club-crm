@@ -1,0 +1,28 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version "$springVersion"
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.shevelyanchik.fitnessclub'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation project(":model")
+	implementation project(":persistence")
+	implementation project(":service")
+
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4.1'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
+	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

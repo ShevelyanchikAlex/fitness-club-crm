@@ -1,0 +1,4 @@
+rootProject.name = 'web'
+include 'model'
+include 'persistence'
+include 'service'
