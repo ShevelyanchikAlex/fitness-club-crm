@@ -54,7 +54,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<UserDto> findAll(Pageable pageable) {
         List<UserDto> users = userRepository.findAll().stream()
-                .map(userMapper::toDto).collect(Collectors.toList());
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
         return new PageImpl<>(users, pageable, userRepository.count());
     }
 

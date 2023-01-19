@@ -1,26 +1,15 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version "$springVersion"
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java-library'
 }
-
-group = 'com.shevelyanchik.fitnessclub'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation project(":model")
+	api project(":model")
 
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.postgresql:postgresql:42.5.1'
-
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+	api "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
+	api 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+	api 'org.postgresql:postgresql:42.5.1'
 }

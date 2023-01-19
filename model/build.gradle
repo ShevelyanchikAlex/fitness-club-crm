@@ -1,12 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version "$springVersion"
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java-library'
+	id "io.freefair.lombok" version "6.6.1"
 }
-
-group = 'com.shevelyanchik.fitnessclub'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
@@ -15,8 +10,6 @@ repositories {
 dependencies {
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+	implementation "org.springframework.boot:spring-boot-starter-security:$springVersion"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
 }
