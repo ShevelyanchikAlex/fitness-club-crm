@@ -36,6 +36,6 @@ public class User {
     private Status status;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
-            optional = false, fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY)
     private Trainer trainer;
 }
