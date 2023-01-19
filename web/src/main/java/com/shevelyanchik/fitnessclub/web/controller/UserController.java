@@ -2,6 +2,7 @@ package com.shevelyanchik.fitnessclub.web.controller;
 
 import com.shevelyanchik.fitnessclub.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.service.UserService;
+import com.shevelyanchik.fitnessclub.web.aop.CustomCacheable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,7 @@ public class UserController {
         return new ArrayList<>(userPage.getContent());
     }
 
+    @CustomCacheable
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public UserDto findById(@PathVariable Long id) {
@@ -37,6 +39,7 @@ public class UserController {
         return userService.findByEmail(email);
     }
 
+    @CustomCacheable
     @GetMapping("/count")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public Long getUsersCount() {
