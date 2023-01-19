@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/fitness-club-info")
+@RequestMapping("/api/v1/fitness-club-info")
 public class FitnessClubInfoController {
     private final FitnessClubInfoService fitnessClubInfoService;
 
