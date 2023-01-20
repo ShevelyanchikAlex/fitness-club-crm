@@ -17,6 +17,7 @@ import java.util.Objects;
 
 @Component
 public class JwtTokenFilter extends GenericFilterBean {
+    private static final String JWT_TOKEN_INVALID = "jwt.token.invalid";
     private final JwtTokenProvider jwtTokenProvider;
 
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
@@ -37,7 +38,7 @@ public class JwtTokenFilter extends GenericFilterBean {
         } catch (ServiceException e) {
             SecurityContextHolder.clearContext();
             ((HttpServletResponse) response).sendError(e.hashCode());
-            throw new ServiceException("jwt.token.invalid");
+            throw new ServiceException(JWT_TOKEN_INVALID);
         }
         chain.doFilter(request, response);
     }

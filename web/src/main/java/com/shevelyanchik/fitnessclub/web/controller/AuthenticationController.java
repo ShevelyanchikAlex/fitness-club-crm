@@ -1,6 +1,6 @@
 package com.shevelyanchik.fitnessclub.web.controller;
 
-import com.shevelyanchik.fitnessclub.model.dto.AuthenticationRequestDTO;
+import com.shevelyanchik.fitnessclub.model.dto.AuthenticationRequestDto;
 import com.shevelyanchik.fitnessclub.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDto authenticationRequestDTO) {
         try {
             return ResponseEntity.ok(authenticationService.login(authenticationRequestDTO));
         } catch (AuthenticationException e) {

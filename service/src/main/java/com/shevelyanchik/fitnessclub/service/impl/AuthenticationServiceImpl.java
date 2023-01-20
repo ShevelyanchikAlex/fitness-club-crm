@@ -1,7 +1,10 @@
 package com.shevelyanchik.fitnessclub.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shevelyanchik.fitnessclub.model.domain.user.User;
-import com.shevelyanchik.fitnessclub.model.dto.AuthenticationRequestDTO;
+import com.shevelyanchik.fitnessclub.model.dto.AuthenticationRequestDto;
+import com.shevelyanchik.fitnessclub.model.dto.AuthenticationResponseDto;
 import com.shevelyanchik.fitnessclub.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.persistence.UserRepository;
 import com.shevelyanchik.fitnessclub.service.AuthenticationService;
@@ -14,19 +17,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final String USER_NOT_EXIST = "user.not.exist";
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final UserService userService;
-
-    private static final String EMAIL = "email";
-    private static final String TOKEN = "token";
+    private final ObjectMapper objectMapper;
 
     @Override
     public UserDto signup(UserDto userDto) {
@@ -34,14 +35,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Map<Object, Object> login(AuthenticationRequestDTO authenticationRequestDTO) throws AuthenticationException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getEmail(), authenticationRequestDTO.getPassword()));
-        User user = userRepository.findByEmail(authenticationRequestDTO.getEmail()).orElseThrow(() ->
-                new ServiceException("user.not.exist"));
+    public Map<Object, Object> login(AuthenticationRequestDto authenticationRequestDTO) throws AuthenticationException {
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                        authenticationRequestDTO.getEmail(),
+                        authenticationRequestDTO.getPassword()
+                );
+
+        authenticationManager.authenticate(authentication);
+
+        User user = userRepository
+                .findByEmail(authenticationRequestDTO.getEmail())
+                .orElseThrow(() -> new ServiceException(USER_NOT_EXIST));
+
         String token = jwtTokenProvider.createToken(authenticationRequestDTO.getEmail(), user.getRole().name());
-        Map<Object, Object> response = new HashMap<>();
-        response.put(EMAIL, authenticationRequestDTO.getEmail());
-        response.put(TOKEN, token);
-        return response;
+        AuthenticationResponseDto response = new AuthenticationResponseDto(authenticationRequestDTO.getEmail(), token);
+        return objectMapper.convertValue(response, new TypeReference<>() {
+        });
     }
 }

@@ -10,14 +10,10 @@ spring:
     generate-ddl: true
 
 logging:
-  #  file:
-  #    name: logs/application-debug.log
-  #  pattern:
-  #    file: "%d %-5level [%thread] %logger{0} : %msg%n"
   level:
     org.springframework.web: ERROR
-    org.hibernate: INFO
-    com.shevelyanchik.fitnessclub.web.aop.LoggingAspect: DEBUG
+    com.shevelyanchik: DEBUG
+    root: INFO
 
 security:
   jwt:
