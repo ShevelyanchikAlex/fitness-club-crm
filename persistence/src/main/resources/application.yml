@@ -1,9 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5433/fitness_club_db
-    username: postgres
-    password: user
-  jpa:
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true

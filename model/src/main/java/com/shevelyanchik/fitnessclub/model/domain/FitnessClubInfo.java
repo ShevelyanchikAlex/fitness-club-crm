@@ -1,17 +1,14 @@
 package com.shevelyanchik.fitnessclub.model.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
+@Entity
+@Table(name = "fitness_club_info")
 @NoArgsConstructor
-@AllArgsConstructor
 public class FitnessClubInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

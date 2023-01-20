@@ -4,7 +4,8 @@ import com.shevelyanchik.fitnessclub.model.domain.Trainer;
 import com.shevelyanchik.fitnessclub.model.dto.TrainerDto;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+
+@Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface TrainerMapper {
     TrainerDto toDto(Trainer trainer);
 

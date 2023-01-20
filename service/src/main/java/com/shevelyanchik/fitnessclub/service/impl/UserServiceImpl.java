@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final String RESOURCE_ALREADY_EXIST = "resource.already.exist";
+    private static final String USER_NOT_FOUND = "user.not.found";
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -27,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto save(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new ServiceException("resource.already.exist");
+            throw new ServiceException(RESOURCE_ALREADY_EXIST);
         }
         userDto.setRole(Role.USER);
         userDto.setStatus(Status.ACTIVE);
@@ -37,24 +40,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findById(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new ServiceException("user.not.found");
-        }
-        return userMapper.toDto(userRepository.findById(id).get());
+        return userRepository.findById(id)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new ServiceException(USER_NOT_FOUND));
     }
 
     @Override
     public UserDto findByEmail(String email) {
-        if (!userRepository.existsByEmail(email)) {
-            throw new ServiceException("user.not.found");
-        }
-        return userMapper.toDto(userRepository.findByEmail(email).get());
+        return userRepository.findByEmail(email)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new ServiceException(USER_NOT_FOUND));
     }
 
     @Override
     public Page<UserDto> findAll(Pageable pageable) {
         List<UserDto> users = userRepository.findAll().stream()
-                .map(userMapper::toDto).collect(Collectors.toList());
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
         return new PageImpl<>(users, pageable, userRepository.count());
     }
 
