@@ -14,4 +14,9 @@ public class FitnessClubInfoCacheServiceImpl implements FitnessClubInfoCacheServ
     public void getDataWithFirstLevelCache() {
         fitnessClubInfoRepository.getDataWithFirstLevelCache();
     }
+
+    @Override
+    public void getDataWithSecondLevelCache() {
+        fitnessClubInfoRepository.getDataWithSecondLevelCache();
+    }
 }

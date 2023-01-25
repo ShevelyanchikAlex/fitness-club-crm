@@ -4,6 +4,7 @@ import com.shevelyanchik.fitnessclub.model.domain.FitnessClubInfo;
 import com.shevelyanchik.fitnessclub.persistence.FitnessClubInfoCacheRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.EntityManager;
@@ -16,15 +17,33 @@ public class FitnessClubInfoCacheRepositoryImpl implements FitnessClubInfoCacheR
 
     @Override
     public void getDataWithFirstLevelCache() {
-        Session session = entityManager.unwrap(Session.class);
-        Transaction transaction = session.beginTransaction();
+        processTwoRequestsInOneSession();
+    }
+
+    @Override
+    public void getDataWithSecondLevelCache() {
+        processTwoRequestsInOneSession();
+        processTwoRequestsInOneSession();
+    }
+
+    private void processTwoRequestsInOneSession() {
+        Session mainSession = entityManager.unwrap(Session.class);
+        SessionFactory sessionFactory = mainSession.getSessionFactory();
+
+        Session session = sessionFactory.openSession();
+        Transaction transaction = mainSession.beginTransaction();
 
         FitnessClubInfo fitnessClubInfo1 = session.load(FitnessClubInfo.class, 1L);
-        log.info(fitnessClubInfo1.getId() + " " + fitnessClubInfo1.getAddress());
+        printLog(fitnessClubInfo1.getId(), fitnessClubInfo1.getAddress(), session.hashCode());
 
         FitnessClubInfo fitnessClubInfo2 = session.load(FitnessClubInfo.class, 1L);
-        log.info(fitnessClubInfo2.getId() + " " + fitnessClubInfo2.getAddress());
+        printLog(fitnessClubInfo2.getId(), fitnessClubInfo2.getAddress(), session.hashCode());
 
         transaction.commit();
+        session.close();
+    }
+
+    private void printLog(long id, String address, int sessionHashCode) {
+        log.info(id + " " + address + ", sessionHashCode: " + sessionHashCode);
     }
 }

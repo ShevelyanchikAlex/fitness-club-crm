@@ -13,11 +13,19 @@ import org.springframework.web.bind.annotation.*;
 public class FitnessClubInfoCacheController {
     private final FitnessClubInfoCacheService fitnessClubInfoCacheService;
 
-    @GetMapping
+    @GetMapping("/first-level")
     @ResponseBody
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public ResponseEntity<String> getDataWithFirstLevelCache() {
         fitnessClubInfoCacheService.getDataWithFirstLevelCache();
+        return new ResponseEntity<>("Request has been completed.", HttpStatus.OK);
+    }
+
+    @GetMapping("/second-level")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    public ResponseEntity<String> getDataWithSecondLevelCache() {
+        fitnessClubInfoCacheService.getDataWithSecondLevelCache();
         return new ResponseEntity<>("Request has been completed.", HttpStatus.OK);
     }
 }
