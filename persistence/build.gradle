@@ -1,5 +1,6 @@
 plugins {
 	id 'java-library'
+	id "io.freefair.lombok" version "6.6.1"
 }
 
 repositories {
@@ -12,4 +13,5 @@ dependencies {
 	api "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
 	api 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 	api 'org.postgresql:postgresql:42.5.1'
+	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
 }
