@@ -17,7 +17,6 @@ import java.util.List;
 public class FitnessClubInfoController {
     private final FitnessClubInfoService fitnessClubInfoService;
 
-
     @PostMapping
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public FitnessClubInfoDto save(@RequestBody FitnessClubInfoDto fitnessClubInfoDto) {

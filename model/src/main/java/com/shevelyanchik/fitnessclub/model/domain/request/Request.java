@@ -5,6 +5,7 @@ import com.shevelyanchik.fitnessclub.model.domain.Trainer;
 import com.shevelyanchik.fitnessclub.model.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,7 +20,8 @@ public class Request {
     private long id;
 
     @Column(name = "createdDateTime")
-    private LocalDateTime createdDateTime = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime createdDateTime;
 
     @Column(name = "trainingStartDateTime")
     private LocalDateTime trainingStartDateTime;

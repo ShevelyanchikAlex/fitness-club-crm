@@ -45,7 +45,6 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
                         .stream()
                         .map(fitnessClubInfoMapper::toDto)
                         .collect(Collectors.toList());
-
         return new PageImpl<>(fitnessClubInfoDtoList, pageable, fitnessClubInfoRepository.count());
     }
 }
