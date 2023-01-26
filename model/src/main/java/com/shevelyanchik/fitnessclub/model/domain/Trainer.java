@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.shevelyanchik.fitnessclub.model.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,7 @@ public class Trainer {
     private String kindOfSport;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name = "user_id")
     private User user;
 }
