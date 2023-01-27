@@ -1,10 +1,7 @@
 package com.shevelyanchik.fitnessclub.model.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.shevelyanchik.fitnessclub.model.domain.Trainer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -36,10 +33,4 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private Status status;
-
-    @ToString.Exclude
-    @JsonManagedReference
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    private Trainer trainer;
 }

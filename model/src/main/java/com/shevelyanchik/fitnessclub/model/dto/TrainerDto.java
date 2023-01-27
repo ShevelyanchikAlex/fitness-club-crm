@@ -1,15 +1,16 @@
 package com.shevelyanchik.fitnessclub.model.dto;
 
+import com.shevelyanchik.fitnessclub.model.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class TrainerDto extends UserDto {
+public class TrainerDto {
+    private long id;
     private String category;
     private String kindOfSport;
+    private User user;
 }
