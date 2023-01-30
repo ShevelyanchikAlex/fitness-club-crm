@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrainerDto {
-    private long id;
+    private Long id;
     private String category;
     private String kindOfSport;
     private User user;

@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(name = "createdDateTime")
+    @Column(name = "created_date_time")
     @CreationTimestamp
     private LocalDateTime createdDateTime;
 
-    @Column(name = "trainingStartDateTime")
+    @Column(name = "training_start_date_time")
     private LocalDateTime trainingStartDateTime;
 
     @ManyToOne
@@ -39,6 +39,6 @@ public class Request {
     private Service service;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "requestStatus")
+    @Column(name = "request_status")
     private RequestStatus requestStatus;
 }

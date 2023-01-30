@@ -13,11 +13,11 @@ import javax.persistence.*;
 public class Trainer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "category")
     private String category;
 
-    @Column(name = "kindOfSport")
+    @Column(name = "kind_of_sport")
     private String kindOfSport;
 
     @OneToOne(cascade = CascadeType.ALL)
