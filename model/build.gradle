@@ -1,6 +1,6 @@
 plugins {
     id 'java-library'
-    id "io.freefair.lombok" version "6.6.1"
+    id "io.freefair.lombok" version "$lombokVersion"
 }
 
 repositories {
@@ -8,8 +8,8 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-    api 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    api "org.mapstruct:mapstruct:$mapstructVersion"
     api "org.springframework.boot:spring-boot-starter-security:$springVersion"
     api "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
 }

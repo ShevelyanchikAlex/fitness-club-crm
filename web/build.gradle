@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id "io.freefair.lombok" version "6.6.1"
+    id "io.freefair.lombok" version "$lombokVersion"
 }
 
 repositories {
@@ -12,10 +12,10 @@ dependencies {
     implementation project(":persistence")
     implementation project(":service")
 
-    implementation 'org.liquibase:liquibase-core:4.19.0'
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
+    implementation "org.liquibase:liquibase-core:$liquibaseVersion"
+    implementation "io.jsonwebtoken:jjwt:$jjwtVersion"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonDatabindVersion"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonDatatypeJsr310Version"
     implementation "org.springframework.boot:spring-boot-starter-aop:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
