@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id "io.freefair.lombok" version "$lombokVersion"
+//    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
 }
 
 repositories {
@@ -21,4 +22,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-security:$springVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
+//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
+
+//dependencyManagement {
+//    imports {
+//        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+//    }
+//}
