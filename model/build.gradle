@@ -13,4 +13,6 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
 	implementation "org.springframework.boot:spring-boot-starter-security:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
+	implementation 'org.hibernate.orm:hibernate-ehcache:6.0.0.Alpha7'
+	implementation 'org.ehcache:ehcache:3.10.8'
 }
