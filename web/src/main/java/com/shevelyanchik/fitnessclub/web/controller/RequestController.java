@@ -36,4 +36,22 @@ public class RequestController {
     public RequestDto findById(@PathVariable Long id) {
         return requestService.findById(id);
     }
+
+    @GetMapping("/service-name")
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    public List<RequestDto> findAllByServiceName(@RequestParam(name = "serviceName") String serviceName) {
+        return requestService.findAllByServiceName(serviceName);
+    }
+
+    @GetMapping("/request-status")
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    public List<RequestDto> findAllByRequestStatus(@RequestParam(name = "requestStatus") String requestStatus) {
+        return requestService.findAllByRequestStatus(requestStatus);
+    }
+
+    @GetMapping("/user-name")
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    public List<RequestDto> findAllByOptionalUserName(@RequestParam(name = "userName", required = false) String userName) {
+        return requestService.findAllByOptionalUserName(userName);
+    }
 }

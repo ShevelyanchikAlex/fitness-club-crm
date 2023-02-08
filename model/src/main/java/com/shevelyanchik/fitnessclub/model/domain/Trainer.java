@@ -1,6 +1,5 @@
 package com.shevelyanchik.fitnessclub.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.shevelyanchik.fitnessclub.model.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,15 +13,14 @@ import javax.persistence.*;
 public class Trainer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "category")
     private String category;
 
-    @Column(name = "kindOfSport")
+    @Column(name = "kind_of_sport")
     private String kindOfSport;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }

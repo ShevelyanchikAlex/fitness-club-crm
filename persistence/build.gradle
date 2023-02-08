@@ -1,17 +1,15 @@
 plugins {
-	id 'java-library'
-	id "io.freefair.lombok" version "6.6.1"
+    id 'java-library'
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	api project(":model")
+    api project(":model")
 
-	api "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
-	api 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
-	api 'org.postgresql:postgresql:42.5.1'
-	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
+    api "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
+    api "javax.xml.bind:jaxb-api:$jaxbApiVersion"
+    api "org.postgresql:postgresql:$postgresqlVersion"
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FitnessClubInfoDto {
-    private long id;
+    private Long id;
     private String address;
     private String description;
 }

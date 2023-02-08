@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class FitnessClubInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "address")
     private String address;
