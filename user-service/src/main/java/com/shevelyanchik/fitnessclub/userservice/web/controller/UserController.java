@@ -19,27 +19,27 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    public List<UserDto> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                 @RequestParam(name = "size", defaultValue = "10") Integer size) {
+    public List<UserDto> findAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<UserDto> userPage = userService.findAll(PageRequest.of(page, size));
         return new ArrayList<>(userPage.getContent());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    public UserDto findById(@PathVariable Long id) {
+    public UserDto findUserById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
     @GetMapping("/email/{email}")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    public UserDto findByEmail(@PathVariable String email) {
+    public UserDto findUserByEmail(@PathVariable String email) {
         return userService.findByEmail(email);
     }
 
     @GetMapping("/count")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    public Long getUsersCount() {
+    public Long findUsersCount() {
         return userService.getUsersCount();
     }
 }
