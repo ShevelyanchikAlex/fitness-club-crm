@@ -23,21 +23,21 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDto findById(Long id) {
+    public UserDto findUserById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new ServiceException(USER_NOT_FOUND));
     }
 
     @Override
-    public UserDto findByEmail(String email) {
-        return userRepository.findByEmail(email)
+    public UserDto findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email)
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new ServiceException(USER_NOT_FOUND));
     }
 
     @Override
-    public Page<UserDto> findAll(Pageable pageable) {
+    public Page<UserDto> findAllUsers(Pageable pageable) {
         List<UserDto> users = userRepository.findAll(pageable).stream()
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long getUsersCount() {
+    public Long countUsers() {
         return userRepository.count();
     }
 }

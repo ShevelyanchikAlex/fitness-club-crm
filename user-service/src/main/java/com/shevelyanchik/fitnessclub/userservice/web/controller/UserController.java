@@ -21,25 +21,25 @@ public class UserController {
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public List<UserDto> findAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        Page<UserDto> userPage = userService.findAll(PageRequest.of(page, size));
+        Page<UserDto> userPage = userService.findAllUsers(PageRequest.of(page, size));
         return new ArrayList<>(userPage.getContent());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public UserDto findUserById(@PathVariable Long id) {
-        return userService.findById(id);
+        return userService.findUserById(id);
     }
 
     @GetMapping("/email/{email}")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public UserDto findUserByEmail(@PathVariable String email) {
-        return userService.findByEmail(email);
+        return userService.findUserByEmail(email);
     }
 
     @GetMapping("/count")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    public Long findUsersCount() {
-        return userService.getUsersCount();
+    public Long countUsers() {
+        return userService.countUsers();
     }
 }

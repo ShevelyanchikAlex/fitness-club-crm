@@ -21,10 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final String USER_VALIDATE_ERROR = "user.validate.error";
     private static final String USER_NOT_EXIST = "user.not.exist";
     private static final String RESOURCE_ALREADY_EXIST = "resource.already.exist";
 
@@ -37,13 +39,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserDto signup(UserDto userDto) {
-        if (userRepository.existsByEmail(userDto.getEmail())) {
+        if (Objects.isNull(userDto)) {
+            throw new ServiceException(USER_VALIDATE_ERROR);
+        }
+        if (userRepository.existsUserByEmail(userDto.getEmail())) {
             throw new ServiceException(RESOURCE_ALREADY_EXIST);
         }
         userDto.setRole(Role.USER);
         userDto.setStatus(Status.ACTIVE);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+
+        User user = userMapper.toEntity(userDto);
+        User savedUser = userRepository.save(user);
+        return userMapper.toDto(savedUser);
     }
 
     @Override
@@ -57,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationManager.authenticate(authentication);
 
         User user = userRepository
-                .findByEmail(authenticationRequestDTO.getEmail())
+                .findUserByEmail(authenticationRequestDTO.getEmail())
                 .orElseThrow(() -> new ServiceException(USER_NOT_EXIST));
 
         String token = jwtTokenProvider.createToken(authenticationRequestDTO.getEmail(), user.getRole().name());

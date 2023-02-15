@@ -26,17 +26,17 @@ public class TrainerServiceImpl implements TrainerService {
     private final TrainerMapper trainerMapper;
 
     @Override
-    public TrainerDto save(TrainerDto trainerDto) {
+    public TrainerDto createTrainer(TrainerDto trainerDto) {
         if (Objects.isNull(trainerDto.getUser())) {
             throw new ServiceException(TRAINER_VALIDATE_ERROR);
         }
-        Trainer entity = trainerMapper.toEntity(trainerDto);
-        Trainer savedTrainer = trainerRepository.save(entity);
+        Trainer trainer = trainerMapper.toEntity(trainerDto);
+        Trainer savedTrainer = trainerRepository.save(trainer);
         return trainerMapper.toDto(savedTrainer);
     }
 
     @Override
-    public TrainerDto findById(Long id) {
+    public TrainerDto findTrainerById(Long id) {
         return trainerRepository
                 .findById(id)
                 .map(trainerMapper::toDto)
@@ -44,7 +44,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Page<TrainerDto> findAll(Pageable pageable) {
+    public Page<TrainerDto> findAllTrainers(Pageable pageable) {
         List<TrainerDto> trainerDtoList = trainerRepository
                 .findAll(pageable)
                 .stream()
@@ -54,7 +54,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
-    public Long getTrainersCount() {
+    public Long countTrainers() {
         return trainerRepository.count();
     }
 }

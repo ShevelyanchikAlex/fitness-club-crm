@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new ServiceException(USER_NOT_EXIST));
         return SecurityUser.fromUser(user);
     }

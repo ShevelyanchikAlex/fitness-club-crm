@@ -21,19 +21,19 @@ public class TrainerController {
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public List<TrainerDto> findAllTrainers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        Page<TrainerDto> trainerPage = trainerService.findAll(PageRequest.of(page, size));
+        Page<TrainerDto> trainerPage = trainerService.findAllTrainers(PageRequest.of(page, size));
         return new ArrayList<>(trainerPage.getContent());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     public TrainerDto findTrainerById(@PathVariable Long id) {
-        return trainerService.findById(id);
+        return trainerService.findTrainerById(id);
     }
 
     @GetMapping("/count")
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    public Long findTrainersCount() {
-        return trainerService.getTrainersCount();
+    public Long countTrainers() {
+        return trainerService.countTrainers();
     }
 }
