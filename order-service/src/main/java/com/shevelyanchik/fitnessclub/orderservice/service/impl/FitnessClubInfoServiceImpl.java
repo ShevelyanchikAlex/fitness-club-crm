@@ -23,14 +23,14 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
     private final FitnessClubInfoMapper fitnessClubInfoMapper;
 
     @Override
-    public FitnessClubInfoDto save(FitnessClubInfoDto fitnessClubInfoDto) {
+    public FitnessClubInfoDto createFitnessClubInfo(FitnessClubInfoDto fitnessClubInfoDto) {
         FitnessClubInfo entity = fitnessClubInfoMapper.toEntity(fitnessClubInfoDto);
         FitnessClubInfo save = fitnessClubInfoRepository.save(entity);
         return fitnessClubInfoMapper.toDto(save);
     }
 
     @Override
-    public FitnessClubInfoDto findById(Long id) {
+    public FitnessClubInfoDto findFitnessClubInfoById(Long id) {
         return fitnessClubInfoRepository
                 .findById(id)
                 .map(fitnessClubInfoMapper::toDto)
@@ -38,7 +38,7 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
     }
 
     @Override
-    public Page<FitnessClubInfoDto> findAll(Pageable pageable) {
+    public Page<FitnessClubInfoDto> findAllFitnessClubInfos(Pageable pageable) {
         List<FitnessClubInfoDto> fitnessClubInfoDtoList =
                 fitnessClubInfoRepository
                         .findAll()

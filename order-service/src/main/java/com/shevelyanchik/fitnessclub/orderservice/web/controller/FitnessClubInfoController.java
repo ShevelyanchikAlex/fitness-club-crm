@@ -18,18 +18,18 @@ public class FitnessClubInfoController {
 
     @PostMapping
     public FitnessClubInfoDto save(@RequestBody FitnessClubInfoDto fitnessClubInfoDto) {
-        return fitnessClubInfoService.save(fitnessClubInfoDto);
+        return fitnessClubInfoService.createFitnessClubInfo(fitnessClubInfoDto);
     }
 
     @GetMapping
     public List<FitnessClubInfoDto> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        Page<FitnessClubInfoDto> fitnessClubInfoDtoPage = fitnessClubInfoService.findAll(PageRequest.of(page, size));
+        Page<FitnessClubInfoDto> fitnessClubInfoDtoPage = fitnessClubInfoService.findAllFitnessClubInfos(PageRequest.of(page, size));
         return new ArrayList<>(fitnessClubInfoDtoPage.getContent());
     }
 
     @GetMapping("/{id}")
     public FitnessClubInfoDto findById(@PathVariable Long id) {
-        return fitnessClubInfoService.findById(id);
+        return fitnessClubInfoService.findFitnessClubInfoById(id);
     }
 }

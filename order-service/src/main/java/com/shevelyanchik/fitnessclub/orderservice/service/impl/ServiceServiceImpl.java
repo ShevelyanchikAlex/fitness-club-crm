@@ -22,14 +22,14 @@ public class ServiceServiceImpl implements ServiceService {
     private final ServiceMapper serviceMapper;
 
     @Override
-    public ServiceDto save(ServiceDto serviceDto) {
-        com.shevelyanchik.fitnessclub.orderservice.model.domain.Service entity = serviceMapper.toEntity(serviceDto);
-        com.shevelyanchik.fitnessclub.orderservice.model.domain.Service savedService = serviceRepository.save(entity);
+    public ServiceDto createService(ServiceDto serviceDto) {
+        com.shevelyanchik.fitnessclub.orderservice.model.domain.Service service = serviceMapper.toEntity(serviceDto);
+        com.shevelyanchik.fitnessclub.orderservice.model.domain.Service savedService = serviceRepository.save(service);
         return serviceMapper.toDto(savedService);
     }
 
     @Override
-    public ServiceDto findById(Long id) {
+    public ServiceDto findServiceById(Long id) {
         return serviceRepository
                 .findById(id)
                 .map(serviceMapper::toDto)
@@ -37,7 +37,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public Page<ServiceDto> findAll(Pageable pageable) {
+    public Page<ServiceDto> findAllServices(Pageable pageable) {
         List<ServiceDto> serviceDtoList = serviceRepository
                 .findAll()
                 .stream()
