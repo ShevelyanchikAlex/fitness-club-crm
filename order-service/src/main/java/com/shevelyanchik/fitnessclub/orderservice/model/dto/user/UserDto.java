@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.model.dto;
+package com.shevelyanchik.fitnessclub.orderservice.model.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
