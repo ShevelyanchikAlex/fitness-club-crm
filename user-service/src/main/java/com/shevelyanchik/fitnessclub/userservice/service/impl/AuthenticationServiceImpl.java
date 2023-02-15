@@ -39,12 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserDto signup(UserDto userDto) {
-        if (Objects.isNull(userDto)) {
-            throw new ServiceException(USER_VALIDATE_ERROR);
-        }
-        if (userRepository.existsUserByEmail(userDto.getEmail())) {
-            throw new ServiceException(RESOURCE_ALREADY_EXIST);
-        }
+        validateUser(userDto);
         userDto.setRole(Role.USER);
         userDto.setStatus(Status.ACTIVE);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -72,5 +67,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AuthenticationResponseDto response = new AuthenticationResponseDto(authenticationRequestDTO.getEmail(), token);
         return objectMapper.convertValue(response, new TypeReference<>() {
         });
+    }
+
+    private void validateUser(UserDto userDto) {
+        if (Objects.isNull(userDto)) {
+            throw new ServiceException(USER_VALIDATE_ERROR);
+        }
+        if (userRepository.existsUserByEmail(userDto.getEmail())) {
+            throw new ServiceException(RESOURCE_ALREADY_EXIST);
+        }
     }
 }

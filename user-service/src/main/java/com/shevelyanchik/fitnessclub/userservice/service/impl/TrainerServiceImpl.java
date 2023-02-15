@@ -27,9 +27,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public TrainerDto createTrainer(TrainerDto trainerDto) {
-        if (Objects.isNull(trainerDto.getUser())) {
-            throw new ServiceException(TRAINER_VALIDATE_ERROR);
-        }
+        validateTrainer(trainerDto);
         Trainer trainer = trainerMapper.toEntity(trainerDto);
         Trainer savedTrainer = trainerRepository.save(trainer);
         return trainerMapper.toDto(savedTrainer);
@@ -56,5 +54,11 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public Long countTrainers() {
         return trainerRepository.count();
+    }
+
+    private void validateTrainer(TrainerDto trainerDto) {
+        if (Objects.isNull(trainerDto.getUser())) {
+            throw new ServiceException(TRAINER_VALIDATE_ERROR);
+        }
     }
 }
