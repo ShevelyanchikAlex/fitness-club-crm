@@ -1,0 +1,26 @@
+server:
+  port: ${PORT:8765}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    consul:
+      config:
+        enabled: false
+      host: localhost
+      port: 8500
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user-service/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/order-service/**

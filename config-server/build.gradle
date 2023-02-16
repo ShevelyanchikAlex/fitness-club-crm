@@ -1,0 +1,22 @@
+plugins {
+	id 'java'
+	id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2021.0.5")
+}
+
+dependencies {
+	implementation 'org.springframework.cloud:spring-cloud-config-server'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}

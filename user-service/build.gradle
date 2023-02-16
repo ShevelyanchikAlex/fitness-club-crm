@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'io.freefair.lombok' version "$lombokVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2021.0.5")
+}
+
+dependencies {
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    implementation "org.mapstruct:mapstruct:$mapstructVersion"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:${springVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-consul-discovery"
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+    implementation "org.liquibase:liquibase-core:$liquibaseVersion"
+    implementation "io.jsonwebtoken:jjwt:$jjwtVersion"
+    implementation "org.springframework.boot:spring-boot-starter-aop:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-security:$springVersion"
+    implementation "javax.xml.bind:jaxb-api:$jaxbApiVersion"
+    implementation "org.postgresql:postgresql:$postgresqlVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
