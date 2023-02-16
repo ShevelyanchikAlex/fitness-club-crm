@@ -4,6 +4,7 @@ import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/order-service/orders")
 public class OrderController {
     private final OrderService orderService;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     @PostMapping
     public OrderDto createOrder(@RequestBody OrderDto orderDto) {
@@ -36,6 +38,8 @@ public class OrderController {
 
     @GetMapping("/full-order/{id}")
     public OrderResponseDto findOrderByIdWithUsersInfo(@PathVariable Long id) {
-        return orderService.findOrderByIdWithUsersInfo(id);
+        return circuitBreakerFactory.create("full-order").run(
+                () -> orderService.findOrderByIdWithUsersInfo(id),
+                throwable -> new OrderResponseDto());
     }
 }
