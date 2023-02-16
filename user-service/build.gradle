@@ -17,6 +17,8 @@ dependencies {
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
     implementation "org.springframework.boot:spring-boot-starter-actuator:${springVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-consul-discovery"
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
     implementation "org.liquibase:liquibase-core:$liquibaseVersion"
     implementation "io.jsonwebtoken:jjwt:$jjwtVersion"
     implementation "org.springframework.boot:spring-boot-starter-aop:$springVersion"

@@ -1,4 +1,5 @@
 rootProject.name = 'fitness-club'
 include 'api-gateway'
+include 'config-server'
 include 'user-service'
 include 'order-service'

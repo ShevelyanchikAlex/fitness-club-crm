@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: user-service
+  cloud:
+    consul:
+      discovery:
+        instance-id: "${spring.cloud.consul.host}:${spring.application.name}:${random.int[1,999999]}"
+      host: localhost
+      port: 8500
+  liquibase:
+    enabled: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/user_service_db
+    username: postgres
+    password: user
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    com.shevelyanchik: DEBUG
+    root: INFO
+
+security:
+  jwt:
+    token:
+      header: Authorization
+      secret-key: test
+      expire-length: 604800
