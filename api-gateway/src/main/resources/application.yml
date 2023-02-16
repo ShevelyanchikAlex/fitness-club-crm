@@ -1,26 +1,30 @@
 server:
   port: ${PORT:8765}
+
 spring:
   application:
     name: api-gateway
-  config:
-    import: "optional:configserver:http://your.config.server.com"
   cloud:
-    config:
-      enabled: false
     consul:
-      discovery:
-        register: false
-        registerHealthCheck: false
+      config:
+        enabled: false
+      host: localhost
+      port: 8500
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: fitness-club-client
-          uri: lb://fitness-club-client
+        - id: user-service
+          uri: lb://user-service
           predicates:
-            - Path=/api/v1/auth/**
-          filters:
-            - RewritePath=/api/v1/auth/(?<path>.*), /$\{path}
+            - Path=/api/v1/user-service/**
+#          filters:
+#            - RewritePath=/api/v1/user-service/(?<path>.*), /$\{path}
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/order-service/**
+#          filters:
+#            - RewritePath=/api/v1/order-service/(?<path>.*), /$\{path}
