@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/trainers")
+@RequestMapping("/api/v1/user-service/trainers")
 public class TrainerController {
     private final TrainerService trainerService;
 

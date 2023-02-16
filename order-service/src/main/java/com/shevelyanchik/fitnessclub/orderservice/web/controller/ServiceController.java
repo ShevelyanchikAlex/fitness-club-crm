@@ -12,24 +12,24 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/services")
+@RequestMapping("/api/v1/order-service/services")
 public class ServiceController {
     private final ServiceService serviceService;
 
     @PostMapping
-    public ServiceDto save(@RequestBody ServiceDto serviceDto) {
+    public ServiceDto createService(@RequestBody ServiceDto serviceDto) {
         return serviceService.createService(serviceDto);
     }
 
     @GetMapping
-    public List<ServiceDto> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                    @RequestParam(name = "size", defaultValue = "10") Integer size) {
+    public List<ServiceDto> findAllServices(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                            @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<ServiceDto> serviceDtoPage = serviceService.findAllServices(PageRequest.of(page, size));
         return new ArrayList<>(serviceDtoPage.getContent());
     }
 
     @GetMapping("/{id}")
-    public ServiceDto findById(@PathVariable Long id) {
+    public ServiceDto findServiceById(@PathVariable Long id) {
         return serviceService.findServiceById(id);
     }
 }

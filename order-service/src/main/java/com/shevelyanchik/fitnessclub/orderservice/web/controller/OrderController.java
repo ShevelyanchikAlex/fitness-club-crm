@@ -13,29 +13,29 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/v1/order-service/orders")
 public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public OrderDto save(@RequestBody OrderDto orderDto) {
+    public OrderDto createOrder(@RequestBody OrderDto orderDto) {
         return orderService.createOrder(orderDto);
     }
 
     @GetMapping
-    public List<OrderDto> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                  @RequestParam(name = "size", defaultValue = "10") Integer size) {
+    public List<OrderDto> findAllOrders(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                        @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<OrderDto> orderDtoPage = orderService.findAllOrders(PageRequest.of(page, size));
         return new ArrayList<>(orderDtoPage.getContent());
     }
 
     @GetMapping("/{id}")
-    public OrderDto findById(@PathVariable Long id) {
+    public OrderDto findOrderById(@PathVariable Long id) {
         return orderService.findOrderById(id);
     }
 
     @GetMapping("/full-order/{id}")
-    public OrderResponseDto findOrderByIdWithUsersData(@PathVariable Long id) {
+    public OrderResponseDto findOrderByIdWithUsersInfo(@PathVariable Long id) {
         return orderService.findOrderByIdWithUsersInfo(id);
     }
 }
