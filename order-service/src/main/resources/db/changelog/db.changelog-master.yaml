@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-fitness-club-info-table.sql
+  - include:
+      file: db/changelog/changeset/create-service-table.sql
+  - include:
+      file: db/changelog/changeset/create-orders-table.sql
