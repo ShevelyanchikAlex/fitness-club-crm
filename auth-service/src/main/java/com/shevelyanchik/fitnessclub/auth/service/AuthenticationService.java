@@ -1,7 +1,7 @@
-package com.shevelyanchik.fitnessclub.userservice.service;
+package com.shevelyanchik.fitnessclub.auth.service;
 
-import com.shevelyanchik.fitnessclub.userservice.model.dto.AuthenticationRequestDto;
-import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
+import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationRequestDto;
+import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
 import org.springframework.security.core.AuthenticationException;
 
 import java.util.Map;

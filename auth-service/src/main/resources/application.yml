@@ -1,0 +1,22 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: auth-service
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+
+logging:
+  level:
+    org.springframework.web:
+      servlet.DispatcherServlet: TRACE
+
+security:
+  jwt:
+    token:
+      header: Authorization
+      secret-key: test
+      expire-length: 604800

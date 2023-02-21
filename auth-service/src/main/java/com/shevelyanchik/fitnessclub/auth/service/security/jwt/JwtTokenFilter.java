@@ -1,6 +1,9 @@
-package com.shevelyanchik.fitnessclub.userservice.service.security.jwt;
+package com.shevelyanchik.fitnessclub.auth.service.security.jwt;
 
-import com.shevelyanchik.fitnessclub.userservice.service.exception.ServiceException;
+import com.shevelyanchik.fitnessclub.auth.attribute.AttributeName;
+import com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,14 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
     private static final String JWT_TOKEN_INVALID = "jwt.token.invalid";
     private final JwtTokenProvider jwtTokenProvider;
-
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -33,12 +34,14 @@ public class JwtTokenFilter extends GenericFilterBean {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 if (Objects.nonNull(authentication)) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    request.setAttribute(AttributeName.USERNAME, authentication.getPrincipal());
+                    request.setAttribute(AttributeName.AUTHORITIES, authentication.getAuthorities());
                 }
             }
-        } catch (ServiceException e) {
+        } catch (AuthenticationException e) {
             SecurityContextHolder.clearContext();
             ((HttpServletResponse) response).sendError(e.hashCode());
-            throw new ServiceException(JWT_TOKEN_INVALID);
+            throw new AuthenticationException(JWT_TOKEN_INVALID);
         }
         chain.doFilter(request, response);
     }

@@ -1,7 +1,7 @@
-package com.shevelyanchik.fitnessclub.userservice.service.security.details;
+package com.shevelyanchik.fitnessclub.auth.service.security.details;
 
-import com.shevelyanchik.fitnessclub.userservice.model.domain.Status;
-import com.shevelyanchik.fitnessclub.userservice.model.domain.User;
+import com.shevelyanchik.fitnessclub.auth.dto.user.Status;
+import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -54,15 +54,15 @@ public class SecurityUser implements UserDetails {
         return isActive;
     }
 
-    public static UserDetails fromUser(User user) {
+    public static UserDetails fromUserDto(UserDto userDto) {
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getRole().getAuthorities()
+                userDto.getEmail(),
+                userDto.getPassword(),
+                userDto.getStatus().equals(Status.ACTIVE),
+                userDto.getStatus().equals(Status.ACTIVE),
+                userDto.getStatus().equals(Status.ACTIVE),
+                userDto.getStatus().equals(Status.ACTIVE),
+                userDto.getRole().getAuthorities()
         );
     }
 }

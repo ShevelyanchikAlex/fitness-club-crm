@@ -1,18 +1,14 @@
-package com.shevelyanchik.fitnessclub.userservice.service.impl;
+package com.shevelyanchik.fitnessclub.auth.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shevelyanchik.fitnessclub.userservice.model.domain.Role;
-import com.shevelyanchik.fitnessclub.userservice.model.domain.Status;
-import com.shevelyanchik.fitnessclub.userservice.model.domain.User;
-import com.shevelyanchik.fitnessclub.userservice.model.dto.AuthenticationRequestDto;
-import com.shevelyanchik.fitnessclub.userservice.model.dto.AuthenticationResponseDto;
-import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
-import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
-import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
-import com.shevelyanchik.fitnessclub.userservice.service.AuthenticationService;
-import com.shevelyanchik.fitnessclub.userservice.service.exception.ServiceException;
-import com.shevelyanchik.fitnessclub.userservice.service.security.jwt.JwtTokenProvider;
+import com.shevelyanchik.fitnessclub.auth.client.UserServiceClient;
+import com.shevelyanchik.fitnessclub.auth.dto.*;
+import com.shevelyanchik.fitnessclub.auth.dto.user.Role;
+import com.shevelyanchik.fitnessclub.auth.dto.user.Status;
+import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
+import com.shevelyanchik.fitnessclub.auth.service.AuthenticationService;
+import com.shevelyanchik.fitnessclub.auth.service.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,11 +23,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     private static final String USER_VALIDATE_ERROR = "user.validate.error";
-    private static final String USER_NOT_EXIST = "user.not.exist";
     private static final String RESOURCE_ALREADY_EXIST = "resource.already.exist";
-
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserServiceClient userServiceClient;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -43,10 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userDto.setRole(Role.USER);
         userDto.setStatus(Status.ACTIVE);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        User user = userMapper.toEntity(userDto);
-        User savedUser = userRepository.save(user);
-        return userMapper.toDto(savedUser);
+        return userServiceClient.createUser(userDto);
     }
 
     @Override
@@ -59,11 +49,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         authenticationManager.authenticate(authentication);
 
-        User user = userRepository
-                .findUserByEmail(authenticationRequestDTO.getEmail())
-                .orElseThrow(() -> new ServiceException(USER_NOT_EXIST));
+        UserDto userDto = userServiceClient
+                .findUserByEmail(authenticationRequestDTO.getEmail());
 
-        String token = jwtTokenProvider.createToken(authenticationRequestDTO.getEmail(), user.getRole().name());
+        String token = jwtTokenProvider
+                .createToken(authenticationRequestDTO.getEmail(), userDto.getRole());
         AuthenticationResponseDto response = new AuthenticationResponseDto(authenticationRequestDTO.getEmail(), token);
         return objectMapper.convertValue(response, new TypeReference<>() {
         });
@@ -71,10 +61,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private void validateUser(UserDto userDto) {
         if (Objects.isNull(userDto)) {
-            throw new ServiceException(USER_VALIDATE_ERROR);
+            throw new com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException(USER_VALIDATE_ERROR);
         }
-        if (userRepository.existsUserByEmail(userDto.getEmail())) {
-            throw new ServiceException(RESOURCE_ALREADY_EXIST);
+        if (userServiceClient.existsUserByEmail(userDto.getEmail())) {
+            throw new com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException(RESOURCE_ALREADY_EXIST);
         }
     }
 }

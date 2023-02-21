@@ -1,6 +1,7 @@
-package com.shevelyanchik.fitnessclub.userservice.service.security.jwt;
+package com.shevelyanchik.fitnessclub.auth.service.security.jwt;
 
-import com.shevelyanchik.fitnessclub.userservice.service.exception.ServiceException;
+import com.shevelyanchik.fitnessclub.auth.dto.user.Role;
+import com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,9 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
+    private static final String AUTHORITIES = "authorities";
+    private static final String JWT_TOKEN_INVALID = "jwt.token.invalid";
+
     private final UserDetailsService userDetailsService;
 
     @Value("${security.jwt.token.secret-key}")
@@ -26,7 +30,6 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.header}")
     private String authorizationHeader;
 
-    private static final String ROLE = "role";
 
     public JwtTokenProvider(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -37,9 +40,9 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String userName, String role) {
+    public String createToken(String userName, Role role) {
         Claims claims = Jwts.claims().setSubject(userName);
-        claims.put(ROLE, role);
+        claims.put(AUTHORITIES, role.getAuthorities());
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds * 1000);
         return Jwts.builder()
@@ -55,20 +58,20 @@ public class JwtTokenProvider {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new ServiceException("jwt.token.invalid");
+            throw new AuthenticationException(JWT_TOKEN_INVALID);
         }
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUserName(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserName(token));
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-    }
-
-    public String getUserName(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader(authorizationHeader);
+    }
+
+    private String getUserName(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 }
