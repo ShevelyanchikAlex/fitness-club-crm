@@ -6,8 +6,6 @@ spring:
     name: user-service
   cloud:
     consul:
-      discovery:
-        instance-id: "${spring.cloud.consul.host}:${spring.application.name}:${random.int[1,999999]}"
       host: localhost
       port: 8500
   liquibase:
@@ -31,10 +29,3 @@ logging:
     org.springframework.web: ERROR
     com.shevelyanchik: DEBUG
     root: INFO
-
-security:
-  jwt:
-    token:
-      header: Authorization
-      secret-key: test
-      expire-length: 604800
