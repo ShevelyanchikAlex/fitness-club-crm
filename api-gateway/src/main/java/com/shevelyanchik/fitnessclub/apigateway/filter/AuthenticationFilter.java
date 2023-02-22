@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.apigateway.filter;
 
-import com.shevelyanchik.fitnessclub.apigateway.model.TokenValidationResponse;
 import com.shevelyanchik.fitnessclub.apigateway.model.GrantedAuthority;
+import com.shevelyanchik.fitnessclub.apigateway.model.TokenValidationResponse;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -18,8 +18,8 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
-    private static final String USERNAME_HEADER = "username";
-    private static final String AUTHORITIES_HEADER = "authorities";
+    private static final String BASE_URL = "http://auth-service";
+    private static final String VALIDATE_TOKEN_ENDPOINT = "/api/v1/auth-service/auth/validateToken";
 
     private final WebClient.Builder webClientBuilder;
 
@@ -42,10 +42,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 })
                 .flatMap(token ->
                         webClientBuilder
-                                .baseUrl("http://auth-service")
+                                .baseUrl(BASE_URL)
                                 .build()
                                 .get()
-                                .uri("/api/v1/auth-service/auth/validateToken")
+                                .uri(VALIDATE_TOKEN_ENDPOINT)
                                 .header(HttpHeaders.AUTHORIZATION, token)
                                 .retrieve()
                                 .bodyToMono(TokenValidationResponse.class)
@@ -53,9 +53,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 .doOnNext(tokenValidationResponse ->
                         exchange.getRequest()
                                 .mutate()
-                                .header(USERNAME_HEADER, tokenValidationResponse.getUsername())
+                                .header(HeaderName.USERNAME, tokenValidationResponse.getUsername())
                                 .header(
-                                        AUTHORITIES_HEADER,
+                                        HeaderName.AUTHORITIES,
                                         tokenValidationResponse
                                                 .getAuthorities()
                                                 .stream()
