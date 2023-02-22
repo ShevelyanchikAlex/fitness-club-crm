@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.userservice.service.impl;
 
+import com.shevelyanchik.fitnessclub.userservice.model.domain.User;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
@@ -23,6 +24,13 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
+    public UserDto createUser(UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
+        User savedUser = userRepository.save(user);
+        return userMapper.toDto(savedUser);
+    }
+
+    @Override
     public UserDto findUserById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
@@ -42,6 +50,11 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(users, pageable, userRepository.count());
+    }
+
+    @Override
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsUserByEmail(email);
     }
 
     @Override

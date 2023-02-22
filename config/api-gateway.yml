@@ -15,12 +15,8 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-      routes:
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/api/v1/user-service/**
-        - id: order-service
-          uri: lb://order-service
-          predicates:
-            - Path=/api/v1/order-service/**
+
+logging:
+  level:
+    org.springframework.web:
+      HttpLogging: TRACE

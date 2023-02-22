@@ -3,6 +3,6 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/ShevelyanchikAlex/fitness-club-service-config
+          uri: https://github.com/ShevelyanchikAlex/fitness-club-service/tree/master/config
 server:
   port: 8888

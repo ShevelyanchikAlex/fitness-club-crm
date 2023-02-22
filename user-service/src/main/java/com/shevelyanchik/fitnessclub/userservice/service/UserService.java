@@ -11,6 +11,14 @@ import org.springframework.data.domain.Pageable;
  */
 public interface UserService {
     /**
+     * Creates new User.
+     *
+     * @param userDto UserDto that contains all information about User.
+     * @return User if userDto is not null and User with same email is not exist, throws ServiceException otherwise.
+     */
+    UserDto createUser(UserDto userDto);
+
+    /**
      * If the user exists, this method will return a User that contains information about them.
      *
      * @param id User id.
@@ -33,6 +41,14 @@ public interface UserService {
      * @return Users.
      */
     Page<UserDto> findAllUsers(Pageable pageable);
+
+    /**
+     * Checks the existing User with email.
+     *
+     * @param email User email.
+     * @return true if User with this email exist, false otherwise.
+     */
+    boolean existsUserByEmail(String email);
 
     /**
      * Returns number of Users.
