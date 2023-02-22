@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.auth.service.security.jwt;
 
 import com.shevelyanchik.fitnessclub.auth.dto.user.Role;
-import com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException;
+import com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +44,7 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(userName);
         claims.put(AUTHORITIES, role.getAuthorities());
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds * 1000);
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)

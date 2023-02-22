@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.auth.exception;
+package com.shevelyanchik.fitnessclub.auth.service.exception;
 
 import lombok.Getter;
 

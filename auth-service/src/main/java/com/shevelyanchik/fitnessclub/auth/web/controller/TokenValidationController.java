@@ -22,7 +22,7 @@ import java.util.List;
 public class TokenValidationController {
 
     @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<TokenValidationResponse> validateGet(HttpServletRequest request) {
+    public ResponseEntity<TokenValidationResponse> validateToken(HttpServletRequest request) {
         User user = (User) request.getAttribute(AttributeName.USERNAME);
         String username = user.getUsername();
         List<GrantedAuthority> grantedAuthorities = (List<GrantedAuthority>) request.getAttribute(AttributeName.AUTHORITIES);

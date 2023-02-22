@@ -61,10 +61,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private void validateUser(UserDto userDto) {
         if (Objects.isNull(userDto)) {
-            throw new com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException(USER_VALIDATE_ERROR);
+            throw new com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException(USER_VALIDATE_ERROR);
         }
         if (userServiceClient.existsUserByEmail(userDto.getEmail())) {
-            throw new com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException(RESOURCE_ALREADY_EXIST);
+            throw new com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException(RESOURCE_ALREADY_EXIST);
         }
     }
 }
