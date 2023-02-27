@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderEventDto {
+public class EmailEvent {
+    private String subject;
     private String message;
-    private Long orderId;
-    private String status;
 }

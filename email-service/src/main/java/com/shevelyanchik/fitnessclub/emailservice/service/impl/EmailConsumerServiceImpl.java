@@ -1,9 +1,9 @@
 package com.shevelyanchik.fitnessclub.emailservice.service.impl;
 
 import com.shevelyanchik.fitnessclub.emailservice.dto.EmailDetails;
-import com.shevelyanchik.fitnessclub.emailservice.dto.OrderEventDto;
+import com.shevelyanchik.fitnessclub.emailservice.dto.EmailEvent;
+import com.shevelyanchik.fitnessclub.emailservice.service.EmailConsumerService;
 import com.shevelyanchik.fitnessclub.emailservice.service.EmailService;
-import com.shevelyanchik.fitnessclub.emailservice.service.OrderConsumerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OrderConsumerServiceImpl implements OrderConsumerService {
+public class EmailConsumerServiceImpl implements EmailConsumerService {
 
     private final EmailService emailService;
     @Value("${spring.mail.recipient}")
@@ -24,17 +24,17 @@ public class OrderConsumerServiceImpl implements OrderConsumerService {
             groupId = "${spring.kafka.consumer.group-id}"
     )
     @Override
-    public void consume(OrderEventDto event) {
-        EmailDetails emailDetails = buildEmailDetails(event);
+    public void consume(EmailEvent event) {
+        EmailDetails emailDetails = buildEmailDetails(event, recipient);
         emailService.sendEmail(emailDetails);
         log.info(event.toString());
     }
 
-    private EmailDetails buildEmailDetails(OrderEventDto event) {
+    private EmailDetails buildEmailDetails(EmailEvent event, String recipient) {
         return EmailDetails.builder()
                 .recipient(recipient)
-                .subject(event.getMessage())
-                .messageBody(event.toString())
+                .subject(event.getSubject())
+                .messageBody(event.getMessage())
                 .build();
     }
 }
