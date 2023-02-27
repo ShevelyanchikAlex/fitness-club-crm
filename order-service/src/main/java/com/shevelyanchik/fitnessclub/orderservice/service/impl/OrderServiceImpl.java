@@ -3,11 +3,13 @@ package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 import com.shevelyanchik.fitnessclub.orderservice.client.UserServiceClient;
 import com.shevelyanchik.fitnessclub.orderservice.model.domain.Order;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
+import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderEventDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.TrainerDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.UserDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.OrderMapper;
 import com.shevelyanchik.fitnessclub.orderservice.persistence.OrderRepository;
+import com.shevelyanchik.fitnessclub.orderservice.service.OrderProducerService;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderService;
 import com.shevelyanchik.fitnessclub.orderservice.service.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +25,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private static final String ORDER_NOT_EXIST = "order.not.exist";
+    private static final String ORDER_CREATED_MESSAGE = "Order created.";
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final UserServiceClient userServiceClient;
+    private final OrderProducerService orderProducerService;
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = orderMapper.toEntity(orderDto);
         Order savedOrder = orderRepository.save(order);
-        return orderMapper.toDto(savedOrder);
+        OrderDto savedOrderDto = orderMapper.toDto(savedOrder);
+
+        OrderEventDto orderEvent = buildOrderEventDto(savedOrderDto);
+        orderProducerService.sendMessage(orderEvent);
+        return savedOrderDto;
     }
 
     @Override
@@ -72,6 +80,14 @@ public class OrderServiceImpl implements OrderService {
                 .trainerDto(trainerDto)
                 .service(orderDto.getService())
                 .orderStatus(orderDto.getOrderStatus())
+                .build();
+    }
+
+    private OrderEventDto buildOrderEventDto(OrderDto orderDto) {
+        return OrderEventDto.builder()
+                .message(ORDER_CREATED_MESSAGE)
+                .orderId(orderDto.getId())
+                .status(orderDto.getOrderStatus().name())
                 .build();
     }
 }
