@@ -1,0 +1,49 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: email-service
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: email
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            value:
+              default:
+                type: 'com.shevelyanchik.fitnessclub.emailservice.dto.OrderEventDto'
+            type:
+              mapping: 'com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderEventDto:com.shevelyanchik.fitnessclub.emailservice.dto.OrderEventDto'
+            trusted:
+              packages: 'com.shevelyanchik.fitnessclub.orderservice.model.dto'
+    topic:
+      name: order_topics
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    recipient: shevelyanchik.alex@gmail.com
+    username: shevelyanchik.alex@gmail.com
+    password: yuiyqznwgxatqeoc
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    root: INFO
+
