@@ -20,21 +20,17 @@ spring:
           json:
             value:
               default:
-                type: 'com.shevelyanchik.fitnessclub.emailservice.dto.OrderEventDto'
-            type:
-              mapping: 'com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderEventDto:com.shevelyanchik.fitnessclub.emailservice.dto.OrderEventDto'
-            trusted:
-              packages: 'com.shevelyanchik.fitnessclub.orderservice.model.dto'
+                type: 'com.shevelyanchik.fitnessclub.emailservice.dto.EmailEvent'
     topic:
-      name: order_topics
+      name: email_topics
 
 
   mail:
     host: smtp.gmail.com
     port: 587
-    recipient: shevelyanchik.alex@gmail.com
-    username: shevelyanchik.alex@gmail.com
-    password: yuiyqznwgxatqeoc
+    recipient: fitnessclub.power.maker@gmail.com
+    username: fitnessclub.power.maker@gmail.com
+    password: knufmkedepvqmdul
     properties:
       mail:
         smtp:

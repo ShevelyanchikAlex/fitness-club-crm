@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.orderservice.service;
 
-import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderEventDto;
+import com.shevelyanchik.fitnessclub.orderservice.model.dto.EmailEvent;
 
 public interface OrderProducerService {
-    void sendMessage(OrderEventDto event);
+    void sendMessage(EmailEvent event);
 }

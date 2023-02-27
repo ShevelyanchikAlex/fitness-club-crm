@@ -1,9 +1,10 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
 import com.shevelyanchik.fitnessclub.orderservice.client.UserServiceClient;
+import com.shevelyanchik.fitnessclub.orderservice.constant.EmailEventPayload;
 import com.shevelyanchik.fitnessclub.orderservice.model.domain.Order;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
-import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderEventDto;
+import com.shevelyanchik.fitnessclub.orderservice.model.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.TrainerDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.UserDto;
@@ -12,6 +13,7 @@ import com.shevelyanchik.fitnessclub.orderservice.persistence.OrderRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderProducerService;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderService;
 import com.shevelyanchik.fitnessclub.orderservice.service.exception.ServiceException;
+import com.shevelyanchik.fitnessclub.orderservice.util.OrderEventUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,7 +27,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private static final String ORDER_NOT_EXIST = "order.not.exist";
-    private static final String ORDER_CREATED_MESSAGE = "Order created.";
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final UserServiceClient userServiceClient;
@@ -37,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.save(order);
         OrderDto savedOrderDto = orderMapper.toDto(savedOrder);
 
-        OrderEventDto orderEvent = buildOrderEventDto(savedOrderDto);
+        EmailEvent orderEvent = buildOrderEvent(savedOrderDto);
         orderProducerService.sendMessage(orderEvent);
         return savedOrderDto;
     }
@@ -83,11 +84,20 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
-    private OrderEventDto buildOrderEventDto(OrderDto orderDto) {
-        return OrderEventDto.builder()
-                .message(ORDER_CREATED_MESSAGE)
-                .orderId(orderDto.getId())
-                .status(orderDto.getOrderStatus().name())
+    private EmailEvent buildOrderEvent(OrderDto orderDto) {
+        EmailEventPayload orderCreatedEventPayload = EmailEventPayload.ORDER_HAS_BEEN_CREATED;
+        String message = OrderEventUtils.getEmailEventMessage(
+                orderCreatedEventPayload,
+                orderDto.getId(),
+                orderDto.getUserId(),
+                orderDto.getTrainerId(),
+                orderDto.getService().getId(),
+                orderDto.getOrderStatus()
+        );
+
+        return EmailEvent.builder()
+                .subject(orderCreatedEventPayload.getSubject())
+                .message(message)
                 .build();
     }
 }

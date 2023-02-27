@@ -1,6 +1,6 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
-import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderEventDto;
+import com.shevelyanchik.fitnessclub.orderservice.model.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderProducerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 public class OrderProducerServiceImpl implements OrderProducerService {
 
     private final NewTopic topic;
-    private final KafkaTemplate<String, OrderEventDto> kafkaTemplate;
+    private final KafkaTemplate<String, EmailEvent> kafkaTemplate;
 
     @Override
-    public void sendMessage(OrderEventDto event) {
-        Message<OrderEventDto> message = MessageBuilder
+    public void sendMessage(EmailEvent event) {
+        Message<EmailEvent> message = MessageBuilder
                 .withPayload(event)
                 .setHeader(KafkaHeaders.TOPIC, topic.name())
                 .build();
