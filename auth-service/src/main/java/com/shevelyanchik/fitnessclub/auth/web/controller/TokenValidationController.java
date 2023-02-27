@@ -1,6 +1,6 @@
 package com.shevelyanchik.fitnessclub.auth.web.controller;
 
-import com.shevelyanchik.fitnessclub.auth.attribute.AttributeName;
+import com.shevelyanchik.fitnessclub.auth.constant.AttributeName;
 import com.shevelyanchik.fitnessclub.auth.dto.TokenValidationResponse;
 import lombok.*;
 import org.springframework.http.HttpMethod;

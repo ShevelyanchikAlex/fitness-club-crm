@@ -1,6 +1,6 @@
 package com.shevelyanchik.fitnessclub.auth.service.security.jwt;
 
-import com.shevelyanchik.fitnessclub.auth.attribute.AttributeName;
+import com.shevelyanchik.fitnessclub.auth.constant.AttributeName;
 import com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
