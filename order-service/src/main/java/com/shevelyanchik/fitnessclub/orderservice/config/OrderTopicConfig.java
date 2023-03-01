@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.orderservice.config;
 
+import com.shevelyanchik.fitnessclub.kafkaconfig.topic.TopicName;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,7 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class OrderTopicConfig {
 
-    @Value("${spring.kafka.topic.name}")
+    @Value(TopicName.EMAIL_TOPIC)
     private String topicName;
 
     @Bean

@@ -1,6 +1,6 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
-import com.shevelyanchik.fitnessclub.orderservice.model.dto.EmailEvent;
+import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderProducerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
