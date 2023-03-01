@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.auth.service.impl;
 
-import com.shevelyanchik.fitnessclub.auth.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.auth.service.AuthenticationProducerService;
+import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.kafka.core.KafkaTemplate;

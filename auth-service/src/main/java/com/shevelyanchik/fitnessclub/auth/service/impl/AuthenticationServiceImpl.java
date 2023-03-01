@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shevelyanchik.fitnessclub.auth.client.UserServiceClient;
 import com.shevelyanchik.fitnessclub.auth.constant.AuthenticationErrorMessageKey;
 import com.shevelyanchik.fitnessclub.auth.constant.EmailEventPayload;
-import com.shevelyanchik.fitnessclub.auth.dto.*;
+import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationRequest;
+import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationResponse;
 import com.shevelyanchik.fitnessclub.auth.dto.user.Role;
 import com.shevelyanchik.fitnessclub.auth.dto.user.Status;
 import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
@@ -13,6 +14,7 @@ import com.shevelyanchik.fitnessclub.auth.service.AuthenticationProducerService;
 import com.shevelyanchik.fitnessclub.auth.service.AuthenticationService;
 import com.shevelyanchik.fitnessclub.auth.service.security.jwt.JwtTokenProvider;
 import com.shevelyanchik.fitnessclub.auth.util.AuthenticationEventUtils;
+import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,27 +44,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         UserDto savedUserDto = userServiceClient.createUser(userDto);
 
-        EmailEvent eventDto = buildEmailEvent(savedUserDto);
-        authenticationProducerService.sendMessage(eventDto);
+        EmailEvent emailEvent = buildEmailEvent(savedUserDto);
+        authenticationProducerService.sendMessage(emailEvent);
         return savedUserDto;
     }
 
     @Override
-    public Map<Object, Object> login(AuthenticationRequestDto authenticationRequestDTO) throws AuthenticationException {
+    public Map<Object, Object> login(AuthenticationRequest authenticationRequest) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
-                        authenticationRequestDTO.getEmail(),
-                        authenticationRequestDTO.getPassword()
+                        authenticationRequest.getEmail(),
+                        authenticationRequest.getPassword()
                 );
 
         authenticationManager.authenticate(authentication);
 
         UserDto userDto = userServiceClient
-                .findUserByEmail(authenticationRequestDTO.getEmail());
+                .findUserByEmail(authenticationRequest.getEmail());
 
         String token = jwtTokenProvider
-                .createToken(authenticationRequestDTO.getEmail(), userDto.getRole());
-        AuthenticationResponseDto response = new AuthenticationResponseDto(authenticationRequestDTO.getEmail(), token);
+                .createToken(authenticationRequest.getEmail(), userDto.getRole());
+        AuthenticationResponse response = new AuthenticationResponse(authenticationRequest.getEmail(), token);
         return objectMapper.convertValue(response, new TypeReference<>() {
         });
     }
@@ -70,11 +72,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private void validateUser(UserDto userDto) {
         if (Objects.isNull(userDto)) {
             throw new com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException(
-                    AuthenticationErrorMessageKey.USER_VALIDATE_ERROR.getKey());
+                    AuthenticationErrorMessageKey.USER_VALIDATE_ERROR);
         }
         if (userServiceClient.existsUserByEmail(userDto.getEmail())) {
             throw new com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException(
-                    AuthenticationErrorMessageKey.RESOURCE_ALREADY_EXIST.getKey());
+                    AuthenticationErrorMessageKey.RESOURCE_ALREADY_EXIST);
         }
     }
 

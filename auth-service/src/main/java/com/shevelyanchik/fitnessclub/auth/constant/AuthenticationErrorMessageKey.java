@@ -1,13 +1,11 @@
 package com.shevelyanchik.fitnessclub.auth.constant;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@Getter
-@AllArgsConstructor
-public enum AuthenticationErrorMessageKey {
-    RESOURCE_ALREADY_EXIST("resource.already.exist"),
-    USER_VALIDATE_ERROR("user.validate.error");
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class AuthenticationErrorMessageKey {
 
-    private final String key;
+    public static final String RESOURCE_ALREADY_EXIST = "resource.already.exist";
+    public static final String USER_VALIDATE_ERROR = "user.validate.error";
 }
