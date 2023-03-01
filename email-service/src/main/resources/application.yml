@@ -18,11 +18,8 @@ spring:
       properties:
         spring:
           json:
-            value:
-              default:
-                type: 'com.shevelyanchik.fitnessclub.emailservice.dto.EmailEvent'
-    topic:
-      name: email_topics
+            trusted:
+              packages: '*'
 
 
   mail:

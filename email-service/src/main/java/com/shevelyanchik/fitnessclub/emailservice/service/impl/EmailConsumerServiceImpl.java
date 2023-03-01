@@ -1,9 +1,10 @@
 package com.shevelyanchik.fitnessclub.emailservice.service.impl;
 
 import com.shevelyanchik.fitnessclub.emailservice.dto.EmailDetails;
-import com.shevelyanchik.fitnessclub.emailservice.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.emailservice.service.EmailConsumerService;
 import com.shevelyanchik.fitnessclub.emailservice.service.EmailService;
+import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
+import com.shevelyanchik.fitnessclub.kafkaconfig.topic.TopicName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +21,7 @@ public class EmailConsumerServiceImpl implements EmailConsumerService {
     private String recipient;
 
     @KafkaListener(
-            topics = "${spring.kafka.topic.name}",
-            groupId = "${spring.kafka.consumer.group-id}"
+            topics = TopicName.EMAIL_TOPIC
     )
     @Override
     public void consume(EmailEvent event) {
@@ -34,7 +34,7 @@ public class EmailConsumerServiceImpl implements EmailConsumerService {
         return EmailDetails.builder()
                 .recipient(recipient)
                 .subject(event.getSubject())
-                .messageBody(event.getMessage())
+                .message(event.getMessage())
                 .build();
     }
 }
