@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.emailservice.dto;
+package com.shevelyanchik.fitnessclub.kafkaconfig.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
