@@ -13,11 +13,13 @@ ext {
 }
 
 dependencies {
+    implementation project(":kafka-config")
     implementation "org.springframework.boot:spring-boot-starter-actuator:${springVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-consul-discovery"
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation "org.springframework.kafka:spring-kafka:$kafkaVersion"
     implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
     implementation "org.springframework.boot:spring-boot-starter-security:$springVersion"
     implementation "javax.xml.bind:jaxb-api:$jaxbApiVersion"

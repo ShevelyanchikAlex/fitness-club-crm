@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
+import com.shevelyanchik.fitnessclub.orderservice.constant.OrderErrorMessageKey;
 import com.shevelyanchik.fitnessclub.orderservice.model.domain.FitnessClubInfo;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.FitnessClubInfoDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.FitnessClubInfoMapper;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
-    private static final String FITNESS_CLUB_INFO_NOT_EXIST = "fitness_club_info.not.exist";
+
     private final FitnessClubInfoRepository fitnessClubInfoRepository;
     private final FitnessClubInfoMapper fitnessClubInfoMapper;
 
@@ -34,7 +35,7 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
         return fitnessClubInfoRepository
                 .findById(id)
                 .map(fitnessClubInfoMapper::toDto)
-                .orElseThrow(() -> new ServiceException(FITNESS_CLUB_INFO_NOT_EXIST));
+                .orElseThrow(() -> new ServiceException(OrderErrorMessageKey.FITNESS_CLUB_INFO_NOT_EXIST));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.auth.attribute;
+package com.shevelyanchik.fitnessclub.auth.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

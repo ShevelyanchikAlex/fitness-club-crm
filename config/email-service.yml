@@ -1,0 +1,41 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: email-service
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: email
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    recipient: fitnessclub.power.maker@gmail.com
+    username: fitnessclub.power.maker@gmail.com
+    password: knufmkedepvqmdul
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    root: INFO

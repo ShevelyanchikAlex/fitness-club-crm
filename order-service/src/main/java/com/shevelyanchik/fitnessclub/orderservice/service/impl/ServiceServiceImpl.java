@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
+import com.shevelyanchik.fitnessclub.orderservice.constant.OrderErrorMessageKey;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapper;
 import com.shevelyanchik.fitnessclub.orderservice.persistence.ServiceRepository;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ServiceServiceImpl implements ServiceService {
-    private static final String SERVICE_NOT_EXIST = "service.not.exist";
+
     private final ServiceRepository serviceRepository;
     private final ServiceMapper serviceMapper;
 
@@ -33,7 +34,7 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceRepository
                 .findById(id)
                 .map(serviceMapper::toDto)
-                .orElseThrow(() -> new ServiceException(SERVICE_NOT_EXIST));
+                .orElseThrow(() -> new ServiceException(OrderErrorMessageKey.SERVICE_NOT_EXIST));
     }
 
     @Override
