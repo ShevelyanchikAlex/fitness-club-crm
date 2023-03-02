@@ -1,0 +1,14 @@
+plugins {
+    id 'java-library'
+    id 'io.freefair.lombok' version "6.6.1"
+}
+
+group = 'com.shevelyanchik.fitnessclub.kafka-config'
+version = '1.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}

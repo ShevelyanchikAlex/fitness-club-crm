@@ -1,6 +1,9 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
+import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.orderservice.client.UserServiceClient;
+import com.shevelyanchik.fitnessclub.orderservice.constant.EmailEventPayload;
+import com.shevelyanchik.fitnessclub.orderservice.constant.OrderErrorMessageKey;
 import com.shevelyanchik.fitnessclub.orderservice.model.domain.Order;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;
@@ -8,8 +11,10 @@ import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.TrainerDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.UserDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.OrderMapper;
 import com.shevelyanchik.fitnessclub.orderservice.persistence.OrderRepository;
+import com.shevelyanchik.fitnessclub.orderservice.service.OrderProducerService;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderService;
 import com.shevelyanchik.fitnessclub.orderservice.service.exception.ServiceException;
+import com.shevelyanchik.fitnessclub.orderservice.util.OrderEventUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,16 +27,21 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-    private static final String ORDER_NOT_EXIST = "order.not.exist";
+
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final UserServiceClient userServiceClient;
+    private final OrderProducerService orderProducerService;
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = orderMapper.toEntity(orderDto);
         Order savedOrder = orderRepository.save(order);
-        return orderMapper.toDto(savedOrder);
+        OrderDto savedOrderDto = orderMapper.toDto(savedOrder);
+
+        EmailEvent emailEvent = buildEmailEvent(savedOrderDto);
+        orderProducerService.sendMessage(emailEvent);
+        return savedOrderDto;
     }
 
     @Override
@@ -39,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository
                 .findById(id)
                 .map(orderMapper::toDto)
-                .orElseThrow(() -> new ServiceException(ORDER_NOT_EXIST));
+                .orElseThrow(() -> new ServiceException(OrderErrorMessageKey.ORDER_NOT_EXIST));
     }
 
     @Override
@@ -47,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
         OrderDto orderDto = orderRepository
                 .findById(id)
                 .map(orderMapper::toDto)
-                .orElseThrow(() -> new ServiceException(ORDER_NOT_EXIST));
+                .orElseThrow(() -> new ServiceException(OrderErrorMessageKey.ORDER_NOT_EXIST));
         UserDto userDto = userServiceClient.findUserById(orderDto.getUserId());
         TrainerDto trainerDto = userServiceClient.findTrainerById(orderDto.getTrainerId());
         return buildOrderResponseDto(orderDto, userDto, trainerDto);
@@ -72,6 +82,23 @@ public class OrderServiceImpl implements OrderService {
                 .trainerDto(trainerDto)
                 .service(orderDto.getService())
                 .orderStatus(orderDto.getOrderStatus())
+                .build();
+    }
+
+    private EmailEvent buildEmailEvent(OrderDto orderDto) {
+        EmailEventPayload orderCreatedEventPayload = EmailEventPayload.ORDER_HAS_BEEN_CREATED;
+        String message = OrderEventUtils.getEmailEventMessage(
+                orderCreatedEventPayload,
+                orderDto.getId(),
+                orderDto.getUserId(),
+                orderDto.getTrainerId(),
+                orderDto.getService().getId(),
+                orderDto.getOrderStatus()
+        );
+
+        return EmailEvent.builder()
+                .subject(orderCreatedEventPayload.getSubject())
+                .message(message)
                 .build();
     }
 }

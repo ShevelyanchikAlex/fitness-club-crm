@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'io.freefair.lombok' version "$lombokVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2021.0.5")
+}
+
+dependencies {
+    implementation project(":kafka-config")
+    implementation "org.springframework.boot:spring-boot-starter-actuator:$springVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-consul-discovery"
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+    implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
+    implementation "org.springframework.kafka:spring-kafka:$kafkaVersion"
+    implementation "org.springframework.boot:spring-boot-starter-mail:$springVersion"
+    testImplementation "org.springframework.kafka:spring-kafka-test:$springVersion"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.5"
+    }
+}
