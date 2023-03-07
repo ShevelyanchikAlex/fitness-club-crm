@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version "${springVersion}"
     id 'io.freefair.lombok' version "$lombokVersion"
     id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
 }
@@ -14,13 +15,13 @@ ext {
 
 dependencies {
     implementation project(":kafka-config")
-    implementation "org.springframework.boot:spring-boot-starter-actuator:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.cloud:spring-cloud-starter-consul-discovery"
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
-    implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.kafka:spring-kafka:$kafkaVersion"
-    implementation "org.springframework.boot:spring-boot-starter-mail:$springVersion"
-    testImplementation "org.springframework.kafka:spring-kafka-test:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    testImplementation "org.springframework.kafka:spring-kafka-test"
 }
 
 dependencyManagement {

@@ -1,20 +1,21 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: user-service
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
   liquibase:
     enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/user_service_db
-    username: postgres
-    password: user
+
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5433/user_service_db}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:user}
   jpa:
     hibernate:
       ddl-auto: validate

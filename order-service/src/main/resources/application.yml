@@ -1,20 +1,20 @@
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 spring:
   application:
     name: order-service
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
   liquibase:
     enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/order_service_db
-    username: postgres
-    password: user
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5433/order_service_db}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:user}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -24,8 +24,8 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
   kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
     producer:
-      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 

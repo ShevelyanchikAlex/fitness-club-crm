@@ -1,16 +1,16 @@
 server:
-  port: 8082
+  port: ${PORT:8082}
 
 spring:
   application:
     name: auth-service
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
   kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
     producer:
-      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 

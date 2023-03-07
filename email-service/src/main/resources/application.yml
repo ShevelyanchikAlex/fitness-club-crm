@@ -1,16 +1,16 @@
 server:
-  port: 8083
+  port: ${PORT:8083}
 
 spring:
   application:
     name: email-service
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
   kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
     consumer:
-      bootstrap-servers: localhost:9092
       group-id: email
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -23,8 +23,8 @@ spring:
 
 
   mail:
-    host: smtp.gmail.com
-    port: 587
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
     recipient: fitnessclub.power.maker@gmail.com
     username: fitnessclub.power.maker@gmail.com
     password: knufmkedepvqmdul
