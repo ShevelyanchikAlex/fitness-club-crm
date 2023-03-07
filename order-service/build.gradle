@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version "${springVersion}"
     id 'io.freefair.lombok' version "$lombokVersion"
     id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
 }
@@ -16,17 +17,17 @@ dependencies {
     implementation project(":kafka-config")
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
-    implementation "org.springframework.boot:spring-boot-starter-actuator:${springVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.cloud:spring-cloud-starter-consul-discovery"
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     implementation "org.springframework.kafka:spring-kafka:$kafkaVersion"
     implementation "org.liquibase:liquibase-core:$liquibaseVersion"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
-    implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "javax.xml.bind:jaxb-api:$jaxbApiVersion"
     implementation "org.postgresql:postgresql:$postgresqlVersion"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
 dependencyManagement {

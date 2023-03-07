@@ -1,0 +1,188 @@
+version: '3.8'
+
+services:
+  user-service:
+    image: fitness-club/user-service:latest
+    container_name: user-service
+    build:
+      context: ./user-service
+    networks:
+      - fitness-club-net
+    expose:
+      - "8080"
+    depends_on:
+      - postgres
+      - consul-service
+      - config-service
+    environment:
+      CONSUL_HOST: consul-service
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/user_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: user
+
+  order-service:
+    image: fitness-club/order-service:latest
+    container_name: order-service
+    build:
+      context: ./order-service
+    networks:
+      - fitness-club-net
+    expose:
+      - "8081"
+    depends_on:
+      - postgres
+      - consul-service
+      - config-service
+      - kafka
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      CONSUL_HOST: consul-service
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/order_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: user
+
+  auth-service:
+    image: fitness-club/auth-service:latest
+    container_name: auth-service
+    build:
+      context: ./auth-service
+    networks:
+      - fitness-club-net
+    expose:
+      - "8082"
+    depends_on:
+      - consul-service
+      - config-service
+      - kafka
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      CONSUL_HOST: consul-service
+
+  email-service:
+    image: fitness-club/email-service:latest
+    container_name: email-service
+    build:
+      context: ./email-service
+    networks:
+      - fitness-club-net
+    expose:
+      - "8083"
+    depends_on:
+      - consul-service
+      - config-service
+      - kafka
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      CONSUL_HOST: consul-service
+
+  config-service:
+    image: fitness-club/config-service:latest
+    container_name: config-service
+    build:
+      context: ./config-server
+    networks:
+      - fitness-club-net
+    expose:
+      - "8888"
+    depends_on:
+      - consul-service
+    environment:
+      CONSUL_HOST: consul-service
+
+  api-gateway:
+    image: fitness-club/api-gateway:latest
+    container_name: api-gateway
+    build:
+      context: ./api-gateway
+    networks:
+      - fitness-club-net
+    ports:
+      - "8765:8765"
+    depends_on:
+      - consul-service
+    environment:
+      CONSUL_HOST: consul-service
+
+
+  postgres:
+    image: 'postgres:14.6-alpine'
+    container_name: postgres
+    restart: always
+    networks:
+      - fitness-club-net
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: user_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: user
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./create-additional-databases.sh:/docker-entrypoint-initdb.d/create-additional-databases.sh
+
+  consul-service:
+    image: bitnami/consul:1.15.0
+    container_name: consul-service
+    networks:
+      - fitness-club-net
+    ports:
+      - '8500:8500'
+
+  zookeeper:
+    image: bitnami/zookeeper:3.8.0
+    container_name: zookeeper
+    restart: always
+    networks:
+      - fitness-club-net
+    expose:
+      - "2181"
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: yes
+    volumes:
+      - zookeeper-data:/bitnami/zookeeper
+
+  kafka:
+    image: bitnami/kafka:3.3.1
+    container_name: kafka
+    restart: always
+    networks:
+      - fitness-club-net
+    expose:
+      - "9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_CFG_LISTENERS: DOCKER://:29092,HOST://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: DOCKER://kafka:29092,HOST://localhost:9092
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER:PLAINTEXT,HOST:PLAINTEXT
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: DOCKER
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: true
+      KAFKA_CFG_DELETE_TOPIC_ENABLE: true
+    volumes:
+      - kafka-data:/bitnami/kafka
+
+  kowl:
+    image: quay.io/cloudhut/kowl:master-59f68da
+    container_name: kowl
+    restart: always
+    networks:
+      - fitness-club-net
+    ports:
+      - "9000:9000"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      SERVER_LISTENPORT: 9000
+
+
+volumes:
+  postgres-data:
+  zookeeper-data:
+  kafka-data:
+
+networks:
+  fitness-club-net:
