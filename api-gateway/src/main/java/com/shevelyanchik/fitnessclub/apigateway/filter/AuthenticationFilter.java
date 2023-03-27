@@ -18,7 +18,7 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
-    private static final String BASE_URL = "http://auth-service";
+    private static final String BASE_URL = System.getenv("AUTH_SERVICE_URL");
     private static final String VALIDATE_TOKEN_ENDPOINT = "/api/v1/auth-service/auth/validateToken";
 
     private final WebClient.Builder webClientBuilder;

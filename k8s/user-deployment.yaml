@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: shevelyanchik/user-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_URL
+              value: jdbc:postgresql://postgres-svc:5432/user_service_db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: user-secret-config
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: user-secret-config
+                  key: password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service-svc
+spec:
+  selector:
+    app: user-service
+  ports:
+    - protocol: "TCP"
+      port: 8080
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-secret-config
+type: Opaque
+data:
+  user: cG9zdGdyZXM=
+  password: dXNlcg==

@@ -4,10 +4,6 @@ server:
 spring:
   application:
     name: user-service
-  cloud:
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
   liquibase:
     enabled: true
   datasource:

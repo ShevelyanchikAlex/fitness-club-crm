@@ -5,9 +5,6 @@ spring:
   application:
     name: config-service
   cloud:
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
     config:
       server:
         git:

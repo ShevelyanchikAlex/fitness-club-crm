@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  selector:
+    matchLabels:
+      app: auth-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+        - name: auth-service
+          image: shevelyanchik/auth-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+          env:
+            - name: KAFKA_BROKERS
+              value: kafka-1679655269-0.kafka-1679655269-headless.default.svc.cluster.local:9092
+            - name: USER_SERVICE_URL
+              value: http://user-service-svc.default.svc.cluster.local:8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service-svc
+spec:
+  selector:
+    app: auth-service
+  ports:
+    - protocol: "TCP"
+      port: 8082
+  type: LoadBalancer

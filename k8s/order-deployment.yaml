@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  selector:
+    matchLabels:
+      app: order-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: shevelyanchik/order-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            - name: POSTGRES_URL
+              value: jdbc:postgresql://postgres-svc:5432/order_service_db
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: order-secret-config
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: order-secret-config
+                  key: password
+            - name: USER_SERVICE_URL
+              value: http://user-service-svc.default.svc.cluster.local:8080
+            - name: KAFKA_BROKERS
+              value: kafka-1679655269-0.kafka-1679655269-headless.default.svc.cluster.local:9092
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service-svc
+spec:
+  selector:
+    app: order-service
+  ports:
+    - protocol: "TCP"
+      port: 8081
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: order-secret-config
+type: Opaque
+data:
+  user: cG9zdGdyZXM=
+  password: dXNlcg==

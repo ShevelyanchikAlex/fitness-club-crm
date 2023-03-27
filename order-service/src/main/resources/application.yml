@@ -4,10 +4,6 @@ server:
 spring:
   application:
     name: order-service
-  cloud:
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
   liquibase:
     enabled: true
   datasource:
@@ -34,3 +30,6 @@ logging:
     org.springframework.web: ERROR
     com.shevelyanchik: DEBUG
     root: INFO
+
+services:
+  user_service_url: ${USER_SERVICE_URL}

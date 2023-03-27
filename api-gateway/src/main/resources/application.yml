@@ -4,17 +4,6 @@ server:
 spring:
   application:
     name: api-gateway
-  cloud:
-    consul:
-      config:
-        enabled: false
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
 
 logging:
   level:

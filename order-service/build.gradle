@@ -18,7 +18,6 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
-    implementation "org.springframework.cloud:spring-cloud-starter-consul-discovery"
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     implementation "org.springframework.kafka:spring-kafka:$kafkaVersion"

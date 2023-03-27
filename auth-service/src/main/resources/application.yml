@@ -4,10 +4,6 @@ server:
 spring:
   application:
     name: auth-service
-  cloud:
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
   kafka:
     bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
     producer:
@@ -25,3 +21,6 @@ security:
       header: Authorization
       secret-key: test
       expire-length: 604800
+
+services:
+  user_service_url: ${USER_SERVICE_URL}

@@ -4,10 +4,6 @@ server:
 spring:
   application:
     name: email-service
-  cloud:
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
   kafka:
     bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
     consumer:
@@ -27,7 +23,7 @@ spring:
     port: ${MAIL_PORT:587}
     recipient: fitnessclub.power.maker@gmail.com
     username: fitnessclub.power.maker@gmail.com
-    password: knufmkedepvqmdul
+    password: ciqwuvrflzyzvxsd
     properties:
       mail:
         smtp:
