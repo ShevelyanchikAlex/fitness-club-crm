@@ -9,3 +9,9 @@ logging:
   level:
     org.springframework.web:
       HttpLogging: TRACE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,metric

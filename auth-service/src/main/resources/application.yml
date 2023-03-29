@@ -24,3 +24,10 @@ security:
 
 services:
   user_service_url: ${USER_SERVICE_URL}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,metric

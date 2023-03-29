@@ -19,7 +19,7 @@ spec:
             - containerPort: 9000
           env:
             - name: KAFKA_BROKERS
-              value: kafka-1679655269-0.kafka-1679655269-headless.default.svc.cluster.local:9092
+              value: kafka-1680084936-0.kafka-1680084936-headless.default.svc.cluster.local:9092
             - name: SERVER_LISTENPORT
               value: "9000"
 

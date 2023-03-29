@@ -20,7 +20,7 @@ spec:
             - containerPort: 8082
           env:
             - name: KAFKA_BROKERS
-              value: kafka-1679655269-0.kafka-1679655269-headless.default.svc.cluster.local:9092
+              value: kafka-1680084936-0.kafka-1680084936-headless.default.svc.cluster.local:9092
             - name: USER_SERVICE_URL
               value: http://user-service-svc.default.svc.cluster.local:8080
 

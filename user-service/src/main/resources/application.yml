@@ -26,3 +26,9 @@ logging:
     org.springframework.web: ERROR
     com.shevelyanchik: DEBUG
     root: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,metric

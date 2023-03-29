@@ -16,6 +16,7 @@ ext {
 dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.5'
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'

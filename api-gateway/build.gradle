@@ -14,6 +14,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.5'
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation "org.springframework.boot:spring-boot-starter-actuator"

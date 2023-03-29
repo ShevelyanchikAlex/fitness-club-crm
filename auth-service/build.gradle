@@ -15,6 +15,7 @@ ext {
 
 dependencies {
     implementation project(":kafka-config")
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.10.5'
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.cloud:spring-cloud-starter-config"
     implementation "org.springframework.cloud:spring-cloud-starter-bootstrap"
