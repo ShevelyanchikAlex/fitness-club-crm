@@ -9,8 +9,7 @@ pipeline {
             stage('Docker build') {
                 steps {
                     echo 'docker building...'
-                    sh 'cd config-server'
-                    sh 'docker build -t shevelyanchik/config-service .'
+                    sh 'docker build -t shevelyanchik/config-service config-server'
                 }
             }
 
