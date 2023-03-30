@@ -31,11 +31,10 @@ pipeline {
                     echo 'kubernetes deploying...'
                 }
             }
-
-            post {
-               always {
-                 sh 'docker logout'
-               }
-            }
+        }
+        post {
+           always {
+             sh 'docker logout'
+           }
         }
     }
