@@ -8,7 +8,7 @@ pipeline {
         stages {
             stage('Docker build') {
                 steps {
-                    echo 'docker building....'
+                    echo 'docker building...'
                     sh 'docker build -t shevelyanchik/config-service config-server'
                 }
             }
