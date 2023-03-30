@@ -6,12 +6,12 @@ pipeline {
           }
 
         stages {
-            stage('Docker build') {
-                steps {
-                    echo 'docker building...'
-                    sh 'docker build -t shevelyanchik/config-service config-server'
-                }
-            }
+//             stage('Docker build') {
+//                 steps {
+//                     echo 'docker building...'
+//                     sh 'docker build -t shevelyanchik/config-service config-server'
+//                 }
+//             }
 
             stage('Docker login') {
                 steps {
