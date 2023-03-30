@@ -9,11 +9,12 @@ pipeline {
             stage('Docker build') {
                 steps {
                     echo 'docker building...'
+                    sh 'cd config-server'
                     sh 'docker build -t shevelyanchik/config-service .'
                 }
             }
 
-            stage('Login') {
+            stage('Docker login') {
                 steps {
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
