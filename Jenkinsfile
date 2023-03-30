@@ -9,7 +9,7 @@ pipeline {
             stage('Docker build') {
                 steps {
                     echo 'docker building...'
-                    sh 'docker build -t shevelyanchik/config-service config-server'
+//                     sh 'docker build -t shevelyanchik/config-service config-server'
                 }
             }
 
@@ -22,7 +22,7 @@ pipeline {
             stage('Docker push') {
                 steps {
                     echo 'docker pushing...'
-                    sh 'docker push shevelyanchik/config-service'
+//                     sh 'docker push shevelyanchik/config-service'
                 }
             }
 
