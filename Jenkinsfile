@@ -19,7 +19,7 @@ pipeline {
             stage('Docker push') {
                 steps {
                     echo 'docker pushing...'
-//                     sh './gradlew pushDockerImage'
+                    sh './gradlew pushDockerImage'
                 }
             }
 
