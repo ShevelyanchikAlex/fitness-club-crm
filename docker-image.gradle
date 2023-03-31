@@ -43,9 +43,9 @@ project.ext.buildAndPushDockerImage = { imageName ->
                 commandLine("docker", "build", "-t", imageNameWithTag, ".")
             }
 
-            exec {
-                commandLine("docker", "push", imageNameWithTag)
-            }
+//            exec {
+//                commandLine("docker", "push", imageNameWithTag)
+//            }
 
             exec {
                 commandLine("docker", "logout")
