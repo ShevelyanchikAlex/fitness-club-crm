@@ -13,11 +13,11 @@ pipeline {
                 }
             }
 
-            stage('Docker login') {
-                steps {
+//             stage('Docker login') {
+//                 steps {
 //                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                }
-            }
+//                 }
+//             }
 
             stage('Docker push') {
                 steps {
@@ -32,6 +32,7 @@ pipeline {
                 }
             }
         }
+
         post {
            always {
              sh 'docker logout'
