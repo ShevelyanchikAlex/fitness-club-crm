@@ -36,4 +36,7 @@ dependencyManagement {
 }
 
 apply from: "$rootDir/docker-image.gradle"
-buildAndPushDockerImage('shevelyanchik/user-service')
+loginDocker()
+logoutDocker()
+buildDockerImage('shevelyanchik/user-service')
+pushDockerImage('shevelyanchik/user-service')
