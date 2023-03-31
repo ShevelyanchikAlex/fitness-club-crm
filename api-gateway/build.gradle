@@ -28,4 +28,7 @@ dependencyManagement {
     }
 }
 
-tasks.register("prepareKotlinBuildScriptModel"){}
+tasks.register("prepareKotlinBuildScriptModel") {}
+
+apply from: "$rootDir/docker-image.gradle"
+addTask('shevelyanchik/api-gateway')

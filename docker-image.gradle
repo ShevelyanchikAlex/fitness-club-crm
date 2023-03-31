@@ -1,0 +1,46 @@
+def versionNumber = {
+    ByteArrayOutputStream stdoutCommitNumber = new ByteArrayOutputStream()
+    ByteArrayOutputStream stdoutCommitHash = new ByteArrayOutputStream()
+    ByteArrayOutputStream stdoutBranchName = new ByteArrayOutputStream()
+
+    exec {
+        commandLine("git", "rev-list", "HEAD", "--count")
+        standardOutput = stdoutCommitNumber
+    }
+
+    exec {
+        commandLine("git", "rev-parse", "--short", "HEAD")
+        standardOutput = stdoutCommitHash
+    }
+
+    exec {
+        commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
+        standardOutput = stdoutBranchName
+    }
+
+    String appVersion =
+            stdoutCommitNumber.toString().trim() +
+                    "-" + stdoutCommitHash.toString().trim() +
+                    "-" + stdoutBranchName.toString().trim()
+
+    return appVersion.toLowerCase()
+}
+
+project.ext.addTask = { imageName ->
+    tasks.register('buildAndPushDockerImage') {
+        group = 'build'
+        dependsOn build
+
+        String imageNameWithTag = "$imageName:${versionNumber()}"
+
+        doLast {
+            exec {
+                commandLine("docker", "build", "-t", imageNameWithTag, ".")
+            }
+
+            exec {
+                commandLine("docker", "push", imageNameWithTag)
+            }
+        }
+    }
+}

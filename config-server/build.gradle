@@ -1,24 +1,27 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version "${springVersion}"
-	id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+    id 'java'
+    id 'org.springframework.boot' version "${springVersion}"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('springCloudVersion', "2021.0.5")
+    set('springCloudVersion', "2021.0.5")
 }
 
 dependencies {
-	implementation "org.springframework.boot:spring-boot-starter-actuator"
-	implementation 'org.springframework.cloud:spring-cloud-config-server'
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation 'org.springframework.cloud:spring-cloud-config-server'
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
+
+apply from: "$rootDir/docker-image.gradle"
+addTask('shevelyanchik/config-service')

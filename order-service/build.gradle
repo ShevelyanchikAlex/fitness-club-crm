@@ -34,3 +34,6 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
+
+apply from: "$rootDir/docker-image.gradle"
+addTask('shevelyanchik/order-service')
