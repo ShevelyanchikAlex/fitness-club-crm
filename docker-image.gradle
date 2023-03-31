@@ -27,57 +27,28 @@ def versionNumber = {
 }
 
 
-project.ext.loginDocker = {
-    tasks.register('loginDocker') {
+project.ext.buildAndPushDockerImage = { imageName ->
+    tasks.register('buildAndPushDockerImage') {
         group = 'build'
         dependsOn build
+
+        String imageNameWithTag = "$imageName:${versionNumber()}"
 
         doLast {
             exec {
                 commandLine("echo", "dckr_pat_9KXVvvHCFtYyOdNxc4uy518pQHA", "|", "docker", "login", "-u", "shevelyanchik", "--password-stdin")
             }
-        }
-    }
-}
 
-project.ext.logoutDocker = {
-    tasks.register('logoutDocker') {
-        group = 'build'
-        dependsOn build
-
-        doLast {
-            exec {
-                commandLine("docker", "logout")
-            }
-        }
-    }
-}
-
-project.ext.buildDockerImage = { imageName ->
-    tasks.register('buildDockerImage') {
-        group = 'build'
-        dependsOn build
-
-        String imageNameWithTag = "$imageName:${versionNumber()}"
-
-        doLast {
             exec {
                 commandLine("docker", "build", "-t", imageNameWithTag, ".")
             }
-        }
-    }
-}
 
-project.ext.pushDockerImage = { imageName ->
-    tasks.register('pushDockerImage') {
-        group = 'build'
-        dependsOn build
-
-        String imageNameWithTag = "$imageName:${versionNumber()}"
-
-        doLast {
             exec {
                 commandLine("docker", "push", imageNameWithTag)
+            }
+
+            exec {
+                commandLine("docker", "logout")
             }
         }
     }

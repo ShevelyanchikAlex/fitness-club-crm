@@ -36,5 +36,4 @@ dependencyManagement {
 }
 
 apply from: "$rootDir/docker-image.gradle"
-buildDockerImage('shevelyanchik/order-service')
-pushDockerImage('shevelyanchik/order-service')
+buildAndPushDockerImage('shevelyanchik/order-service')

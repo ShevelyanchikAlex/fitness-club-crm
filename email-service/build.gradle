@@ -30,5 +30,4 @@ dependencyManagement {
 }
 
 apply from: "$rootDir/docker-image.gradle"
-buildDockerImage('shevelyanchik/email-service')
-pushDockerImage('shevelyanchik/email-service')
+buildAndPushDockerImage('shevelyanchik/email-service')

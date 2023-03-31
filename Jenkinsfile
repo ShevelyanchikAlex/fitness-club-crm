@@ -2,37 +2,16 @@ pipeline {
         agent any
 
         stages {
-            stage('Docker login') {
+            stage('Docker build and push') {
                 steps {
-                    echo 'docker login...'
-                    sh './gradlew loginDocker'
-                }
-            }
-
-            stage('Docker build') {
-                steps {
-                    echo 'docker building...'
-                    sh './gradlew buildDockerImage'
-                }
-            }
-
-            stage('Docker push') {
-                steps {
-                    echo 'docker pushing...'
-                    sh './gradlew pushDockerImage'
+                    echo 'docker building and pushing...'
+                    sh './gradlew buildAndPushDockerImage'
                 }
             }
 
             stage('Kubernetes deploy') {
                 steps {
                     echo 'kubernetes deploying...'
-                }
-            }
-
-            stage('Docker logout') {
-                steps {
-                    echo 'docker login...'
-                    sh './gradlew logoutDocker'
                 }
             }
         }
