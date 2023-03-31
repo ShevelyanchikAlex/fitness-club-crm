@@ -40,7 +40,7 @@ project.ext.addTask = { imageName ->
 
 
             exec {
-                commandLine("docker", "login", "-u", "shevelyanchik", "-p", "dckr_pat_9KXVvvHCFtYyOdNxc4uy518pQHA")
+                commandLine("docker", "login", "-u", "shevelyanchik", "--password-stdin", "rtyfghvbn+375299806307")
             }
 
             exec {
