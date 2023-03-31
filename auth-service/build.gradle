@@ -34,4 +34,5 @@ dependencyManagement {
 }
 
 apply from: "$rootDir/docker-image.gradle"
-addTask('shevelyanchik/auth-service')
+buildDockerImage('shevelyanchik/auth-service')
+pushDockerImage('shevelyanchik/auth-service')
