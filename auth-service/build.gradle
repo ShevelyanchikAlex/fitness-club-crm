@@ -38,3 +38,6 @@ loginDocker()
 logoutDocker()
 buildDockerImage('shevelyanchik/auth-service')
 pushDockerImage('shevelyanchik/auth-service')
+
+apply from: "$rootDir/kubernetes.gradle"
+applyDeployment('auth-deployment.yaml')

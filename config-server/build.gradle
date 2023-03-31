@@ -28,3 +28,7 @@ loginDocker()
 logoutDocker()
 buildDockerImage('shevelyanchik/config-service')
 pushDockerImage('shevelyanchik/config-service')
+
+
+apply from: "$rootDir/kubernetes.gradle"
+applyDeployment('config-deployment.yaml')

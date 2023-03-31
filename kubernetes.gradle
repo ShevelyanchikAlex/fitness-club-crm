@@ -1,0 +1,12 @@
+project.ext.applyDeployment = { deploymentName ->
+    tasks.register('applyDeployment') {
+        group = 'build'
+        dependsOn build
+
+        doLast {
+            exec {
+                commandLine("cd", "$rootDir/k8s", "|", "kubectl", "apply", "-f", deploymentName)
+            }
+        }
+    }
+}

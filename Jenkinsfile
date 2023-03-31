@@ -26,7 +26,7 @@ pipeline {
             stage('Kubernetes deploy') {
                 steps {
                     echo 'kubernetes deploying...'
-                    sh 'cd k8s | kubectl apply -f api-gateway-deployment.yaml'
+                    sh './gradlew applyDeployment'
                 }
             }
 
