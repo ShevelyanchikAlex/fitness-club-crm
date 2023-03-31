@@ -35,11 +35,11 @@ dependencyManagement {
     }
 }
 
-apply from: "$rootDir/docker-image.gradle"
-loginDocker()
-logoutDocker()
-buildDockerImage('shevelyanchik/user-service')
-pushDockerImage('shevelyanchik/user-service')
-
-apply from: "$rootDir/kubernetes.gradle"
-applyDeployment('user-deployment.yaml')
+//apply from: "$rootDir/docker-image.gradle"
+//loginDocker()
+//logoutDocker()
+//buildDockerImage('shevelyanchik/user-service')
+//pushDockerImage('shevelyanchik/user-service')
+//
+//apply from: "$rootDir/kubernetes.gradle"
+//applyDeployment('user-deployment.yaml')

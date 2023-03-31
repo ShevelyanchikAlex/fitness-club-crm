@@ -1,0 +1,33 @@
+pipeline {
+        agent any
+
+        stages {
+            stage('Project build') {
+                steps {
+                    echo 'docker building...'
+                    sh 'devops/build.sh'
+                }
+            }
+
+            stage('Docker build') {
+                steps {
+                    echo 'docker building...'
+                    sh 'devops/docker-build.sh'
+                }
+            }
+
+            stage('Docker push') {
+                steps {
+                    echo 'docker pushing...'
+                    sh 'devops/docker-push.sh'
+                }
+            }
+
+            stage('Kubernetes deploy') {
+                steps {
+                    echo 'kubernetes deploying...'
+                    sh 'devops/kubernetes-deploy.sh'
+                }
+            }
+        }
+    }

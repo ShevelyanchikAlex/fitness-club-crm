@@ -29,11 +29,11 @@ dependencyManagement {
     }
 }
 
-apply from: "$rootDir/docker-image.gradle"
-loginDocker()
-logoutDocker()
-buildDockerImage('shevelyanchik/email-service')
-pushDockerImage('shevelyanchik/email-service')
-
-apply from: "$rootDir/kubernetes.gradle"
-applyDeployment('email-deployment.yaml')
+//apply from: "$rootDir/docker-image.gradle"
+//loginDocker()
+//logoutDocker()
+//buildDockerImage('shevelyanchik/email-service')
+//pushDockerImage('shevelyanchik/email-service')
+//
+//apply from: "$rootDir/kubernetes.gradle"
+//applyDeployment('email-deployment.yaml')
