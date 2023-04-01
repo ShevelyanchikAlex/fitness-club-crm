@@ -18,13 +18,3 @@ spec:
                 secretKeyRef:
                   name: postgres-secret-config
                   key: password
-        - name: create-auth-db
-          image: postgres:14.6-alpine
-          command: [ "createdb" ]
-          args: [ "-h","postgres-svc", "-e", "-U", "postgres", "auth_service_db" ]
-          env:
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret-config
-                  key: password

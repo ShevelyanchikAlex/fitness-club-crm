@@ -18,7 +18,7 @@ declare -a images=(
 
 for image in ${images[@]};
 do
-  /usr/local/bin/docker && docker push "$image:$appVersion"
+  /usr/local/bin/docker push "$image:$appVersion"
 done
 
   /usr/local/bin/docker logout

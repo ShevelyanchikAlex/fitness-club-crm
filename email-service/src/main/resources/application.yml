@@ -36,3 +36,8 @@ logging:
     org.springframework.web: ERROR
     root: INFO
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,metric

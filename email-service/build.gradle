@@ -28,12 +28,3 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.5"
     }
 }
-
-//apply from: "$rootDir/docker-image.gradle"
-//loginDocker()
-//logoutDocker()
-//buildDockerImage('shevelyanchik/email-service')
-//pushDockerImage('shevelyanchik/email-service')
-//
-//apply from: "$rootDir/kubernetes.gradle"
-//applyDeployment('email-deployment.yaml')

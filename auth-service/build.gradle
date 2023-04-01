@@ -32,12 +32,3 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
-
-//apply from: "$rootDir/docker-image.gradle"
-//loginDocker()
-//logoutDocker()
-//buildDockerImage('shevelyanchik/auth-service')
-//pushDockerImage('shevelyanchik/auth-service')
-//
-//apply from: "$rootDir/kubernetes.gradle"
-//applyDeployment('auth-deployment.yaml')
