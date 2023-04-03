@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: shevelyanchik/auth-service:110-29492ad-kubernetes_task
+          image: shevelyanchik/auth-service:113-a5e6e0f-kubernetes_task
           imagePullPolicy: Always
           ports:
             - containerPort: 8082

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: shevelyanchik/order-service:110-29492ad-kubernetes_task
+          image: shevelyanchik/order-service:113-a5e6e0f-kubernetes_task
           imagePullPolicy: Always
           ports:
             - containerPort: 8081

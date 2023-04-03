@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: config-service
-          image: shevelyanchik/config-service:110-29492ad-kubernetes_task
+          image: shevelyanchik/config-service:113-a5e6e0f-kubernetes_task
           imagePullPolicy: Always
           ports:
             - containerPort: 8888

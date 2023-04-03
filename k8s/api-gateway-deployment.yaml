@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: shevelyanchik/api-gateway:110-29492ad-kubernetes_task
+          image: shevelyanchik/api-gateway:113-a5e6e0f-kubernetes_task
           imagePullPolicy: Always
           ports:
             - containerPort: 8765

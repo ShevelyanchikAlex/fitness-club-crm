@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: shevelyanchik/user-service:110-29492ad-kubernetes_task
+          image: shevelyanchik/user-service:113-a5e6e0f-kubernetes_task
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

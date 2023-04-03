@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: email-service
-          image: shevelyanchik/email-service:110-29492ad-kubernetes_task
+          image: shevelyanchik/email-service:113-a5e6e0f-kubernetes_task
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
