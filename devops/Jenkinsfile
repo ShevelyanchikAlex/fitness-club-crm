@@ -22,7 +22,13 @@ pipeline {
 
             stage('Kubernetes deploy') {
                 steps {
-                    sh 'devops/kubernetes-deploy.sh'
+                    withCredentials([usernamePassword(credentialsId: 'fitness-club-push',
+                                                     usernameVariable: 'username',
+                                                     passwordVariable: 'password')]){
+
+                        sh 'devops/kubernetes-deploy.sh'
+                        sh "git push https://$username:$password@github.com/ShevelyanchikAlex/fitness-club-service.git --all"
+                    }
                 }
             }
         }

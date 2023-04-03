@@ -37,4 +37,3 @@ done
 
 git add .
 git commit -m "Images update: $appVersion"
-git push
