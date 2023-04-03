@@ -34,3 +34,7 @@ do
   sed -i '' "s/${images[$index]}:[0-9]\{1,\}\-[a-zA-Z0-9_]\{1,\}\-[a-zA-Z1-9_]\{1,\}/${images[$index]}:$appVersion/g" $deployment
   /usr/local/bin/kubectl apply -f $deployment
 done
+
+git add .
+git commit -m "Images update: $appVersion"
+git push

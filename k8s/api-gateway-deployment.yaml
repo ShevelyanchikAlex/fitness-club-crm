@@ -1,1 +1,41 @@
-apiVersion: apps/v1kind: Deploymentmetadata:  name: api-gatewayspec:  replicas: 1  selector:    matchLabels:      app: api-gateway  template:    metadata:      labels:        app: api-gateway    spec:      containers:        - name: api-gateway          image: shevelyanchik/api-gateway:110-29492ad-kubernetes_task          imagePullPolicy: Always          ports:            - containerPort: 8765          env:            - name: AUTH_SERVICE_URL              value: http://auth-service-svc.default.svc.cluster.local:8082            - name: USER_SERVICE_URL              value: http://user-service-svc.default.svc.cluster.local:8080            - name: ORDER_SERVICE_URL              value: http://order-service-svc.default.svc.cluster.local:8081---apiVersion: v1kind: Servicemetadata:  name: api-gateway-svcspec:  type: LoadBalancer  selector:    app: api-gateway  ports:    - protocol: "TCP"      port: 8765      targetPort: 8765
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: shevelyanchik/api-gateway:110-29492ad-kubernetes_task
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8765
+          env:
+            - name: AUTH_SERVICE_URL
+              value: http://auth-service-svc.default.svc.cluster.local:8082
+            - name: USER_SERVICE_URL
+              value: http://user-service-svc.default.svc.cluster.local:8080
+            - name: ORDER_SERVICE_URL
+              value: http://order-service-svc.default.svc.cluster.local:8081
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: api-gateway
+  ports:
+    - protocol: "TCP"
+      port: 8765
+      targetPort: 8765
