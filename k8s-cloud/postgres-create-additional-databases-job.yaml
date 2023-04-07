@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: additional-databases
+spec:
+  ttlSecondsAfterFinished: 180
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: create-order-db
+          image: postgres:14.6-alpine
+          command: [ "createdb" ]
+          args: [ "-h","postgres-svc", "-e", "-U", "postgres", "order_service_db" ]
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret-config
+                  key: password

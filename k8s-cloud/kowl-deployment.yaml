@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kowl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kowl
+  template:
+    metadata:
+      labels:
+        app: kowl
+    spec:
+      containers:
+        - name: kowl
+          image: quay.io/cloudhut/kowl:master-59f68da
+          ports:
+            - containerPort: 9000
+          env:
+            - name: KAFKA_BROKERS
+              value: kafka-1680084936-0.kafka-1680084936-headless.default.svc.cluster.local:9092
+            - name: SERVER_LISTENPORT
+              value: "9000"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kowl-svc
+spec:
+  selector:
+    app: kowl
+  ports:
+    - name: kowl-port
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+  type: LoadBalancer

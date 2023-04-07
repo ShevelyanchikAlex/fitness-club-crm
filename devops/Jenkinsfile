@@ -1,39 +1,56 @@
 pipeline {
         agent any
-
+        environment {
+            PROJECT_ID = 'skilful-display-384007'
+            CLUSTER_NAME = 'fitness-club-cluster'
+            LOCATION = 'europe-central2-a'
+            CREDENTIALS_ID = 'fitness-club'
+        }
         stages {
+            stage('Add script permission') {
+                steps {
+                   sh 'chmod +x devops/add-script-permission.sh'
+                   sh 'devops/add-script-permission.sh'
+                }
+            }
+
             stage('Project build') {
                 steps {
-                       echo 'building...'
-//                     sh 'devops/build.sh'
+                    sh 'bash devops/gce-build.sh'
                 }
             }
 
             stage('Docker build') {
                 steps {
-                       echo 'docker building...'
-//                     sh 'devops/docker-build.sh'
+                    sh 'bash devops/gce-docker-build.sh'
                 }
             }
 
             stage('Docker push') {
                 steps {
-                       echo 'docker pushing...'
-//                     sh 'devops/docker-push.sh'
+                    sh 'bash devops/gce-docker-push.sh'
                 }
             }
 
             stage('Kubernetes deploy') {
-                steps {
-                       echo 'kubernetes deploy...'
-//                     withCredentials([usernamePassword(credentialsId: 'fitness-club-push',
+                 steps {
+                    sh 'devops/gce-kubernetes-deploy.sh'
+
+                    step([
+                    $class: 'KubernetesEngineBuilder',
+                    projectId: env.PROJECT_ID,
+                    clusterName: env.CLUSTER_NAME,
+                    location: env.LOCATION,
+                    manifestPattern: 'k8s-cloud',
+                    credentialsId: env.CREDENTIALS_ID,
+                    verifyDeployments: true])
+
+//                    withCredentials([usernamePassword(credentialsId: 'jenkins-github',
 //                                                      usernameVariable: 'username',
 //                                                      passwordVariable: 'password')]){
-//
-//                         sh 'devops/kubernetes-deploy.sh'
-//                         sh "git push https://$username:$password@github.com/ShevelyanchikAlex/fitness-club-service.git --all"
-//                     }
-                }
+//                       sh "git push https://$username:$password@github.com/ShevelyanchikAlex/fitness-club-service.git --all"
+//                    }
+                 }
             }
         }
     }
