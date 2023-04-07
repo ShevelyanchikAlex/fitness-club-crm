@@ -4,31 +4,35 @@ pipeline {
         stages {
             stage('Project build') {
                 steps {
-                    sh 'devops/build.sh'
+                       echo 'building...'
+//                     sh 'devops/build.sh'
                 }
             }
 
             stage('Docker build') {
                 steps {
-                    sh 'devops/docker-build.sh'
+                       echo 'docker building...'
+//                     sh 'devops/docker-build.sh'
                 }
             }
 
             stage('Docker push') {
                 steps {
-                    sh 'devops/docker-push.sh'
+                       echo 'docker pushing...'
+//                     sh 'devops/docker-push.sh'
                 }
             }
 
             stage('Kubernetes deploy') {
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'fitness-club-push',
-                                                     usernameVariable: 'username',
-                                                     passwordVariable: 'password')]){
-
-                        sh 'devops/kubernetes-deploy.sh'
-                        sh "git push https://$username:$password@github.com/ShevelyanchikAlex/fitness-club-service.git --all"
-                    }
+                       echo 'kubernetes deploy...'
+//                     withCredentials([usernamePassword(credentialsId: 'fitness-club-push',
+//                                                      usernameVariable: 'username',
+//                                                      passwordVariable: 'password')]){
+//
+//                         sh 'devops/kubernetes-deploy.sh'
+//                         sh "git push https://$username:$password@github.com/ShevelyanchikAlex/fitness-club-service.git --all"
+//                     }
                 }
             }
         }
