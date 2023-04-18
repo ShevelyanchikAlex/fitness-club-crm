@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.web.controller;
+package com.shevelyanchik.fitnessclub.orderservice.controller;
 
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;

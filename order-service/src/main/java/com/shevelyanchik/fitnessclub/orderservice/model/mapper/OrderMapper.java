@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.orderservice.model.mapper;
 
-import com.shevelyanchik.fitnessclub.orderservice.model.domain.Order;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
+import com.shevelyanchik.fitnessclub.orderservice.model.entity.Order;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

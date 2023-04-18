@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.model.domain;
+package com.shevelyanchik.fitnessclub.orderservice.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

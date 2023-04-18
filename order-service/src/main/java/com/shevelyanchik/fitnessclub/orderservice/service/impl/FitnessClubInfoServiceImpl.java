@@ -1,12 +1,11 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
-import com.shevelyanchik.fitnessclub.orderservice.constant.OrderErrorMessageKey;
-import com.shevelyanchik.fitnessclub.orderservice.model.domain.FitnessClubInfo;
+import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.FitnessClubInfoDto;
+import com.shevelyanchik.fitnessclub.orderservice.model.entity.FitnessClubInfo;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.FitnessClubInfoMapper;
 import com.shevelyanchik.fitnessclub.orderservice.persistence.FitnessClubInfoRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.FitnessClubInfoService;
-import com.shevelyanchik.fitnessclub.orderservice.service.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -35,7 +34,7 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
         return fitnessClubInfoRepository
                 .findById(id)
                 .map(fitnessClubInfoMapper::toDto)
-                .orElseThrow(() -> new ServiceException(OrderErrorMessageKey.FITNESS_CLUB_INFO_NOT_EXIST));
+                .orElseThrow(() -> new EntityNotFoundException("FitnessClubInfo not found with id: " + id));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.orderservice.model.dto;
 
-import com.shevelyanchik.fitnessclub.orderservice.model.domain.OrderStatus;
-import com.shevelyanchik.fitnessclub.orderservice.model.domain.Service;
+import com.shevelyanchik.fitnessclub.orderservice.constant.OrderStatus;
+import com.shevelyanchik.fitnessclub.orderservice.model.entity.Service;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

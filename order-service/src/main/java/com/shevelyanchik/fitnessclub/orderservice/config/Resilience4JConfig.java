@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.web.config;
+package com.shevelyanchik.fitnessclub.orderservice.config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;

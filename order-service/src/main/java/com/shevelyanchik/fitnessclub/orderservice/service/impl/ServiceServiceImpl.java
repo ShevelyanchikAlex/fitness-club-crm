@@ -1,11 +1,10 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
-import com.shevelyanchik.fitnessclub.orderservice.constant.OrderErrorMessageKey;
+import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapper;
 import com.shevelyanchik.fitnessclub.orderservice.persistence.ServiceRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.ServiceService;
-import com.shevelyanchik.fitnessclub.orderservice.service.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,8 +23,8 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public ServiceDto createService(ServiceDto serviceDto) {
-        com.shevelyanchik.fitnessclub.orderservice.model.domain.Service service = serviceMapper.toEntity(serviceDto);
-        com.shevelyanchik.fitnessclub.orderservice.model.domain.Service savedService = serviceRepository.save(service);
+        com.shevelyanchik.fitnessclub.orderservice.model.entity.Service service = serviceMapper.toEntity(serviceDto);
+        com.shevelyanchik.fitnessclub.orderservice.model.entity.Service savedService = serviceRepository.save(service);
         return serviceMapper.toDto(savedService);
     }
 
@@ -34,7 +33,7 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceRepository
                 .findById(id)
                 .map(serviceMapper::toDto)
-                .orElseThrow(() -> new ServiceException(OrderErrorMessageKey.SERVICE_NOT_EXIST));
+                .orElseThrow(() -> new EntityNotFoundException("Service not found with id: " + id));
     }
 
     @Override

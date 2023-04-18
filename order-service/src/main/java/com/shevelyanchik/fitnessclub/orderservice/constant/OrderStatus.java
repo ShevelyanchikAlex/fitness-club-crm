@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.model.domain;
+package com.shevelyanchik.fitnessclub.orderservice.constant;
 
 public enum OrderStatus {
     CONFIRMED,

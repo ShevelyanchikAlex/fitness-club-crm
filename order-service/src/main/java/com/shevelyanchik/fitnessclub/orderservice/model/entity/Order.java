@@ -1,5 +1,6 @@
-package com.shevelyanchik.fitnessclub.orderservice.model.domain;
+package com.shevelyanchik.fitnessclub.orderservice.model.entity;
 
+import com.shevelyanchik.fitnessclub.orderservice.constant.OrderStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
