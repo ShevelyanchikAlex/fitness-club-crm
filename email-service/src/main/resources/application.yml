@@ -27,7 +27,7 @@ spring:
     port: ${MAIL_PORT:587}
     recipient: fitnessclub.power.maker@gmail.com
     username: fitnessclub.power.maker@gmail.com
-    password: knufmkedepvqmdul
+    password: fhbrgnwotsxzehvn
     properties:
       mail:
         smtp:
