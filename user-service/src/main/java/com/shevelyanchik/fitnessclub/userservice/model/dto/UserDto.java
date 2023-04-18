@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.model.dto;
 
-import com.shevelyanchik.fitnessclub.userservice.model.domain.Role;
-import com.shevelyanchik.fitnessclub.userservice.model.domain.Status;
+import com.shevelyanchik.fitnessclub.userservice.model.constants.Role;
+import com.shevelyanchik.fitnessclub.userservice.model.constants.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

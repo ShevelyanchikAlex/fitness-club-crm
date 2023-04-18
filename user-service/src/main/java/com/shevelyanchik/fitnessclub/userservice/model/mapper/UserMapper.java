@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.model.mapper;
 
-import com.shevelyanchik.fitnessclub.userservice.model.domain.User;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
+import com.shevelyanchik.fitnessclub.userservice.model.entity.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

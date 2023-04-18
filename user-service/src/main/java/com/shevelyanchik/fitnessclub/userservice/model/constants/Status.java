@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.userservice.model.domain;
+package com.shevelyanchik.fitnessclub.userservice.model.constants;
 
 import lombok.Getter;
 

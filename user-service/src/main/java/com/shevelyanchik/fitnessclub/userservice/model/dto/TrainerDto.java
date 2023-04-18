@@ -1,6 +1,6 @@
 package com.shevelyanchik.fitnessclub.userservice.model.dto;
 
-import com.shevelyanchik.fitnessclub.userservice.model.domain.User;
+import com.shevelyanchik.fitnessclub.userservice.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

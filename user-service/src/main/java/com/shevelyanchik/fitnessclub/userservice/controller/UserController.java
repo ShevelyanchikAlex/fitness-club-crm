@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.userservice.web.controller;
+package com.shevelyanchik.fitnessclub.userservice.controller;
 
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;

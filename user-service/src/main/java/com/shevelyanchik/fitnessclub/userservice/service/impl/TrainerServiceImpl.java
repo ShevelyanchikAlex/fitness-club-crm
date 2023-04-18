@@ -1,11 +1,12 @@
 package com.shevelyanchik.fitnessclub.userservice.service.impl;
 
-import com.shevelyanchik.fitnessclub.userservice.model.domain.Trainer;
+import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
+import com.shevelyanchik.fitnessclub.userservice.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerDto;
+import com.shevelyanchik.fitnessclub.userservice.model.entity.Trainer;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.TrainerRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.TrainerService;
-import com.shevelyanchik.fitnessclub.userservice.service.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,8 +20,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TrainerServiceImpl implements TrainerService {
-    private static final String TRAINER_NOT_FOUND = "trainer.not.found";
-    private static final String TRAINER_VALIDATE_ERROR = "trainer.validate.error";
 
     private final TrainerRepository trainerRepository;
     private final TrainerMapper trainerMapper;
@@ -38,7 +37,7 @@ public class TrainerServiceImpl implements TrainerService {
         return trainerRepository
                 .findById(id)
                 .map(trainerMapper::toDto)
-                .orElseThrow(() -> new ServiceException(TRAINER_NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException("Trainer not found with id: " + id));
     }
 
     @Override
@@ -58,7 +57,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     private void validateTrainer(TrainerDto trainerDto) {
         if (Objects.isNull(trainerDto.getUser())) {
-            throw new ServiceException(TRAINER_VALIDATE_ERROR);
+            throw new ValidationException("Invalid trainer's data");
         }
     }
 }
