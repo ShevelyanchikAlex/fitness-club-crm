@@ -24,4 +24,4 @@ security:
     token:
       header: Authorization
       secret-key: test
-      expire-length: 604800
+      expire-length: 60480000

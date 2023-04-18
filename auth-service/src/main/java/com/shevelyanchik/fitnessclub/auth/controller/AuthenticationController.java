@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.auth.web.controller;
+package com.shevelyanchik.fitnessclub.auth.controller;
 
 import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationRequest;
 import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;

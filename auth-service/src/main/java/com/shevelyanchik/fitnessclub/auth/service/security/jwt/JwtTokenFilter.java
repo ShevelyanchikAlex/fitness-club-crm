@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.auth.service.security.jwt;
 
 import com.shevelyanchik.fitnessclub.auth.constant.AttributeName;
-import com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException;
+import com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -22,7 +22,7 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
-    private static final String JWT_TOKEN_INVALID = "jwt.token.invalid";
+
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -41,7 +41,7 @@ public class JwtTokenFilter extends GenericFilterBean {
         } catch (AuthenticationException e) {
             SecurityContextHolder.clearContext();
             ((HttpServletResponse) response).sendError(e.hashCode());
-            throw new AuthenticationException(JWT_TOKEN_INVALID);
+            throw new AuthenticationException("Auth token is invalid");
         }
         chain.doFilter(request, response);
     }

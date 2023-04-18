@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.auth.web.config;
+package com.shevelyanchik.fitnessclub.auth.controller.config;
 
 import com.shevelyanchik.fitnessclub.auth.service.security.jwt.JwtConfigurer;
 import lombok.RequiredArgsConstructor;

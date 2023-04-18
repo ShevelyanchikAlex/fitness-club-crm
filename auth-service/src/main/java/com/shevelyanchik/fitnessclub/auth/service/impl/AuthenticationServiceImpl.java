@@ -3,17 +3,16 @@ package com.shevelyanchik.fitnessclub.auth.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shevelyanchik.fitnessclub.auth.client.UserServiceClient;
-import com.shevelyanchik.fitnessclub.auth.constant.AuthenticationErrorMessageKey;
-import com.shevelyanchik.fitnessclub.auth.constant.EmailEventPayload;
 import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationRequest;
 import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationResponse;
 import com.shevelyanchik.fitnessclub.auth.dto.user.Role;
 import com.shevelyanchik.fitnessclub.auth.dto.user.Status;
 import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
+import com.shevelyanchik.fitnessclub.auth.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.auth.service.AuthenticationProducerService;
 import com.shevelyanchik.fitnessclub.auth.service.AuthenticationService;
 import com.shevelyanchik.fitnessclub.auth.service.security.jwt.JwtTokenProvider;
-import com.shevelyanchik.fitnessclub.auth.util.AuthenticationEventUtils;
+import com.shevelyanchik.fitnessclub.auth.utils.AuthenticationEventUtils;
 import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         UserDto savedUserDto = userServiceClient.createUser(userDto);
 
-        EmailEvent emailEvent = buildEmailEvent(savedUserDto);
+        EmailEvent emailEvent = AuthenticationEventUtils.createEmailEvent(savedUserDto);
         authenticationProducerService.sendMessage(emailEvent);
         return savedUserDto;
     }
@@ -71,26 +70,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private void validateUser(UserDto userDto) {
         if (Objects.isNull(userDto)) {
-            throw new com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException(
-                    AuthenticationErrorMessageKey.USER_VALIDATE_ERROR);
+            throw new ValidationException("Invalid user's data");
         }
         if (userServiceClient.existsUserByEmail(userDto.getEmail())) {
-            throw new com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException(
-                    AuthenticationErrorMessageKey.RESOURCE_ALREADY_EXIST);
+            throw new ValidationException("User with same email already exist");
         }
-    }
-
-    private EmailEvent buildEmailEvent(UserDto userDto) {
-        EmailEventPayload userCreatedEventPayload = EmailEventPayload.USER_HAS_BEEN_CREATED;
-        String message = AuthenticationEventUtils.getEmailEventMessage(
-                userCreatedEventPayload,
-                userDto.getId(),
-                userDto.getEmail()
-        );
-
-        return EmailEvent.builder()
-                .subject(userCreatedEventPayload.getSubject())
-                .message(message)
-                .build();
     }
 }
