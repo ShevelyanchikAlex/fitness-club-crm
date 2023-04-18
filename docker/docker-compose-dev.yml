@@ -28,8 +28,6 @@ services:
     restart: always
     networks:
       - fitness-club-net
-    #    expose:
-    #      - "9092"
     ports:
       - "9092:9092"
     depends_on:
@@ -60,7 +58,6 @@ services:
     environment:
       KAFKA_BROKERS: kafka:29092
       SERVER_LISTENPORT: 9000
-
 
 volumes:
   zookeeper-data:
