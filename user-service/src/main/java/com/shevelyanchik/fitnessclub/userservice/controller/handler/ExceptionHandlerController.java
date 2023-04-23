@@ -4,32 +4,29 @@ import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundExcepti
 import com.shevelyanchik.fitnessclub.userservice.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionHandlerController {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleEntityNotFoundException(EntityNotFoundException ex) {
+    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
         log.error(ex.getMessage(), ex);
-        return ex.getMessage();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleValidationException(ValidationException ex) {
+    public ResponseEntity<String> handleValidationException(ValidationException ex) {
         log.error(ex.getMessage(), ex);
-        return ex.getMessage();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleIllegalArgumentException(IllegalArgumentException ex) {
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         log.error(ex.getMessage(), ex);
-        return ex.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
