@@ -61,6 +61,15 @@ services:
       KAFKA_BROKERS: kafka:29092
       SERVER_LISTENPORT: 9000
 
+  redis:
+    container_name: redis
+    image: redis:6-alpine
+    restart: always
+    networks:
+      - fitness-club-net
+    ports:
+      - "6379:6379"
+
 
 volumes:
   zookeeper-data:

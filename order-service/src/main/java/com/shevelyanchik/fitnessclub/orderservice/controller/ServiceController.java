@@ -3,6 +3,7 @@ package com.shevelyanchik.fitnessclub.orderservice.controller;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.service.ServiceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class ServiceController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(value = "services", key = "#id")
     public ServiceDto findServiceById(@PathVariable Long id) {
         return serviceService.findServiceById(id);
     }

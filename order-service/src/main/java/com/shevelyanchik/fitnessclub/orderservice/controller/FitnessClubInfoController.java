@@ -3,6 +3,7 @@ package com.shevelyanchik.fitnessclub.orderservice.controller;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.FitnessClubInfoDto;
 import com.shevelyanchik.fitnessclub.orderservice.service.FitnessClubInfoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class FitnessClubInfoController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(value = "fitness-club-info", key = "#id")
     public FitnessClubInfoDto findFitnessClubInfoById(@PathVariable Long id) {
         return fitnessClubInfoService.findFitnessClubInfoById(id);
     }

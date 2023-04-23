@@ -2,7 +2,6 @@ package com.shevelyanchik.fitnessclub.orderservice.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -10,8 +9,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "fitness_club_info")
 @NoArgsConstructor
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class FitnessClubInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
