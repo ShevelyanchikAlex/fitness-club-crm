@@ -22,7 +22,7 @@ public class AuthenticationEventUtils {
                 .build();
     }
 
-    private static String getEmailEventMessage(EmailEventPayload emailEventPayload, Object... args) {
+    private String getEmailEventMessage(EmailEventPayload emailEventPayload, Object... args) {
         return String.format(emailEventPayload.getMessageFormat(), args);
     }
 }

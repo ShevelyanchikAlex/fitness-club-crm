@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.auth.service.security.jwt;
 
 import com.shevelyanchik.fitnessclub.auth.dto.user.Role;
-import com.shevelyanchik.fitnessclub.auth.exception.AuthenticationException;
+import com.shevelyanchik.fitnessclub.auth.exception.InvalidAuthenticationTokenException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,7 +57,7 @@ public class JwtTokenProvider {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new AuthenticationException("Auth token is invalid");
+            throw new InvalidAuthenticationTokenException("Auth token is invalid");
         }
     }
 

@@ -8,6 +8,7 @@ import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationResponse;
 import com.shevelyanchik.fitnessclub.auth.dto.user.Role;
 import com.shevelyanchik.fitnessclub.auth.dto.user.Status;
 import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
+import com.shevelyanchik.fitnessclub.auth.exception.UnauthorizedException;
 import com.shevelyanchik.fitnessclub.auth.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.auth.service.AuthenticationProducerService;
 import com.shevelyanchik.fitnessclub.auth.service.AuthenticationService;
@@ -49,14 +50,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Map<Object, Object> login(AuthenticationRequest authenticationRequest) throws AuthenticationException {
-        UsernamePasswordAuthenticationToken authentication =
+    public Map<Object, Object> login(AuthenticationRequest authenticationRequest) {
+        UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getEmail(),
                         authenticationRequest.getPassword()
                 );
 
-        authenticationManager.authenticate(authentication);
+        authenticateToken(authenticationToken);
 
         UserDto userDto = userServiceClient
                 .findUserByEmail(authenticationRequest.getEmail());
@@ -66,6 +67,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AuthenticationResponse response = new AuthenticationResponse(authenticationRequest.getEmail(), token);
         return objectMapper.convertValue(response, new TypeReference<>() {
         });
+    }
+
+    private void authenticateToken(UsernamePasswordAuthenticationToken authenticationToken) {
+        try {
+            authenticationManager.authenticate(authenticationToken);
+        } catch (AuthenticationException ex) {
+            throw new UnauthorizedException("Invalid email/password combination");
+        }
     }
 
     private void validateUser(UserDto userDto) {
