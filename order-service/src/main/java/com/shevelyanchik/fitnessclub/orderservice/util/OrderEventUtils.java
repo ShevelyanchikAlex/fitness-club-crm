@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.utils;
+package com.shevelyanchik.fitnessclub.orderservice.util;
 
 import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.orderservice.constant.EmailEventPayload;

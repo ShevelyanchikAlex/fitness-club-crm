@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.auth.utils;
+package com.shevelyanchik.fitnessclub.auth.util;
 
 import com.shevelyanchik.fitnessclub.auth.constant.EmailEventPayload;
 import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;

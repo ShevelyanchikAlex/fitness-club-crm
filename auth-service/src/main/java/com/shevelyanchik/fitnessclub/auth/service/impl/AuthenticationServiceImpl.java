@@ -13,7 +13,7 @@ import com.shevelyanchik.fitnessclub.auth.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.auth.service.AuthenticationProducerService;
 import com.shevelyanchik.fitnessclub.auth.service.AuthenticationService;
 import com.shevelyanchik.fitnessclub.auth.service.security.jwt.JwtTokenProvider;
-import com.shevelyanchik.fitnessclub.auth.utils.AuthenticationEventUtils;
+import com.shevelyanchik.fitnessclub.auth.util.AuthenticationEventUtils;
 import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
