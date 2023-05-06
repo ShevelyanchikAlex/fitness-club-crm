@@ -23,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +37,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserDto signup(UserDto userDto) {
-        validateUser(userDto);
+        if (userServiceClient.existsUserByEmail(userDto.getEmail())) {
+            throw new ValidationException("User with same email already exist");
+        }
+
         userDto.setRole(Role.USER);
         userDto.setStatus(Status.ACTIVE);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -77,12 +79,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private void validateUser(UserDto userDto) {
-        if (Objects.isNull(userDto)) {
-            throw new ValidationException("Invalid user's data");
-        }
-        if (userServiceClient.existsUserByEmail(userDto.getEmail())) {
-            throw new ValidationException("User with same email already exist");
-        }
-    }
 }
