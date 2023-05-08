@@ -1,6 +1,5 @@
 package com.shevelyanchik.fitnessclub.userservice.model.dto;
 
-import com.shevelyanchik.fitnessclub.userservice.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +21,6 @@ public class TrainerDto {
     private String kindOfSport;
 
     @NotNull
-    private User user;
+    private UserDto userDto;
 
 }

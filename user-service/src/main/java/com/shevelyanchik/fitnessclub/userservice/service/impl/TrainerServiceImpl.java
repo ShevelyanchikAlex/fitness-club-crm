@@ -1,7 +1,6 @@
 package com.shevelyanchik.fitnessclub.userservice.service.impl;
 
 import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
-import com.shevelyanchik.fitnessclub.userservice.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerDto;
 import com.shevelyanchik.fitnessclub.userservice.model.entity.Trainer;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapper;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +24,6 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public TrainerDto createTrainer(TrainerDto trainerDto) {
-        validateTrainer(trainerDto);
         Trainer trainer = trainerMapper.toEntity(trainerDto);
         Trainer savedTrainer = trainerRepository.save(trainer);
         return trainerMapper.toDto(savedTrainer);
@@ -55,9 +52,4 @@ public class TrainerServiceImpl implements TrainerService {
         return trainerRepository.count();
     }
 
-    private void validateTrainer(TrainerDto trainerDto) {
-        if (Objects.isNull(trainerDto.getUser())) {
-            throw new ValidationException("Invalid trainer's data");
-        }
-    }
 }
