@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,7 +25,7 @@ public class TrainerController {
     public List<TrainerDto> findAllTrainers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<TrainerDto> trainerPage = trainerService.findAllTrainers(PageRequest.of(page, size));
-        return new ArrayList<>(trainerPage.getContent());
+        return trainerPage.getContent();
     }
 
     @GetMapping("/{id}")
