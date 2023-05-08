@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class TrainerServiceImpl implements TrainerService {
     private final TrainerRepository trainerRepository;
     private final TrainerMapper trainerMapper;
 
+    @Transactional
     @Override
     public TrainerDto createTrainer(TrainerDto trainerDto) {
         Trainer trainer = trainerMapper.toEntity(trainerDto);
@@ -30,6 +32,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TrainerDto findTrainerById(Long id) {
         return trainerRepository
                 .findById(id)
@@ -38,6 +41,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<TrainerDto> findAllTrainers(Pageable pageable) {
         List<TrainerDto> trainerDtoList = trainerRepository
                 .findAll(pageable)
@@ -48,6 +52,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long countTrainers() {
         return trainerRepository.count();
     }

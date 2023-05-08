@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    @Transactional
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto findUserById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
@@ -37,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto findUserByEmail(String email) {
         return userRepository.findUserByEmail(email)
                 .map(userMapper::toDto)
@@ -44,6 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<UserDto> findAllUsers(Pageable pageable) {
         List<UserDto> users = userRepository.findAll(pageable).stream()
                 .map(userMapper::toDto)
@@ -52,11 +57,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean existsUserByEmail(String email) {
         return userRepository.existsUserByEmail(email);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long countUsers() {
         return userRepository.count();
     }

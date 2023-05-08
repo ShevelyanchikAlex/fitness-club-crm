@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderProducerService orderProducerService;
 
 
+    @Transactional
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
         orderDto.setOrderStatus(OrderStatus.IN_PROCESSING);
@@ -47,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OrderDto findOrderById(Long id) {
         return orderRepository
                 .findById(id)
@@ -55,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OrderResponseDto findOrderByIdWithUsersInfo(Long id) {
         OrderDto orderDto = orderRepository
                 .findById(id)
@@ -67,6 +71,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<OrderDto> findAllOrders(Pageable pageable) {
         List<OrderDto> requestDtoList = orderRepository
                 .findAll(pageable)

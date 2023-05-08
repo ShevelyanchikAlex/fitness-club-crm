@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,8 @@ public class ServiceServiceImpl implements ServiceService {
     private final ServiceRepository serviceRepository;
     private final ServiceMapper serviceMapper;
 
+
+    @Transactional
     @Override
     public ServiceDto createService(ServiceDto serviceDto) {
         com.shevelyanchik.fitnessclub.orderservice.model.entity.Service service = serviceMapper.toEntity(serviceDto);
@@ -29,6 +32,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ServiceDto findServiceById(Long id) {
         return serviceRepository
                 .findById(id)
@@ -37,6 +41,7 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ServiceDto> findAllServices(Pageable pageable) {
         List<ServiceDto> serviceDtoList = serviceRepository
                 .findAll(pageable)
