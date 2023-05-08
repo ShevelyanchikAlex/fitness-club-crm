@@ -40,12 +40,12 @@ class UserServiceTest {
     private final UserMapper userMapper = new UserMapperImpl();
 
     private final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "name", "surname", "pass",
+            1L, "Name", "Surname", "passUser1",
             "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
     private final String EXPECTED_EMAIL = "test@gmail.com";
 
     @Test
-    void createUser() {
+    void testCreateUser() {
         //given
         User expectedUser = userMapper.toEntity(EXPECTED_USER_DTO);
         BDDMockito.given(userRepository.save(any())).willReturn(expectedUser);
@@ -57,7 +57,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findUserById() {
+    void testFindUserById() {
         //given
         User expectedUser = userMapper.toEntity(EXPECTED_USER_DTO);
         BDDMockito.given(userRepository.findById(any())).willReturn(Optional.of(expectedUser));
@@ -69,7 +69,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findUserByEmail() {
+    void testFindUserByEmail() {
         //given
         User expectedUser = userMapper.toEntity(EXPECTED_USER_DTO);
         BDDMockito.given(userRepository.findUserByEmail(EXPECTED_EMAIL)).willReturn(Optional.of(expectedUser));
@@ -81,11 +81,11 @@ class UserServiceTest {
     }
 
     @Test
-    void findAllUsers() {
+    void testFindAllUsers() {
         //given
-        UserDto firstUserDto = new UserDto(1L, "name-first", "surname-first", "pass-first",
+        UserDto firstUserDto = new UserDto(1L, "Namefirst", "Surnamefirst", "passFirst1",
                 "test1@gmail.com", "+375443321201", Role.USER, Status.ACTIVE);
-        UserDto secondUserDto = new UserDto(2L, "name-second", "surname-second", "pass-second",
+        UserDto secondUserDto = new UserDto(2L, "Namesecond", "Surnamesecond", "passSecond2",
                 "test2@gmail.com", "+375443321202", Role.USER, Status.ACTIVE);
         List<UserDto> expectedUserDtoList = new ArrayList<>(List.of(firstUserDto, secondUserDto));
         User expectedFirstUser = userMapper.toEntity(firstUserDto);
@@ -106,7 +106,7 @@ class UserServiceTest {
     }
 
     @Test
-    void existsUserByEmail() {
+    void testExistsUserByEmail() {
         //given
         BDDMockito.given(userRepository.existsUserByEmail(EXPECTED_EMAIL)).willReturn(true);
         //when
@@ -117,7 +117,7 @@ class UserServiceTest {
     }
 
     @Test
-    void countUsers() {
+    void testCountUsers() {
         //given
         long expectedUsersCount = 1L;
         BDDMockito.given(userRepository.count()).willReturn(expectedUsersCount);
