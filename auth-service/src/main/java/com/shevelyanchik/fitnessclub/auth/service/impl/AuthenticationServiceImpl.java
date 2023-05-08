@@ -1,7 +1,5 @@
 package com.shevelyanchik.fitnessclub.auth.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shevelyanchik.fitnessclub.auth.client.UserServiceClient;
 import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationRequest;
 import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationResponse;
@@ -22,8 +20,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -32,8 +28,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final ObjectMapper objectMapper;
     private final AuthenticationProducerService authenticationProducerService;
+
 
     @Override
     public UserDto signup(UserDto userDto) {
@@ -52,23 +48,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Map<Object, Object> login(AuthenticationRequest authenticationRequest) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getEmail(),
-                        authenticationRequest.getPassword()
-                );
+    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
+        String email = authenticationRequest.getEmail();
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                email, authenticationRequest.getPassword());
 
         authenticateToken(authenticationToken);
 
-        UserDto userDto = userServiceClient
-                .findUserByEmail(authenticationRequest.getEmail());
-
-        String token = jwtTokenProvider
-                .createToken(authenticationRequest.getEmail(), userDto.getRole());
-        AuthenticationResponse response = new AuthenticationResponse(authenticationRequest.getEmail(), token);
-        return objectMapper.convertValue(response, new TypeReference<>() {
-        });
+        UserDto userDto = userServiceClient.findUserByEmail(email);
+        String token = jwtTokenProvider.createToken(email, userDto.getRole());
+        return new AuthenticationResponse(email, token);
     }
 
     private void authenticateToken(UsernamePasswordAuthenticationToken authenticationToken) {

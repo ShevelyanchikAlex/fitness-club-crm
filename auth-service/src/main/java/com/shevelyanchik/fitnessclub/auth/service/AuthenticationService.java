@@ -1,10 +1,9 @@
 package com.shevelyanchik.fitnessclub.auth.service;
 
 import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationRequest;
+import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationResponse;
 import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
 import org.springframework.security.core.AuthenticationException;
-
-import java.util.Map;
 
 /**
  * The AuthenticationService provides information useful for forcing a user to log in or sign up.
@@ -27,5 +26,5 @@ public interface AuthenticationService {
      * @return Map that contains user's email and auth token.
      * @throws AuthenticationException Throws if AuthenticationRequest contains invalid data.
      */
-    Map<Object, Object> login(AuthenticationRequest authenticationRequest) throws AuthenticationException;
+    AuthenticationResponse login(AuthenticationRequest authenticationRequest) throws AuthenticationException;
 }
