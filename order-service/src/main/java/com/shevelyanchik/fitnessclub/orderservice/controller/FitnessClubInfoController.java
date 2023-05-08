@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class FitnessClubInfoController {
     private final FitnessClubInfoService fitnessClubInfoService;
 
     @PostMapping
-    public FitnessClubInfoDto createFitnessClubInfo(@RequestBody FitnessClubInfoDto fitnessClubInfoDto) {
+    public FitnessClubInfoDto createFitnessClubInfo(@Valid @RequestBody FitnessClubInfoDto fitnessClubInfoDto) {
         return fitnessClubInfoService.createFitnessClubInfo(fitnessClubInfoDto);
     }
 
