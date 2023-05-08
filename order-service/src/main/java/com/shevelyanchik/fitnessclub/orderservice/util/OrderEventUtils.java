@@ -15,7 +15,7 @@ public class OrderEventUtils {
                 orderDto.getId(),
                 orderDto.getUserId(),
                 orderDto.getTrainerId(),
-                orderDto.getService().getId(),
+                orderDto.getServiceDto().getId(),
                 orderDto.getOrderStatus()
         );
 

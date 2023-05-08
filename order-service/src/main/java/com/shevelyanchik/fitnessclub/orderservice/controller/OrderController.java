@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class OrderController {
     private final CircuitBreakerFactory circuitBreakerFactory;
 
     @PostMapping
-    public OrderDto createOrder(@RequestBody OrderDto orderDto) {
+    public OrderDto createOrder(@Valid @RequestBody OrderDto orderDto) {
         return orderService.createOrder(orderDto);
     }
 

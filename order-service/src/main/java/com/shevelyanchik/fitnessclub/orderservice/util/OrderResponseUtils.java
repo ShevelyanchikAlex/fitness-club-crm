@@ -16,7 +16,7 @@ public class OrderResponseUtils {
                 .trainingStartDateTime(orderDto.getTrainingStartDateTime())
                 .userDto(userDto)
                 .trainerDto(trainerDto)
-                .service(orderDto.getService())
+                .serviceDto(orderDto.getServiceDto())
                 .orderStatus(orderDto.getOrderStatus())
                 .build();
     }

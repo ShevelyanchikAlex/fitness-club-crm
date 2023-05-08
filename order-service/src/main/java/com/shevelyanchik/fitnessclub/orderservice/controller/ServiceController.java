@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class ServiceController {
     private final ServiceService serviceService;
 
     @PostMapping
-    public ServiceDto createService(@RequestBody ServiceDto serviceDto) {
+    public ServiceDto createService(@Valid @RequestBody ServiceDto serviceDto) {
         return serviceService.createService(serviceDto);
     }
 

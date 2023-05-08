@@ -41,7 +41,7 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
     public Page<FitnessClubInfoDto> findAllFitnessClubInfos(Pageable pageable) {
         List<FitnessClubInfoDto> fitnessClubInfoDtoList =
                 fitnessClubInfoRepository
-                        .findAll()
+                        .findAll(pageable)
                         .stream()
                         .map(fitnessClubInfoMapper::toDto)
                         .collect(Collectors.toList());

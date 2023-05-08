@@ -2,6 +2,7 @@ package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
 import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.orderservice.client.UserServiceClient;
+import com.shevelyanchik.fitnessclub.orderservice.constant.OrderStatus;
 import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;
@@ -32,8 +33,10 @@ public class OrderServiceImpl implements OrderService {
     private final UserServiceClient userServiceClient;
     private final OrderProducerService orderProducerService;
 
+
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
+        orderDto.setOrderStatus(OrderStatus.IN_PROCESSING);
         Order order = orderMapper.toEntity(orderDto);
         Order savedOrder = orderRepository.save(order);
         OrderDto savedOrderDto = orderMapper.toDto(savedOrder);
@@ -66,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<OrderDto> findAllOrders(Pageable pageable) {
         List<OrderDto> requestDtoList = orderRepository
-                .findAll()
+                .findAll(pageable)
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());

@@ -39,7 +39,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public Page<ServiceDto> findAllServices(Pageable pageable) {
         List<ServiceDto> serviceDtoList = serviceRepository
-                .findAll()
+                .findAll(pageable)
                 .stream()
                 .map(serviceMapper::toDto)
                 .collect(Collectors.toList());
