@@ -37,11 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new ValidationException("User with same email already exist");
         }
 
-        userDto.setRole(Role.USER);
-        userDto.setStatus(Status.ACTIVE);
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        UserDto savedUserDto = userServiceClient.createUser(userDto);
-
+        UserDto savedUserDto = userServiceClient.createUser(configureUserDto(userDto));
         EmailEvent emailEvent = AuthenticationEventUtils.createEmailEvent(savedUserDto);
         authenticationProducerService.sendMessage(emailEvent);
         return savedUserDto;
@@ -54,10 +50,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 email, authenticationRequest.getPassword());
 
         authenticateToken(authenticationToken);
-
         UserDto userDto = userServiceClient.findUserByEmail(email);
         String token = jwtTokenProvider.createToken(email, userDto.getRole());
         return new AuthenticationResponse(email, token);
+    }
+
+    private UserDto configureUserDto(UserDto userDto) {
+        userDto.setRole(Role.USER);
+        userDto.setStatus(Status.ACTIVE);
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        return userDto;
     }
 
     private void authenticateToken(UsernamePasswordAuthenticationToken authenticationToken) {

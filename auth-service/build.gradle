@@ -26,6 +26,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "javax.xml.bind:jaxb-api:$jaxbApiVersion"
     implementation "io.jsonwebtoken:jjwt:$jjwtVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 dependencyManagement {
