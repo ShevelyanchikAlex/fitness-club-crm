@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.orderservice.service;
 
+import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.Service;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapper;
@@ -62,6 +63,16 @@ class ServiceServiceTest {
         //then
         BDDMockito.then(serviceRepository).should().findById(any());
         Assertions.assertEquals(EXPECTED_SERVICE_DTO, actualServiceDto);
+    }
+
+    @Test
+    void testFindServiceByIdWithUnExistingId() {
+        //given
+        long expectedId = 1L;
+        BDDMockito.given(serviceRepository.findById(any())).willThrow(EntityNotFoundException.class);
+        //then
+        Assertions.assertThrows(EntityNotFoundException.class, () -> serviceService.findServiceById(expectedId));
+        BDDMockito.then(serviceRepository).should().findById(expectedId);
     }
 
     @Test

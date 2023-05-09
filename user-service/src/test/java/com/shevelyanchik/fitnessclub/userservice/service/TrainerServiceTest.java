@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.userservice.service;
 
+import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.userservice.model.constants.Role;
 import com.shevelyanchik.fitnessclub.userservice.model.constants.Status;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerDto;
@@ -75,6 +76,16 @@ class TrainerServiceTest {
         //then
         BDDMockito.then(trainerRepository).should().findById(any());
         Assertions.assertEquals(EXPECTED_TRAINER_DTO, actualTrainerDto);
+    }
+
+    @Test
+    void testFindTrainerByIdWithUnExistingId() {
+        //given
+        long expectedId = 1L;
+        BDDMockito.given(trainerRepository.findById(any())).willThrow(EntityNotFoundException.class);
+        //then
+        Assertions.assertThrows(EntityNotFoundException.class, () -> trainerService.findTrainerById(expectedId));
+        BDDMockito.then(trainerRepository).should().findById(expectedId);
     }
 
     @Test

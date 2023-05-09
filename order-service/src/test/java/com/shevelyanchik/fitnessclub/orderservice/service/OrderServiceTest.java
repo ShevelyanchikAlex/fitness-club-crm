@@ -2,6 +2,7 @@ package com.shevelyanchik.fitnessclub.orderservice.service;
 
 import com.shevelyanchik.fitnessclub.orderservice.client.UserServiceClient;
 import com.shevelyanchik.fitnessclub.orderservice.constant.OrderStatus;
+import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
@@ -103,6 +104,16 @@ class OrderServiceTest {
     }
 
     @Test
+    void testFindOrderByIdWithUnExistingId() {
+        //given
+        long expectedId = 1L;
+        BDDMockito.given(orderRepository.findById(any())).willThrow(EntityNotFoundException.class);
+        //then
+        Assertions.assertThrows(EntityNotFoundException.class, () -> orderService.findOrderById(expectedId));
+        BDDMockito.then(orderRepository).should().findById(expectedId);
+    }
+
+    @Test
     void testFindOrderByIdWithUsersInfo() {
         //given
         Order expectedOrder = orderMapper.toEntity(EXPECTED_ORDER_DTO);
@@ -117,6 +128,16 @@ class OrderServiceTest {
         BDDMockito.then(userServiceClient).should().findUserById(any());
         BDDMockito.then(userServiceClient).should().findTrainerById(any());
         Assertions.assertEquals(EXPECTED_ORDER_RESPONSE_DTO, actualOrderResponseDto);
+    }
+
+    @Test
+    void testFindOrderByIdWithUsersInfoWithUnExistingId() {
+        //given
+        long expectedId = 1L;
+        BDDMockito.given(orderRepository.findById(any())).willThrow(EntityNotFoundException.class);
+        //then
+        Assertions.assertThrows(EntityNotFoundException.class, () -> orderService.findOrderByIdWithUsersInfo(expectedId));
+        BDDMockito.then(orderRepository).should().findById(expectedId);
     }
 
     @Test

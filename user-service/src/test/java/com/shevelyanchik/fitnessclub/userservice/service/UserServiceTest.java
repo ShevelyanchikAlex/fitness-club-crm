@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.userservice.service;
 
+import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.userservice.model.constants.Role;
 import com.shevelyanchik.fitnessclub.userservice.model.constants.Status;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
@@ -69,6 +70,16 @@ class UserServiceTest {
     }
 
     @Test
+    void testFindUserByIdWithUnExistingId() {
+        //given
+        long expectedId = 1L;
+        BDDMockito.given(userRepository.findById(any())).willThrow(EntityNotFoundException.class);
+        //then
+        Assertions.assertThrows(EntityNotFoundException.class, () -> userService.findUserById(expectedId));
+        BDDMockito.then(userRepository).should().findById(expectedId);
+    }
+
+    @Test
     void testFindUserByEmail() {
         //given
         User expectedUser = userMapper.toEntity(EXPECTED_USER_DTO);
@@ -78,6 +89,15 @@ class UserServiceTest {
         //then
         BDDMockito.then(userRepository).should().findUserByEmail(EXPECTED_EMAIL);
         Assertions.assertEquals(EXPECTED_USER_DTO, actualUserDto);
+    }
+
+    @Test
+    void testFindUserByEmailWithExistingEmail() {
+        //given
+        BDDMockito.given(userRepository.findUserByEmail(any())).willThrow(EntityNotFoundException.class);
+        //then
+        Assertions.assertThrows(EntityNotFoundException.class, () -> userService.findUserByEmail(EXPECTED_EMAIL));
+        BDDMockito.then(userRepository).should().findUserByEmail(EXPECTED_EMAIL);
     }
 
     @Test
