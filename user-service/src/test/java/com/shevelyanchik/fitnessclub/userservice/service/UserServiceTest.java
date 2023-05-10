@@ -1,8 +1,8 @@
 package com.shevelyanchik.fitnessclub.userservice.service;
 
+import com.shevelyanchik.fitnessclub.userservice.constant.Role;
+import com.shevelyanchik.fitnessclub.userservice.constant.Status;
 import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
-import com.shevelyanchik.fitnessclub.userservice.model.constants.Role;
-import com.shevelyanchik.fitnessclub.userservice.model.constants.Status;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.userservice.model.entity.User;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;

@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.model.entity;
 
-import com.shevelyanchik.fitnessclub.userservice.model.constants.Role;
-import com.shevelyanchik.fitnessclub.userservice.model.constants.Status;
+import com.shevelyanchik.fitnessclub.userservice.constant.Role;
+import com.shevelyanchik.fitnessclub.userservice.constant.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

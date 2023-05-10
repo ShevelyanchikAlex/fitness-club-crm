@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.config.filter;
 
-import com.shevelyanchik.fitnessclub.userservice.model.constants.Permission;
-import com.shevelyanchik.fitnessclub.userservice.model.constants.Role;
+import com.shevelyanchik.fitnessclub.userservice.constant.Permission;
+import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserAuthentication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
