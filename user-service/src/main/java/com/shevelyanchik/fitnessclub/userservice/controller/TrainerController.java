@@ -5,6 +5,7 @@ import com.shevelyanchik.fitnessclub.userservice.service.TrainerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,11 +17,13 @@ import java.util.List;
 public class TrainerController {
     private final TrainerService trainerService;
 
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @PostMapping("/create")
     public TrainerDto createTrainer(@Valid @RequestBody TrainerDto trainerDto) {
         return trainerService.createTrainer(trainerDto);
     }
 
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @GetMapping
     public List<TrainerDto> findAllTrainers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -28,11 +31,13 @@ public class TrainerController {
         return trainerPage.getContent();
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     public TrainerDto findTrainerById(@PathVariable Long id) {
         return trainerService.findTrainerById(id);
     }
 
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @GetMapping("/count")
     public Long countTrainers() {
         return trainerService.countTrainers();
