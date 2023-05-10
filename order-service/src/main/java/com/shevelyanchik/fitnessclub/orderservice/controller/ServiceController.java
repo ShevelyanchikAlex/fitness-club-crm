@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,11 +18,13 @@ import java.util.List;
 public class ServiceController {
     private final ServiceService serviceService;
 
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @PostMapping
     public ServiceDto createService(@Valid @RequestBody ServiceDto serviceDto) {
         return serviceService.createService(serviceDto);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping
     public List<ServiceDto> findAllServices(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -29,6 +32,7 @@ public class ServiceController {
         return serviceDtoPage.getContent();
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     @Cacheable(value = "services", key = "#id")
     public ServiceDto findServiceById(@PathVariable Long id) {

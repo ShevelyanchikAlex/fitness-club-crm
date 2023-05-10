@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,11 +18,13 @@ import java.util.List;
 public class FitnessClubInfoController {
     private final FitnessClubInfoService fitnessClubInfoService;
 
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @PostMapping
     public FitnessClubInfoDto createFitnessClubInfo(@Valid @RequestBody FitnessClubInfoDto fitnessClubInfoDto) {
         return fitnessClubInfoService.createFitnessClubInfo(fitnessClubInfoDto);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @GetMapping
     public List<FitnessClubInfoDto> findAllFitnessClubInfos(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
@@ -29,6 +32,7 @@ public class FitnessClubInfoController {
         return fitnessClubInfoDtoPage.getContent();
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     @Cacheable(value = "fitness-club-info", key = "#id")
     public FitnessClubInfoDto findFitnessClubInfoById(@PathVariable Long id) {
