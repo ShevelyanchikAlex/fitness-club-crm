@@ -68,4 +68,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.count();
     }
 
+    @Override
+    @Transactional
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
+
 }

@@ -40,4 +40,10 @@ public interface TrainerService {
      * @return Number of Trainers.
      */
     Long countTrainers();
+
+
+    /**
+     * Deletes all Trainers.
+     */
+    void deleteAllTrainers();
 }

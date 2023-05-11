@@ -56,4 +56,10 @@ public interface UserService {
      * @return Number of Users.
      */
     Long countUsers();
+
+
+    /**
+     * Deletes all Users.
+     */
+    void deleteAllUsers();
 }

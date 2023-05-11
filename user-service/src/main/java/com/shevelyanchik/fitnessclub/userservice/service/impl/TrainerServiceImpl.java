@@ -57,4 +57,9 @@ public class TrainerServiceImpl implements TrainerService {
         return trainerRepository.count();
     }
 
+    @Override
+    public void deleteAllTrainers() {
+        trainerRepository.deleteAll();
+    }
+
 }
