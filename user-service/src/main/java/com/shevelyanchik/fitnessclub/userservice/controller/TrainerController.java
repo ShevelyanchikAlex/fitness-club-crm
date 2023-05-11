@@ -23,7 +23,7 @@ public class TrainerController {
         return trainerService.createTrainer(trainerDto);
     }
 
-    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @PreAuthorize("permitAll()")
     @GetMapping
     public List<TrainerDto> findAllTrainers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {

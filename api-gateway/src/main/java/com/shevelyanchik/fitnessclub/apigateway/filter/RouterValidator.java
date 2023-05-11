@@ -12,7 +12,9 @@ import java.util.List;
 public final class RouterValidator {
     private static final List<String> OPEN_API_ENDPOINTS = List.of(
             "/api/v1/auth-service/auth/signup",
-            "/api/v1/auth-service/auth/login"
+            "/api/v1/auth-service/auth/login",
+            "/api/v1/user-service/trainers",
+            "/api/v1/order-service/services"
     );
 
     public static boolean isSecuredApiEndpoints(ServerHttpRequest request) {

@@ -19,7 +19,7 @@ public class ServiceController {
     private final ServiceService serviceService;
 
     @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
-    @PostMapping
+    @PostMapping("/create")
     public ServiceDto createService(@Valid @RequestBody ServiceDto serviceDto) {
         return serviceService.createService(serviceDto);
     }
