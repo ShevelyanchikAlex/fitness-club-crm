@@ -43,4 +43,9 @@ public interface OrderService {
      * @return Orders.
      */
     Page<OrderDto> findAllOrders(Pageable pageable);
+
+    /**
+     * Deletes all Orders.
+     */
+    void deleteAll();
 }

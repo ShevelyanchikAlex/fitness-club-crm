@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.integration;
+package com.shevelyanchik.fitnessclub.orderservice.integration.service;
 
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.service.ServiceService;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ServiceIntegrationTest {
+class ServiceServiceIntegrationTest {
 
     @Autowired
     private ServiceService serviceService;

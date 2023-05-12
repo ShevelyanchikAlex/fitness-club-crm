@@ -81,4 +81,9 @@ public class OrderServiceImpl implements OrderService {
         return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
     }
 
+    @Override
+    public void deleteAll() {
+        orderRepository.deleteAll();
+    }
+
 }

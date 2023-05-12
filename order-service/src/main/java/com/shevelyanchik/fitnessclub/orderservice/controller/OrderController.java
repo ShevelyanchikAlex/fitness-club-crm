@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public OrderDto createOrder(@Valid @RequestBody OrderDto orderDto) {
         return orderService.createOrder(orderDto);
     }

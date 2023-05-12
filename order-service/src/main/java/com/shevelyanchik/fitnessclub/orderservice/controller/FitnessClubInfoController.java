@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class FitnessClubInfoController {
 
     @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public FitnessClubInfoDto createFitnessClubInfo(@Valid @RequestBody FitnessClubInfoDto fitnessClubInfoDto) {
         return fitnessClubInfoService.createFitnessClubInfo(fitnessClubInfoDto);
     }
