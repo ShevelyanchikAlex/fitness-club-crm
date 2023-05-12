@@ -50,4 +50,9 @@ public class ServiceServiceImpl implements ServiceService {
                 .collect(Collectors.toList());
         return new PageImpl<>(serviceDtoList, pageable, serviceRepository.count());
     }
+
+    @Override
+    public void deleteAllServices() {
+        serviceRepository.deleteAll();
+    }
 }

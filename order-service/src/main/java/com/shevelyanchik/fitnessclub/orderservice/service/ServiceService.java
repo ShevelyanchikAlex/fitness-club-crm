@@ -33,4 +33,9 @@ public interface ServiceService {
      * @return Services.
      */
     Page<ServiceDto> findAllServices(Pageable pageable);
+
+    /**
+     * Deletes all Services.
+     */
+    void deleteAllServices();
 }

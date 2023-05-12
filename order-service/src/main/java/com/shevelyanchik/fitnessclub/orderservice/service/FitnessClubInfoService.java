@@ -33,4 +33,9 @@ public interface FitnessClubInfoService {
      * @return FitnessClubInfos.
      */
     Page<FitnessClubInfoDto> findAllFitnessClubInfos(Pageable pageable);
+
+    /**
+     * Deletes all FitnessClubInfos.
+     */
+    void deleteAllFitnessClubInfos();
 }

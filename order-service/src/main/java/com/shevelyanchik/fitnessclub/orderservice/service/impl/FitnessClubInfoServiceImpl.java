@@ -51,4 +51,9 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
                         .collect(Collectors.toList());
         return new PageImpl<>(fitnessClubInfoDtoList, pageable, fitnessClubInfoRepository.count());
     }
+
+    @Override
+    public void deleteAllFitnessClubInfos() {
+        fitnessClubInfoRepository.deleteAll();
+    }
 }

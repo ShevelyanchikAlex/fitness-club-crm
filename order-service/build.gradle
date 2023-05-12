@@ -32,6 +32,8 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt:$jjwtVersion"
     implementation "org.postgresql:postgresql:$postgresqlVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.testcontainers:postgresql:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
 }
 
 test {
