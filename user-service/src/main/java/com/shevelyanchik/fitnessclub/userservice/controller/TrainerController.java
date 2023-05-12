@@ -5,6 +5,7 @@ import com.shevelyanchik.fitnessclub.userservice.service.TrainerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class TrainerController {
 
     @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public TrainerDto createTrainer(@Valid @RequestBody TrainerDto trainerDto) {
         return trainerService.createTrainer(trainerDto);
     }

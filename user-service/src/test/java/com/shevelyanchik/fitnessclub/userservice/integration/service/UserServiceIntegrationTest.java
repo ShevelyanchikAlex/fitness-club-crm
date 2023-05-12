@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.userservice.integration;
+package com.shevelyanchik.fitnessclub.userservice.integration.service;
 
 import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.constant.Status;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class UserIntegrationTest {
+class UserServiceIntegrationTest {
 
     @Autowired
     private UserService userService;
