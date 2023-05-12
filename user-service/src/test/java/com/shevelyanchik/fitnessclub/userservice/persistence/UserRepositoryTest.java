@@ -33,7 +33,7 @@ class UserRepositoryTest {
 
 
     @AfterEach
-    void cleanUsers() {
+    void deleteUsers() {
         userRepository.deleteAll();
     }
 

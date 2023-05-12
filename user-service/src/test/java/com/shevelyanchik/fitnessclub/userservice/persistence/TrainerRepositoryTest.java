@@ -50,7 +50,7 @@ class TrainerRepositoryTest {
 
 
     @AfterEach
-    void cleanUsers() {
+    void deleteUsers() {
         userRepository.deleteAll();
     }
 
@@ -61,9 +61,7 @@ class TrainerRepositoryTest {
         User expectedUser = userMapper.toEntity(EXPECTED_USER_DTO);
         Trainer expectedTrainer = trainerMapper.toEntity(EXPECTED_TRAINER_DTO);
         //when
-        User savedUser = userRepository.save(expectedUser);
-        expectedTrainer.setUser(savedUser);
-        Trainer actualTrainer = trainerRepository.save(expectedTrainer);
+        Trainer actualTrainer = saveTrainer(expectedUser, expectedTrainer);
         //then
         Assertions.assertEquals(expectedTrainer.getCategory(), actualTrainer.getCategory());
         Assertions.assertEquals(expectedTrainer.getUser(), actualTrainer.getUser());
@@ -75,9 +73,7 @@ class TrainerRepositoryTest {
         User expectedUser = userMapper.toEntity(EXPECTED_USER_DTO);
         Trainer expectedTrainer = trainerMapper.toEntity(EXPECTED_TRAINER_DTO);
         //when
-        User savedUser = userRepository.save(expectedUser);
-        expectedTrainer.setUser(savedUser);
-        Trainer savedTrainer = trainerRepository.save(expectedTrainer);
+        Trainer savedTrainer = saveTrainer(expectedUser, expectedTrainer);
         long savedTrainerId = savedTrainer.getId();
         Trainer actualTrainer = trainerRepository.findById(savedTrainerId).orElse(null);
         //then
@@ -92,9 +88,7 @@ class TrainerRepositoryTest {
         Trainer expectedTrainer = trainerMapper.toEntity(EXPECTED_TRAINER_DTO);
         long expectedTrainersCount = 1L;
         //when
-        User savedUser = userRepository.save(expectedUser);
-        expectedTrainer.setUser(savedUser);
-        trainerRepository.save(expectedTrainer);
+        saveTrainer(expectedUser, expectedTrainer);
         List<Trainer> actualTrainers = trainerRepository.findAll();
         //then
         Assertions.assertEquals(expectedTrainersCount, actualTrainers.size());
@@ -107,12 +101,16 @@ class TrainerRepositoryTest {
         Trainer expectedTrainer = trainerMapper.toEntity(EXPECTED_TRAINER_DTO);
         long expectedTrainersCount = 1L;
         //when
-        User savedUser = userRepository.save(expectedUser);
-        expectedTrainer.setUser(savedUser);
-        trainerRepository.save(expectedTrainer);
+        saveTrainer(expectedUser, expectedTrainer);
         long actualTrainersCount = trainerRepository.count();
         //then
         Assertions.assertEquals(expectedTrainersCount, actualTrainersCount);
+    }
+
+    private Trainer saveTrainer(User expectedUser, Trainer expectedTrainer) {
+        User savedUser = userRepository.save(expectedUser);
+        expectedTrainer.setUser(savedUser);
+        return trainerRepository.save(expectedTrainer);
     }
 
 }

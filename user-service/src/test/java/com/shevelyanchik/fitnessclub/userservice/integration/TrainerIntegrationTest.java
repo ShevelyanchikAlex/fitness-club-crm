@@ -37,7 +37,7 @@ class TrainerIntegrationTest {
 
 
     @AfterEach
-    void deleteUsers() {
+    void deleteTrainers() {
         trainerService.deleteAllTrainers();
     }
 
