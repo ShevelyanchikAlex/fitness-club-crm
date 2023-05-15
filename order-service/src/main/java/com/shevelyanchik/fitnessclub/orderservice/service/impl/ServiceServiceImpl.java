@@ -55,4 +55,9 @@ public class ServiceServiceImpl implements ServiceService {
     public void deleteAllServices() {
         serviceRepository.deleteAll();
     }
+
+    @Override
+    public Long countServices() {
+        return serviceRepository.count();
+    }
 }

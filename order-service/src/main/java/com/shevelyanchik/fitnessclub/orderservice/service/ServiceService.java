@@ -38,4 +38,11 @@ public interface ServiceService {
      * Deletes all Services.
      */
     void deleteAllServices();
+
+    /**
+     * Counts all Services.
+     *
+     * @return Count of Services.
+     */
+    Long countServices();
 }

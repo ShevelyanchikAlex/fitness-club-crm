@@ -44,6 +44,8 @@ public interface OrderService {
      */
     Page<OrderDto> findAllOrders(Pageable pageable);
 
+    Page<OrderDto> findAllOrdersByUserId(Pageable pageable, Long userId);
+
     /**
      * Deletes all Orders.
      */

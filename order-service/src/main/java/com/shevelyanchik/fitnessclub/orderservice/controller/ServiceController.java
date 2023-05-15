@@ -40,4 +40,11 @@ public class ServiceController {
     public ServiceDto findServiceById(@PathVariable Long id) {
         return serviceService.findServiceById(id);
     }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping("/count")
+    public Long countServices() {
+        return serviceService.countServices();
+    }
+
 }

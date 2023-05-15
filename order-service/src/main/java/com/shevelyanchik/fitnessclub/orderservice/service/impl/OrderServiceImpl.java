@@ -82,6 +82,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Page<OrderDto> findAllOrdersByUserId(Pageable pageable, Long userId) {
+        List<OrderDto> requestDtoList = orderRepository
+                .findAllByUserId(pageable, userId)
+                .stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
+    }
+
+    @Override
     public void deleteAll() {
         orderRepository.deleteAll();
     }
