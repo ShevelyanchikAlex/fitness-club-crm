@@ -25,6 +25,12 @@ public class UserController {
         return userService.createUser(userDto);
     }
 
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    @PatchMapping("/update")
+    public UserDto updateUser(@Valid @RequestBody UserDto userDto) {
+        return userService.updateUser(userDto);
+    }
+
     @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @GetMapping
     public List<UserDto> findAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,

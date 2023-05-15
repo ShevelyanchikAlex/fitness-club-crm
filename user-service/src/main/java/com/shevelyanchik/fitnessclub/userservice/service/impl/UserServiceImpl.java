@@ -1,6 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.service.impl;
 
 import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
+import com.shevelyanchik.fitnessclub.userservice.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.userservice.model.entity.User;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
@@ -29,6 +30,23 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toEntity(userDto);
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
+    }
+
+    @Transactional
+    @Override
+    public UserDto updateUser(UserDto userDto) {
+        UserDto actualUserDto = findUserById(userDto.getId());
+        String updatedEmail = userDto.getEmail();
+        if (!actualUserDto.getEmail().equals(updatedEmail) && existsUserByEmail(updatedEmail)) {
+            throw new ValidationException("User with the same email exists.");
+        }
+        actualUserDto.setEmail(updatedEmail);
+        actualUserDto.setName(userDto.getName());
+        actualUserDto.setSurname(userDto.getSurname());
+        actualUserDto.setPhoneNumber(userDto.getPhoneNumber());
+        User preUpdatedUser = userMapper.toEntity(actualUserDto);
+        User updatedUser = userRepository.save(preUpdatedUser);
+        return userMapper.toDto(updatedUser);
     }
 
     @Override

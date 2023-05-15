@@ -19,6 +19,14 @@ public interface UserService {
     UserDto createUser(UserDto userDto);
 
     /**
+     * Updates User.
+     *
+     * @param userDto updated UserDto.
+     * @return UserDto if userDto is valid.
+     */
+    UserDto updateUser(UserDto userDto);
+
+    /**
      * If the user exists, this method will return a User that contains information about them.
      *
      * @param id User id.

@@ -25,7 +25,6 @@ public class UserDto {
     @Pattern(regexp = ValidatorRegex.SURNAME_REGEX)
     private String surname;
 
-    @NotEmpty
     private String password;
 
     @NotEmpty
