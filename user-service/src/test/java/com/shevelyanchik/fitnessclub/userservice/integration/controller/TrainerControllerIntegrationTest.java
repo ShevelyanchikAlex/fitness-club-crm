@@ -1,5 +1,6 @@
 package com.shevelyanchik.fitnessclub.userservice.integration.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.constant.Status;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerDto;
@@ -7,26 +8,29 @@ import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.userservice.service.TrainerService;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WithMockUser(authorities = {"ADMIN_PERMISSION"})
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 class TrainerControllerIntegrationTest {
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @Autowired
     private UserService userService;
@@ -37,13 +41,9 @@ class TrainerControllerIntegrationTest {
 
     private final UserDto EXPECTED_USER_DTO = new UserDto(
             1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+            "test@gmail.com", "+375443321233", Role.ADMIN, Status.ACTIVE);
     private final String TRAINER_API_ENDPOINT = "/api/v1/user-service/trainers";
 
-    @BeforeEach
-    public void setup() {
-        testRestTemplate = testRestTemplate.withBasicAuth("", "");
-    }
 
     @AfterEach
     void deleteTrainers() {
@@ -51,48 +51,70 @@ class TrainerControllerIntegrationTest {
     }
 
     @Test
-    void testCreateTrainer() {
-        //given
-        TrainerDto expectedTrainerDto = prepareTrainerDto();
-        testRestTemplate = new TestRestTemplate("user", "password");
-        //when
-        ResponseEntity<TrainerDto> response = testRestTemplate.postForEntity(TRAINER_API_ENDPOINT + "/create", expectedTrainerDto, TrainerDto.class);
-        //then
-        Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(expectedTrainerDto.getCategory(), response.getBody().getCategory());
-    }
-
-    @Test
-    void testFindTrainerById() {
-        //given
-        TrainerDto expectedTrainerDto = prepareTrainerDto();
-        //when
-        ResponseEntity<TrainerDto> responseWithSavedTrainer = testRestTemplate.postForEntity(TRAINER_API_ENDPOINT + "/create", expectedTrainerDto, TrainerDto.class);
-        ResponseEntity<TrainerDto> response = testRestTemplate.getForEntity(TRAINER_API_ENDPOINT + "/{id}", TrainerDto.class, Objects.requireNonNull(responseWithSavedTrainer.getBody()).getId());
-        //then
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(expectedTrainerDto.getCategory(), response.getBody().getCategory());
-    }
-
-    @Test
-    void testCountTrainers() {
-        //given
-        TrainerDto expectedTrainerDto = prepareTrainerDto();
-        long expectedTrainersCount = 1L;
-        //when
-        testRestTemplate.postForEntity(TRAINER_API_ENDPOINT + "/create", expectedTrainerDto, TrainerDto.class);
-        ResponseEntity<Long> response = testRestTemplate.getForEntity(TRAINER_API_ENDPOINT + "/count", Long.class);
-        //then
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(expectedTrainersCount, response.getBody());
-    }
-
-    private TrainerDto prepareTrainerDto() {
+//    @WithMockUser(authorities={"ADMIN_PERMISSION"})
+    void testCreateTrainer() throws Exception {
         UserDto savedUser = userService.createUser(EXPECTED_USER_DTO);
-        return new TrainerDto(1L, "Higher", "Box", savedUser);
+        TrainerDto expectedTrainerDto = new TrainerDto(1L, "Higher", "Box", savedUser);
+        HttpHeaders headers = initHeaders(savedUser);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post(TRAINER_API_ENDPOINT + "/create")
+                                .content(mapper.writeValueAsString(expectedTrainerDto))
+                                .headers(headers)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.category")
+                        .value(expectedTrainerDto.getCategory()));
+    }
+
+    @Test
+    void testFindTrainerById() throws Exception {
+        TrainerDto expectedTrainerDto = initTrainer();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get(TRAINER_API_ENDPOINT + "/{id}", expectedTrainerDto.getId())
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.category")
+                        .value(expectedTrainerDto.getCategory()));
+    }
+
+    @Test
+    void testCountTrainers() throws Exception {
+        String expectedUsersCount = "1";
+        initTrainer();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get(TRAINER_API_ENDPOINT + "/count")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expectedUsersCount));
+    }
+
+
+    private TrainerDto initTrainer() {
+        UserDto savedUser = userService.createUser(EXPECTED_USER_DTO);
+        TrainerDto trainerDto = new TrainerDto(1L, "Higher", "Box", savedUser);
+        return trainerService.createTrainer(trainerDto);
+    }
+
+    private HttpHeaders initHeaders(UserDto userDto) {
+        HttpHeaders headers = new HttpHeaders();
+        String authorities =
+                userDto
+                        .getRole()
+                        .getPermissions()
+                        .stream()
+                        .map(Enum::name)
+                        .collect(Collectors.joining(","));
+
+        headers.add("username", userDto.getEmail());
+        headers.add("authorities", authorities);
+        return headers;
     }
 
 }

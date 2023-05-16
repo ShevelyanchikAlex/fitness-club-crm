@@ -39,7 +39,7 @@ public class TrainerController {
         return trainerService.findTrainerById(id);
     }
 
-    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @PreAuthorize("permitAll()")
     @GetMapping("/count")
     public Long countTrainers() {
         return trainerService.countTrainers();

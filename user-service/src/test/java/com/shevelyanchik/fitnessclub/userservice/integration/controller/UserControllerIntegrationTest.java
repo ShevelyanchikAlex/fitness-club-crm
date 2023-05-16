@@ -1,27 +1,31 @@
 package com.shevelyanchik.fitnessclub.userservice.integration.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.constant.Status;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Objects;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 class UserControllerIntegrationTest {
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @Autowired
     private UserService userService;
@@ -39,61 +43,70 @@ class UserControllerIntegrationTest {
         userService.deleteAllUsers();
     }
 
-
     @Test
-    void testCreateUser() {
-        //when
-        ResponseEntity<UserDto> response = testRestTemplate.postForEntity(USER_API_ENDPOINT + "/create", EXPECTED_USER_DTO, UserDto.class);
-        //then
-        Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(EXPECTED_USER_DTO.getEmail(), response.getBody().getEmail());
+    void testCreateUser() throws Exception {
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post(USER_API_ENDPOINT + "/create")
+                                .content(mapper.writeValueAsString(EXPECTED_USER_DTO))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(EXPECTED_USER_DTO.getEmail()));
     }
 
     @Test
-    void testFindUserById() {
-        //when
-        ResponseEntity<UserDto> responseWithSavedUser = testRestTemplate.postForEntity(USER_API_ENDPOINT + "/create", EXPECTED_USER_DTO, UserDto.class);
-        ResponseEntity<UserDto> response = testRestTemplate.getForEntity(USER_API_ENDPOINT + "/{id}", UserDto.class, Objects.requireNonNull(responseWithSavedUser.getBody()).getId());
-        //then
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(EXPECTED_USER_DTO.getEmail(), response.getBody().getEmail());
+    void testFindUserById() throws Exception {
+        UserDto savedUser = initUser();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get(USER_API_ENDPOINT + "/{id}", savedUser.getId())
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(EXPECTED_USER_DTO.getEmail()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(EXPECTED_USER_DTO.getName()));
     }
 
     @Test
-    void testFindUserByEmail() {
-        //when
-        testRestTemplate.postForEntity(USER_API_ENDPOINT + "/create", EXPECTED_USER_DTO, UserDto.class);
-        ResponseEntity<UserDto> response = testRestTemplate.getForEntity(USER_API_ENDPOINT + "/email/{email}", UserDto.class, EXPECTED_EMAIL);
-        //then
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(EXPECTED_USER_DTO.getEmail(), response.getBody().getEmail());
+    void testFindUserByEmail() throws Exception {
+        initUser();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get(USER_API_ENDPOINT + "/email/{email}", EXPECTED_EMAIL)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(EXPECTED_EMAIL))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(EXPECTED_USER_DTO.getName()));
     }
 
     @Test
-    void testExistsUserByEmail() {
-        //when
-        testRestTemplate.postForEntity(USER_API_ENDPOINT + "/create", EXPECTED_USER_DTO, UserDto.class);
-        ResponseEntity<Boolean> response = testRestTemplate.getForEntity(USER_API_ENDPOINT + "/exists-by-email/{email}", Boolean.class, EXPECTED_EMAIL);
-        //then
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertTrue(response.getBody());
+    void testExistsUserByEmail() throws Exception {
+        initUser();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get(USER_API_ENDPOINT + "/exists-by-email/{email}", EXPECTED_EMAIL)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void testCountUsers() {
-        //given
-        long expectedUsersCount = 1L;
-        //when
-        testRestTemplate.postForEntity(USER_API_ENDPOINT + "/create", EXPECTED_USER_DTO, UserDto.class);
-        ResponseEntity<Long> response = testRestTemplate.getForEntity(USER_API_ENDPOINT + "/count", Long.class);
-        //then
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(expectedUsersCount, response.getBody());
+    void testCountUsers() throws Exception {
+        String expectedUsersCount = "1";
+        initUser();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get(USER_API_ENDPOINT + "/count")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expectedUsersCount));
+    }
+
+    private UserDto initUser() {
+        return userService.createUser(EXPECTED_USER_DTO);
     }
 
 }
