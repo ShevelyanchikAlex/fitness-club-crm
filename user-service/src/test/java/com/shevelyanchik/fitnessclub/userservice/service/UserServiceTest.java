@@ -31,6 +31,11 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
+    private static final UserDto EXPECTED_USER_DTO = new UserDto(
+            1L, "Name", "Surname", "passUser1",
+            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+    private static final String EXPECTED_EMAIL = "test@gmail.com";
+
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -40,10 +45,6 @@ class UserServiceTest {
     @Spy
     private final UserMapper userMapper = new UserMapperImpl();
 
-    private final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
-    private final String EXPECTED_EMAIL = "test@gmail.com";
 
     @Test
     void testCreateUser() {

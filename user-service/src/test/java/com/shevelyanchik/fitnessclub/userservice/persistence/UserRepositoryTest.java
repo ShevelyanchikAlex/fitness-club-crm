@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
 @ActiveProfiles("test")
 class UserRepositoryTest {
 
+    private static final UserDto EXPECTED_USER_DTO = new UserDto(
+            1L, "Name", "Surname", "passUser1",
+            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+
     @Autowired
     private UserRepository userRepository;
     private final UserMapper userMapper = new UserMapperImpl();
-
-    private final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
 
 
     @AfterEach

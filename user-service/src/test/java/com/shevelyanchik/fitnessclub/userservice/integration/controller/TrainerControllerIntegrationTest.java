@@ -26,6 +26,12 @@ import java.util.stream.Collectors;
 @ActiveProfiles("test")
 class TrainerControllerIntegrationTest {
 
+    private static final UserDto EXPECTED_USER_DTO = new UserDto(
+            1L, "Name", "Surname", "passUser1",
+            "test@gmail.com", "+375443321233", Role.ADMIN, Status.ACTIVE);
+    private static final String TRAINER_API_ENDPOINT = "/api/v1/user-service/trainers";
+
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -39,19 +45,12 @@ class TrainerControllerIntegrationTest {
     private TrainerService trainerService;
 
 
-    private final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.ADMIN, Status.ACTIVE);
-    private final String TRAINER_API_ENDPOINT = "/api/v1/user-service/trainers";
-
-
     @AfterEach
     void deleteTrainers() {
         trainerService.deleteAllTrainers();
     }
 
     @Test
-//    @WithMockUser(authorities={"ADMIN_PERMISSION"})
     void testCreateTrainer() throws Exception {
         UserDto savedUser = userService.createUser(EXPECTED_USER_DTO);
         TrainerDto expectedTrainerDto = new TrainerDto(1L, "Higher", "Box", savedUser);

@@ -26,6 +26,14 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {
 
+    private static final AuthenticationRequest EXPECTED_AUTH_REQUEST = new AuthenticationRequest(
+            "test@gmail.com", "pass");
+
+    private static final UserDto EXPECTED_USER_DTO = new UserDto(
+            1L, "Name", "Surname", "passUser1",
+            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+
+
     @InjectMocks
     private AuthenticationServiceImpl authenticationService;
 
@@ -43,14 +51,6 @@ class AuthenticationServiceTest {
 
     @Mock
     private AuthenticationProducerService authenticationProducerService;
-
-
-    private final AuthenticationRequest EXPECTED_AUTH_REQUEST = new AuthenticationRequest(
-            "test@gmail.com", "pass");
-
-    private final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
 
 
     @Test

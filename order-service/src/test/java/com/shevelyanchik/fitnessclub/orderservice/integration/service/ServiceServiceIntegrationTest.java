@@ -21,10 +21,12 @@ import java.util.List;
 @ActiveProfiles("test")
 class ServiceServiceIntegrationTest {
 
+    private static final ServiceDto EXPECTED_SERVICE_DTO = new ServiceDto(
+            1L, "Service", "Service desc", BigDecimal.ONE);
+
+
     @Autowired
     private ServiceService serviceService;
-
-    private final ServiceDto EXPECTED_SERVICE_DTO = new ServiceDto(1L, "Service", "Service desc", BigDecimal.ONE);
 
 
     @AfterEach

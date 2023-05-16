@@ -18,12 +18,14 @@ import java.util.List;
 @ActiveProfiles("test")
 class ServiceRepositoryTest {
 
+    private static final ServiceDto EXPECTED_SERVICE_DTO = new ServiceDto(
+            1L, "Service", "Service desc", BigDecimal.ONE);
+
+
     @Autowired
     private ServiceRepository serviceRepository;
 
     private final ServiceMapper serviceMapper = new ServiceMapperImpl();
-
-    private final ServiceDto EXPECTED_SERVICE_DTO = new ServiceDto(1L, "Service", "Service desc", BigDecimal.ONE);
 
 
     @AfterEach

@@ -39,7 +39,8 @@ public class OrderController {
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @GetMapping("/user/{userId}")
     public List<OrderDto> findAllOrdersByUserId(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                @RequestParam(name = "size", defaultValue = "10") Integer size, @PathVariable Long userId) {
+                                                @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                @PathVariable Long userId) {
         Page<OrderDto> orderDtoPage = orderService.findAllOrdersByUserId(PageRequest.of(page, size), userId);
         return orderDtoPage.getContent();
     }

@@ -21,6 +21,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ActiveProfiles("test")
 class UserControllerIntegrationTest {
 
+    private static final UserDto EXPECTED_USER_DTO = new UserDto(
+            1L, "Name", "Surname", "passUser1",
+            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+    private static final String EXPECTED_EMAIL = "test@gmail.com";
+    private static final String USER_API_ENDPOINT = "/api/v1/user-service/users";
+
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -29,13 +36,6 @@ class UserControllerIntegrationTest {
 
     @Autowired
     private UserService userService;
-
-
-    private final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
-    private final String EXPECTED_EMAIL = "test@gmail.com";
-    private final String USER_API_ENDPOINT = "/api/v1/user-service/users";
 
 
     @AfterEach

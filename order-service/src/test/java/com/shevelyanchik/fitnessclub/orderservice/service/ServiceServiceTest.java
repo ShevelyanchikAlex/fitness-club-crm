@@ -30,6 +30,10 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 class ServiceServiceTest {
 
+    private static final ServiceDto EXPECTED_SERVICE_DTO = new ServiceDto(
+            1L, "Service", "Service desc", BigDecimal.ONE);
+
+
     @InjectMocks
     private ServiceServiceImpl serviceService;
 
@@ -39,7 +43,6 @@ class ServiceServiceTest {
     @Spy
     private final ServiceMapper serviceMapper = new ServiceMapperImpl();
 
-    private final ServiceDto EXPECTED_SERVICE_DTO = new ServiceDto(1L, "Service", "Service desc", BigDecimal.ONE);
 
     @Test
     void testCreateService() {

@@ -17,14 +17,14 @@ import java.util.List;
 @ActiveProfiles("test")
 class FitnessClubInfoRepositoryTest {
 
+    private static final FitnessClubInfoDto EXPECTED_FITNESS_CLUB_INFO_DTO = new FitnessClubInfoDto(
+            1L, "Address", "Description");
+
+
     @Autowired
     private FitnessClubInfoRepository fitnessClubInfoRepository;
 
     private final FitnessClubInfoMapper fitnessClubInfoMapper = new FitnessClubInfoMapperImpl();
-
-
-    private final FitnessClubInfoDto EXPECTED_FITNESS_CLUB_INFO_DTO = new FitnessClubInfoDto(
-            1L, "Address", "Description");
 
 
     @AfterEach

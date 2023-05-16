@@ -23,14 +23,14 @@ import java.util.List;
 @ActiveProfiles("test")
 class UserServiceIntegrationTest {
 
-    @Autowired
-    private UserService userService;
-
-
-    private final UserDto EXPECTED_USER_DTO = new UserDto(
+    private static final UserDto EXPECTED_USER_DTO = new UserDto(
             1L, "Name", "Surname", "passUser1",
             "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
-    private final String EXPECTED_EMAIL = "test@gmail.com";
+    private static final String EXPECTED_EMAIL = "test@gmail.com";
+
+
+    @Autowired
+    private UserService userService;
 
 
     @AfterEach

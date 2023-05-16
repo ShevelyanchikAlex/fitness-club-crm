@@ -39,6 +39,26 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
+    private static final LocalDateTime EXPECTED_DATE_TIME = LocalDateTime.now();
+
+    private static final ServiceDto EXPECTED_SERVICE_DTO = new ServiceDto(1L, "Service", "Service desc", BigDecimal.ONE);
+
+    private static final OrderDto EXPECTED_ORDER_DTO = new OrderDto(
+            1L, EXPECTED_DATE_TIME, EXPECTED_DATE_TIME,
+            1L, 1L, EXPECTED_SERVICE_DTO, OrderStatus.IN_PROCESSING);
+
+    private static final UserDto EXPECTED_USER_DTO = new UserDto(
+            1L, "Name", "Surname", "passUser1",
+            "test@gmail.com", "+375443321233", "USER", "ACTIVE");
+
+    private static final TrainerDto EXPECTED_TRAINER_DTO = new TrainerDto(
+            1L, "Higher", "Box", EXPECTED_USER_DTO);
+
+    private static final OrderResponseDto EXPECTED_ORDER_RESPONSE_DTO = new OrderResponseDto(
+            1L, EXPECTED_DATE_TIME, EXPECTED_DATE_TIME, EXPECTED_USER_DTO, EXPECTED_TRAINER_DTO,
+            EXPECTED_SERVICE_DTO, OrderStatus.IN_PROCESSING);
+
+
     @InjectMocks
     private OrderServiceImpl orderService;
 
@@ -57,26 +77,6 @@ class OrderServiceTest {
 
     @Spy
     private final ServiceMapper serviceMapper = new ServiceMapperImpl();
-
-
-    private final LocalDateTime EXPECTED_DATE_TIME = LocalDateTime.now();
-
-    private final ServiceDto EXPECTED_SERVICE_DTO = new ServiceDto(1L, "Service", "Service desc", BigDecimal.ONE);
-
-    private final OrderDto EXPECTED_ORDER_DTO = new OrderDto(
-            1L, EXPECTED_DATE_TIME, EXPECTED_DATE_TIME,
-            1L, 1L, EXPECTED_SERVICE_DTO, OrderStatus.IN_PROCESSING);
-
-    private final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", "USER", "ACTIVE");
-
-    private final TrainerDto EXPECTED_TRAINER_DTO = new TrainerDto(
-            1L, "Higher", "Box", EXPECTED_USER_DTO);
-
-    private final OrderResponseDto EXPECTED_ORDER_RESPONSE_DTO = new OrderResponseDto(
-            1L, EXPECTED_DATE_TIME, EXPECTED_DATE_TIME, EXPECTED_USER_DTO, EXPECTED_TRAINER_DTO,
-            EXPECTED_SERVICE_DTO, OrderStatus.IN_PROCESSING);
 
 
     @Test

@@ -20,11 +20,13 @@ import java.util.List;
 @ActiveProfiles("test")
 class FitnessClubInfoServiceIntegrationTest {
 
+    private static final FitnessClubInfoDto EXPECTED_FITNESS_CLUB_INFO_DTO = new FitnessClubInfoDto(
+            1L, "Address", "Description");
+
+
     @Autowired
     private FitnessClubInfoService fitnessClubInfoService;
 
-    private final FitnessClubInfoDto EXPECTED_FITNESS_CLUB_INFO_DTO = new FitnessClubInfoDto(
-            1L, "Address", "Description");
 
     @AfterEach
     void deleteFitnessClubInfos() {

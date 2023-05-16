@@ -34,6 +34,13 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 class TrainerServiceTest {
 
+    private static final UserDto EXPECTED_USER_DTO = new UserDto(
+            1L, "Name", "Surname", "passUser1",
+            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+
+    private static final TrainerDto EXPECTED_TRAINER_DTO = new TrainerDto(
+            1L, "Higher", "Box", EXPECTED_USER_DTO);
+
     @InjectMocks
     private TrainerServiceImpl trainerService;
 
@@ -47,12 +54,6 @@ class TrainerServiceTest {
     @Spy
     private final UserMapper userMapper = new UserMapperImpl();
 
-    private final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
-
-    private final TrainerDto EXPECTED_TRAINER_DTO = new TrainerDto(
-            1L, "Higher", "Box", EXPECTED_USER_DTO);
 
     @Test
     void testCreateTrainer() {

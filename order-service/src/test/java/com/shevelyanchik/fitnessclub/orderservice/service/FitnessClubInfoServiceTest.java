@@ -29,6 +29,9 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 class FitnessClubInfoServiceTest {
 
+    private static final FitnessClubInfoDto EXPECTED_FITNESS_CLUB_INFO_DTO = new FitnessClubInfoDto(
+            1L, "Address", "Description");
+
     @InjectMocks
     private FitnessClubInfoServiceImpl fitnessClubInfoService;
 
@@ -38,9 +41,6 @@ class FitnessClubInfoServiceTest {
     @Spy
     private final FitnessClubInfoMapper fitnessClubInfoMapper = new FitnessClubInfoMapperImpl();
 
-
-    private final FitnessClubInfoDto EXPECTED_FITNESS_CLUB_INFO_DTO = new FitnessClubInfoDto(
-            1L, "Address", "Description");
 
     @Test
     void testCreateFitnessClubInfo() {
