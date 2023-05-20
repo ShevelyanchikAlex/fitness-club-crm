@@ -58,4 +58,11 @@ public class OrderController {
                 () -> orderService.findOrderByIdWithUsersInfo(id),
                 throwable -> new OrderResponseDto());
     }
+
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @PatchMapping("/update/{id}/order-status")
+    public void updateOrderStatusById(@PathVariable Long id, @RequestParam("status") String status) {
+        orderService.updateOrderStatusById(id, status);
+    }
+
 }

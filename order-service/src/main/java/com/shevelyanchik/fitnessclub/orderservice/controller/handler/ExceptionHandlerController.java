@@ -1,6 +1,7 @@
 package com.shevelyanchik.fitnessclub.orderservice.controller.handler;
 
 import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
+import com.shevelyanchik.fitnessclub.orderservice.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.orderservice.exception.response.ValidationErrorResponse;
 import com.shevelyanchik.fitnessclub.orderservice.exception.response.Violation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,12 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<String> handleValidationException(ValidationException ex) {
         log.error(ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }

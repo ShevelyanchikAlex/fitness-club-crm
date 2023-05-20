@@ -16,6 +16,7 @@ import com.shevelyanchik.fitnessclub.orderservice.service.OrderService;
 import com.shevelyanchik.fitnessclub.orderservice.util.OrderEventUtils;
 import com.shevelyanchik.fitnessclub.orderservice.util.OrderResponseUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -90,6 +91,17 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
+    }
+
+    @Override
+    @Transactional
+    public void updateOrderStatusById(Long id, String orderStatusName) {
+        try {
+            OrderStatus orderStatus = OrderStatus.getOrderStatusByName(orderStatusName);
+            orderRepository.updateOrderStatusById(id, orderStatus);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new EntityNotFoundException("OrderStatus not found with id: " + id);
+        }
     }
 
     @Override

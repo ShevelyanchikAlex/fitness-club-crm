@@ -47,6 +47,14 @@ public interface OrderService {
     Page<OrderDto> findAllOrdersByUserId(Pageable pageable, Long userId);
 
     /**
+     * Updates OrderStatus.
+     *
+     * @param id              Order id.
+     * @param orderStatusName OrderStatusName.
+     */
+    void updateOrderStatusById(Long id, String orderStatusName);
+
+    /**
      * Deletes all Orders.
      */
     void deleteAll();
