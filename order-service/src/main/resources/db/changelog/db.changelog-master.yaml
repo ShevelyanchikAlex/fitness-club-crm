@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-service-table.sql
   - include:
       file: db/changelog/changeset/create-orders-table.sql
+  - include:
+      file: db/changelog/changeset/create-schedule-table.sql

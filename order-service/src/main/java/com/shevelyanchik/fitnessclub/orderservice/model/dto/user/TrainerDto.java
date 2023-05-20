@@ -11,5 +11,5 @@ public class TrainerDto {
     private Long id;
     private String category;
     private String kindOfSport;
-    private UserDto user;
+    private UserDto userDto;
 }
