@@ -1,5 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.service.impl;
 
+import com.shevelyanchik.fitnessclub.userservice.constant.Role;
+import com.shevelyanchik.fitnessclub.userservice.constant.Status;
 import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.userservice.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
@@ -8,6 +10,7 @@ import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -72,6 +75,26 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(users, pageable, userRepository.count());
+    }
+
+    @Override
+    @Transactional
+    public void updateUserStatusById(Long id, String status) {
+        try {
+            userRepository.updateUserStatusById(id, Status.getStatusByName(status));
+        } catch (EmptyResultDataAccessException ex) {
+            throw new EntityNotFoundException("User not found with id: " + id);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateUserRoleById(Long id, String role) {
+        try {
+            userRepository.updateUserRoleById(id, Role.getRoleByName(role));
+        } catch (EmptyResultDataAccessException ex) {
+            throw new EntityNotFoundException("User not found with id: " + id);
+        }
     }
 
     @Override

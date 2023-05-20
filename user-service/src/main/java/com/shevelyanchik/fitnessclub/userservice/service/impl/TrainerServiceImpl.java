@@ -1,11 +1,13 @@
 package com.shevelyanchik.fitnessclub.userservice.service.impl;
 
+import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerDto;
 import com.shevelyanchik.fitnessclub.userservice.model.entity.Trainer;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.TrainerRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.TrainerService;
+import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,12 +24,15 @@ public class TrainerServiceImpl implements TrainerService {
 
     private final TrainerRepository trainerRepository;
     private final TrainerMapper trainerMapper;
+    private final UserService userService;
+
 
     @Transactional
     @Override
     public TrainerDto createTrainer(TrainerDto trainerDto) {
         Trainer trainer = trainerMapper.toEntity(trainerDto);
         Trainer savedTrainer = trainerRepository.save(trainer);
+        userService.updateUserRoleById(savedTrainer.getUser().getId(), Role.TRAINER.name());
         return trainerMapper.toDto(savedTrainer);
     }
 

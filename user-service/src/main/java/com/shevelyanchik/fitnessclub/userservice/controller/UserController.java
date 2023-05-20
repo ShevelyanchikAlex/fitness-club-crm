@@ -31,6 +31,18 @@ public class UserController {
         return userService.updateUser(userDto);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
+    @PatchMapping("/update/{id}/status")
+    public void updateUserStatus(@PathVariable Long id, @RequestParam("status") String status) {
+        userService.updateUserStatusById(id, status);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
+    @PatchMapping("/update/{id}/role")
+    public void updateUserRole(@PathVariable Long id, @RequestParam("role") String role) {
+        userService.updateUserRoleById(id, role);
+    }
+
     @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @GetMapping
     public List<UserDto> findAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,

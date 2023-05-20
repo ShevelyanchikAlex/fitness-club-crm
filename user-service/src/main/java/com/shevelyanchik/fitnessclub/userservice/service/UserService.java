@@ -51,6 +51,22 @@ public interface UserService {
     Page<UserDto> findAllUsers(Pageable pageable);
 
     /**
+     * Updates User Status.
+     *
+     * @param id     User id.
+     * @param status User status.
+     */
+    void updateUserStatusById(Long id, String status);
+
+    /**
+     * Updates User role.
+     *
+     * @param id   User id.
+     * @param role User role.
+     */
+    void updateUserRoleById(Long id, String role);
+
+    /**
      * Checks the existing User with email.
      *
      * @param email User email.

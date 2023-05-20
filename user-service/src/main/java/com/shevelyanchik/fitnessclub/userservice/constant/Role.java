@@ -1,7 +1,9 @@
 package com.shevelyanchik.fitnessclub.userservice.constant;
 
+import com.shevelyanchik.fitnessclub.userservice.exception.ValidationException;
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.Set;
 
 @Getter
@@ -16,4 +18,12 @@ public enum Role {
     Role(Set<Permission> permissions) {
         this.permissions = permissions;
     }
+
+    public static Role getRoleByName(String roleName) {
+        return Arrays.stream(Role.values())
+                .filter(role -> role.name().equalsIgnoreCase(roleName))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("Not supported Role: " + roleName));
+    }
+
 }
