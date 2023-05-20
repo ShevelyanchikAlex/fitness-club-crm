@@ -63,18 +63,18 @@ public interface UserService {
     /**
      * Updates User Status.
      *
-     * @param id     User id.
-     * @param status User status.
+     * @param id         User id.
+     * @param statusName User status name.
      */
-    void updateUserStatusById(Long id, String status);
+    void updateUserStatusById(Long id, String statusName);
 
     /**
      * Updates User role.
      *
-     * @param id   User id.
-     * @param role User role.
+     * @param id       User id.
+     * @param roleName User role name.
      */
-    void updateUserRoleById(Long id, String role);
+    void updateUserRoleById(Long id, String roleName);
 
     /**
      * Updates User ProfileImage.

@@ -17,11 +17,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsUserByEmail(String email);
 
     @Modifying
-    @Query("UPDATE  User u SET u.status = :status WHERE u.id = :id")
+    @Query("UPDATE User u SET u.status = :status WHERE u.id = :id")
     void updateUserStatusById(Long id, Status status);
 
     @Modifying
-    @Query("UPDATE  User u SET u.role = :role WHERE u.id = :id")
+    @Query("UPDATE User u SET u.role = :role WHERE u.id = :id")
     void updateUserRoleById(Long id, Role role);
 
 }

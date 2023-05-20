@@ -94,9 +94,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserStatusById(Long id, String status) {
+    public void updateUserStatusById(Long id, String statusName) {
         try {
-            userRepository.updateUserStatusById(id, Status.getStatusByName(status));
+            Status status = Status.getStatusByName(statusName);
+            userRepository.updateUserStatusById(id, status);
         } catch (EmptyResultDataAccessException ex) {
             throw new EntityNotFoundException("User not found with id: " + id);
         }
@@ -104,9 +105,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserRoleById(Long id, String role) {
+    public void updateUserRoleById(Long id, String roleName) {
         try {
-            userRepository.updateUserRoleById(id, Role.getRoleByName(role));
+            Role role = Role.getRoleByName(roleName);
+            userRepository.updateUserRoleById(id, role);
         } catch (EmptyResultDataAccessException ex) {
             throw new EntityNotFoundException("User not found with id: " + id);
         }
