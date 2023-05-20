@@ -1,6 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.controller;
 
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
+import com.shevelyanchik.fitnessclub.userservice.model.dto.UserProfile;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -43,6 +45,13 @@ public class UserController {
         userService.updateUserRoleById(id, role);
     }
 
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    @PostMapping("/update/{email}/profile-image")
+    public UserDto updateUserProfileImage(@PathVariable String email,
+                                          @RequestParam("profileImage") MultipartFile profileImage) {
+        return userService.updateUserProfileImageByEmail(email, profileImage);
+    }
+
     @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @GetMapping
     public List<UserDto> findAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -61,6 +70,12 @@ public class UserController {
     @GetMapping("/email/{email}")
     public UserDto findUserByEmail(@PathVariable String email) {
         return userService.findUserByEmail(email);
+    }
+
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    @GetMapping("/{email}/with-profile-image")
+    public UserProfile findUserWithProfileImageByEmail(@PathVariable String email) {
+        return userService.findUserProfileByEmail(email);
     }
 
     @PreAuthorize("permitAll()")

@@ -4,10 +4,13 @@ import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.constant.Status;
 import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.userservice.exception.ValidationException;
+import com.shevelyanchik.fitnessclub.userservice.model.dto.FilePayload;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
+import com.shevelyanchik.fitnessclub.userservice.model.dto.UserProfile;
 import com.shevelyanchik.fitnessclub.userservice.model.entity.User;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
+import com.shevelyanchik.fitnessclub.userservice.service.FileService;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final FileService fileService;
+
 
     @Transactional
     @Override
@@ -70,6 +76,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public UserProfile findUserProfileByEmail(String email) {
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+        FilePayload filePayload = fileService.findFileById(user.getProfileImageId());
+        return buildUserProfile(user, filePayload);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Page<UserDto> findAllUsers(Pageable pageable) {
         List<UserDto> users = userRepository.findAll(pageable).stream()
                 .map(userMapper::toDto)
@@ -98,6 +113,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public UserDto updateUserProfileImageByEmail(String email, MultipartFile profileImage) {
+        UserDto actualUserDto = findUserByEmail(email);
+        String fileId = fileService.saveFile(profileImage);
+        actualUserDto.setProfileImageId(fileId);
+        User preUpdatedUser = userMapper.toEntity(actualUserDto);
+        User updatedUser = userRepository.save(preUpdatedUser);
+        return userMapper.toDto(updatedUser);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public boolean existsUserByEmail(String email) {
         return userRepository.existsUserByEmail(email);
@@ -113,6 +139,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteAllUsers() {
         userRepository.deleteAll();
+    }
+
+    private UserProfile buildUserProfile(User user, FilePayload filePayload) {
+        return UserProfile.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .profileImagePayload(filePayload)
+                .phoneNumber(user.getPhoneNumber())
+                .status(user.getStatus())
+                .role(user.getRole())
+                .build();
     }
 
 }

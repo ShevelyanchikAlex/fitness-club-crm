@@ -1,8 +1,10 @@
 package com.shevelyanchik.fitnessclub.userservice.service;
 
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
+import com.shevelyanchik.fitnessclub.userservice.model.dto.UserProfile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The UserService retrieving information about the users.
@@ -43,6 +45,14 @@ public interface UserService {
     UserDto findUserByEmail(String email);
 
     /**
+     * Finds User with ProfileImage.
+     *
+     * @param email User email.
+     * @return UserResponse.
+     */
+    UserProfile findUserProfileByEmail(String email);
+
+    /**
      * Returns all Users.
      *
      * @param pageable Pageable that is needed for pagination.
@@ -65,6 +75,15 @@ public interface UserService {
      * @param role User role.
      */
     void updateUserRoleById(Long id, String role);
+
+    /**
+     * Updates User ProfileImage.
+     *
+     * @param email        User email.
+     * @param profileImage ProfileImage.
+     * @return UserDto with added ProfileImage.
+     */
+    UserDto updateUserProfileImageByEmail(String email, MultipartFile profileImage);
 
     /**
      * Checks the existing User with email.

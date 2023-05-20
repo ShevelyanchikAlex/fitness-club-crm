@@ -31,6 +31,9 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "profile_image_id")
+    private String profileImageId;
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "role")
     private Role role;

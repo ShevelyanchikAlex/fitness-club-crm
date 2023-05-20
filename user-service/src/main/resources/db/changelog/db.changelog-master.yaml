@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-trainer-table.sql
   - include:
       file: db/changelog/changeset/add-user-phone_number.sql
+  - include:
+      file: db/changelog/changeset/add-user_profile_image_id.sql

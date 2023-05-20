@@ -10,6 +10,20 @@ spring:
       port: ${CONSUL_PORT:8500}
   liquibase:
     enabled: true
+  data:
+    mongodb:
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_DATABASE:user_db}
+      username: ${MONGO_USERNAME:root}
+      password: ${MONGO_PASSWORD:root}
+      authentication-database: ${MONGO_AUTH_DATABASE:admin}
+  servlet:
+    multipart:
+      max-request-size: 500MB
+      max-file-size: 500MB
+      enabled: true
+
   datasource:
     driver-class-name: org.postgresql.Driver
 
