@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user-service/users")
@@ -46,7 +48,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    @PostMapping("/update/{email}/profile-image")
+    @PostMapping(path = "/update/{email}/profile-image", consumes = {MULTIPART_FORM_DATA_VALUE})
     public UserDto updateUserProfileImage(@PathVariable String email,
                                           @RequestParam("profileImage") MultipartFile profileImage) {
         return userService.updateUserProfileImageByEmail(email, profileImage);

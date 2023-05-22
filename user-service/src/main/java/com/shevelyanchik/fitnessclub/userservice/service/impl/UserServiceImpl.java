@@ -12,6 +12,7 @@ import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.FileService;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
+import com.shevelyanchik.fitnessclub.userservice.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,8 +81,11 @@ public class UserServiceImpl implements UserService {
     public UserProfile findUserProfileByEmail(String email) {
         User user = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
-        FilePayload filePayload = fileService.findFileById(user.getProfileImageId());
-        return buildUserProfile(user, filePayload);
+        FilePayload filePayload = null;
+        if (Objects.nonNull(user.getProfileImageId())) {
+            filePayload = fileService.findFileById(user.getProfileImageId());
+        }
+        return UserUtils.buildUserProfile(user, filePayload);
     }
 
     @Override
@@ -141,19 +146,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteAllUsers() {
         userRepository.deleteAll();
-    }
-
-    private UserProfile buildUserProfile(User user, FilePayload filePayload) {
-        return UserProfile.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .email(user.getEmail())
-                .profileImagePayload(filePayload)
-                .phoneNumber(user.getPhoneNumber())
-                .status(user.getStatus())
-                .role(user.getRole())
-                .build();
     }
 
 }
