@@ -45,6 +45,15 @@ public class OrderController {
         return orderDtoPage.getContent();
     }
 
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @GetMapping("/trainer/{trainerId}")
+    public List<OrderDto> findAllOrdersByTrainerId(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                   @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                   @PathVariable Long trainerId) {
+        Page<OrderDto> orderDtoPage = orderService.findAllOrdersByTrainerId(PageRequest.of(page, size), trainerId);
+        return orderDtoPage.getContent();
+    }
+
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @GetMapping("/{id}")
     public OrderDto findOrderById(@PathVariable Long id) {
@@ -59,10 +68,22 @@ public class OrderController {
                 throwable -> new OrderResponseDto());
     }
 
-    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @PreAuthorize("permitAll()")
     @PatchMapping("/update/{id}/order-status")
     public void updateOrderStatusById(@PathVariable Long id, @RequestParam("status") String status) {
         orderService.updateOrderStatusById(id, status);
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping("/count")
+    public Long countAllOrders() {
+        return orderService.countAllOrders();
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping("/count/trainerId/{trainerId}")
+    public Long countAllOrdersByTrainerId(@PathVariable Long trainerId) {
+        return orderService.countAllOrdersByTrainerId(trainerId);
     }
 
 }

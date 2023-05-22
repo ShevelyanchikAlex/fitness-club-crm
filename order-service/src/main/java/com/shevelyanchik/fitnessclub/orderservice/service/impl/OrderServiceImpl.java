@@ -100,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<OrderDto> findAllByTrainerId(Pageable pageable, Long trainerId) {
+    public Page<OrderDto> findAllOrdersByTrainerId(Pageable pageable, Long trainerId) {
         List<OrderDto> requestDtoList = orderRepository
                 .findAllByTrainerId(pageable, trainerId)
                 .stream()

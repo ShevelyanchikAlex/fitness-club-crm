@@ -46,6 +46,8 @@ public interface OrderService {
 
     Page<OrderDto> findAllOrdersByUserId(Pageable pageable, Long userId);
 
+    Page<OrderDto> findAllOrdersByTrainerId(Pageable pageable, Long trainerId);
+
     /**
      * Updates OrderStatus.
      *
@@ -58,4 +60,9 @@ public interface OrderService {
      * Deletes all Orders.
      */
     void deleteAll();
+
+    Long countAllOrders();
+
+    Long countAllOrdersByTrainerId(Long trainerId);
+
 }

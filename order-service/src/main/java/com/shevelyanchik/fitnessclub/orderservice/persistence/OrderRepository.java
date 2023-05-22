@@ -14,8 +14,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findAllByUserId(Pageable pageable, Long userId);
 
+    Page<Order> findAllByTrainerId(Pageable pageable, Long trainerId);
+
     @Modifying
     @Query("UPDATE Order o SET o.orderStatus = :orderStatus WHERE o.id = :id")
     void updateOrderStatusById(Long id, OrderStatus orderStatus);
+
+    Long countAllByTrainerId(Long trainerId);
 
 }
