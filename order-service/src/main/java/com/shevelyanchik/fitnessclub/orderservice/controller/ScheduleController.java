@@ -35,6 +35,15 @@ public class ScheduleController {
         return scheduleDtoPage.getContent();
     }
 
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @GetMapping("/trainer/{trainerId}")
+    public List<ScheduleDto> findAllSchedulesByTrainerId(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                         @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                         @PathVariable Long trainerId) {
+        Page<ScheduleDto> scheduleDtoPage = scheduleService.findAllSchedulesByTrainerId(PageRequest.of(page, size), trainerId);
+        return scheduleDtoPage.getContent();
+    }
+
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @GetMapping("/{id}")
     public ScheduleDto findScheduleById(@PathVariable Long id) {
@@ -45,6 +54,12 @@ public class ScheduleController {
     @GetMapping("/count")
     public Long countSchedules() {
         return scheduleService.countSchedules();
+    }
+
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @GetMapping("/count/trainer/{trainerId}")
+    public Long countSchedulesByTrainerId(@PathVariable Long trainerId) {
+        return scheduleService.countSchedulesByTrainerId(trainerId);
     }
 
 }

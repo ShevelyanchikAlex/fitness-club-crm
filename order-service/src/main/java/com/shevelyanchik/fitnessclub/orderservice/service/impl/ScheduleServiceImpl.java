@@ -7,12 +7,14 @@ import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ScheduleMapper;
 import com.shevelyanchik.fitnessclub.orderservice.persistence.ScheduleRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional
+    public void updateScheduleAvailableSpotsById(Long id, Long availableSpots) {
+        try {
+            scheduleRepository.updateScheduleAvailableSpotsById(id, availableSpots);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new EntityNotFoundException("Schedule not found with id: " + id);
+        }
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public ScheduleDto findScheduleById(Long id) {
         return scheduleRepository.findById(id)
@@ -41,8 +53,27 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional(readOnly = true)
+    public ScheduleDto findScheduleByTrainerIdAndTrainingStartDateTime(
+            Long trainerId, LocalDateTime trainingStartDateTime) {
+        return scheduleRepository.findScheduleByTrainerIdAndTrainingStartDateTime(
+                        trainerId, trainingStartDateTime)
+                .map(scheduleMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Schedule not found with trainerId: " + trainerId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Page<ScheduleDto> findAllSchedules(Pageable pageable) {
         List<ScheduleDto> scheduleDtoList = scheduleRepository.findAll(pageable)
+                .stream()
+                .map(scheduleMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(scheduleDtoList, pageable, scheduleRepository.count());
+    }
+
+    @Override
+    public Page<ScheduleDto> findAllSchedulesByTrainerId(Pageable pageable, Long trainerId) {
+        List<ScheduleDto> scheduleDtoList = scheduleRepository.findAllByTrainerId(pageable, trainerId)
                 .stream()
                 .map(scheduleMapper::toDto)
                 .collect(Collectors.toList());
@@ -59,6 +90,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(readOnly = true)
     public Long countSchedules() {
         return scheduleRepository.count();
+    }
+
+    @Override
+    public Long countSchedulesByTrainerId(Long trainerId) {
+        return scheduleRepository.countSchedulesByTrainerId(trainerId);
     }
 
 }
