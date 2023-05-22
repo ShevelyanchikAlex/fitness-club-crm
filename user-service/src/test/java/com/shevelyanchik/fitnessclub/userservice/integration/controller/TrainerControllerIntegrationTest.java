@@ -28,7 +28,7 @@ class TrainerControllerIntegrationTest {
 
     private static final UserDto EXPECTED_USER_DTO = new UserDto(
             1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.ADMIN, Status.ACTIVE);
+            "test@gmail.com", "+375443321233", "", Role.ADMIN, Status.ACTIVE);
     private static final String TRAINER_API_ENDPOINT = "/api/v1/user-service/trainers";
 
 

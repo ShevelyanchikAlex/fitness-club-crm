@@ -25,7 +25,7 @@ class UserServiceIntegrationTest {
 
     private static final UserDto EXPECTED_USER_DTO = new UserDto(
             1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+            "test@gmail.com", "+375443321233", "", Role.USER, Status.ACTIVE);
     private static final String EXPECTED_EMAIL = "test@gmail.com";
 
 

@@ -25,7 +25,7 @@ class UserE2ETest {
 
     private static final UserDto EXPECTED_USER_DTO = new UserDto(
             1L, "Max", "Filin", "userUseruser01",
-            "filin@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+            "filin@gmail.com", "+375443321233", "", Role.USER, Status.ACTIVE);
     private static final AuthenticationRequest EXPECTED_AUTH_REQUEST = new AuthenticationRequest(
             "filin@gmail.com", "userUseruser01");
     private static final String BASE_API_URL = "http://localhost:8765/api/v1";

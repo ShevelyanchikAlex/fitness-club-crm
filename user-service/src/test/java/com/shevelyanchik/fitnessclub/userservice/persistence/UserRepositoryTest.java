@@ -25,7 +25,7 @@ class UserRepositoryTest {
 
     private static final UserDto EXPECTED_USER_DTO = new UserDto(
             1L, "Name", "Surname", "passUser1",
-            "test@gmail.com", "+375443321233", Role.USER, Status.ACTIVE);
+            "test@gmail.com", "+375443321233", "", Role.USER, Status.ACTIVE);
 
     @Autowired
     private UserRepository userRepository;
@@ -78,9 +78,9 @@ class UserRepositoryTest {
     void testFindAllUsers() {
         //given
         UserDto firstUserDto = new UserDto(1L, "Namefirst", "Surnamefirst", "passFirst1",
-                "test1@gmail.com", "+375443321201", Role.USER, Status.ACTIVE);
+                "test1@gmail.com", "+375443321201", "", Role.USER, Status.ACTIVE);
         UserDto secondUserDto = new UserDto(2L, "Namesecond", "Surnamesecond", "passSecond2",
-                "test2@gmail.com", "+375443321202", Role.USER, Status.ACTIVE);
+                "test2@gmail.com", "+375443321202", "", Role.USER, Status.ACTIVE);
         List<UserDto> expectedUserDtoList = new ArrayList<>(List.of(firstUserDto, secondUserDto));
         List<User> expectedUserList = expectedUserDtoList.stream()
                 .map(userMapper::toEntity)
