@@ -3,11 +3,14 @@ package com.shevelyanchik.fitnessclub.userservice.service.impl;
 import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerDto;
+import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerProfile;
+import com.shevelyanchik.fitnessclub.userservice.model.dto.UserProfile;
 import com.shevelyanchik.fitnessclub.userservice.model.entity.Trainer;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.TrainerRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.TrainerService;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
+import com.shevelyanchik.fitnessclub.userservice.util.TrainerUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,10 +43,16 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     @Transactional(readOnly = true)
     public TrainerDto findTrainerById(Long id) {
-        return trainerRepository
-                .findById(id)
+        return trainerRepository.findById(id)
                 .map(trainerMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Trainer not found with id: " + id));
+    }
+
+    @Override
+    public TrainerDto findTrainerByEmail(String email) {
+        return trainerRepository.findTrainerByUserEmail(email)
+                .map(trainerMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Trainer not found with email: " + email));
     }
 
     @Override
@@ -54,6 +64,23 @@ public class TrainerServiceImpl implements TrainerService {
                 .map(trainerMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(trainerDtoList, pageable, trainerRepository.count());
+    }
+
+    @Override
+    public Page<TrainerProfile> findAllTrainerProfiles(Pageable pageable) {
+        List<TrainerDto> trainerDtoList = trainerRepository
+                .findAll(pageable)
+                .stream()
+                .map(trainerMapper::toDto)
+                .collect(Collectors.toList());
+
+        List<TrainerProfile> trainerProfileList = new ArrayList<>();
+        trainerDtoList.forEach(trainerDto -> {
+            UserProfile userProfile = userService.findUserProfileByEmail(
+                    trainerDto.getUserDto().getEmail());
+            trainerProfileList.add(TrainerUtils.buildTrainerProfile(trainerDto, userProfile));
+        });
+        return new PageImpl<>(trainerProfileList, pageable, trainerProfileList.size());
     }
 
     @Override

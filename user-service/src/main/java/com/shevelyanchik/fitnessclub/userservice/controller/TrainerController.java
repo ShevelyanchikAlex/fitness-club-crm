@@ -1,6 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.controller;
 
 import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerDto;
+import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerProfile;
 import com.shevelyanchik.fitnessclub.userservice.service.TrainerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,9 +35,23 @@ public class TrainerController {
     }
 
     @PreAuthorize("permitAll()")
+    @GetMapping("/trainer-profiles")
+    public List<TrainerProfile> findAllTrainerProfiles(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        Page<TrainerProfile> trainerPage = trainerService.findAllTrainerProfiles(PageRequest.of(page, size));
+        return trainerPage.getContent();
+    }
+
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     public TrainerDto findTrainerById(@PathVariable Long id) {
         return trainerService.findTrainerById(id);
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping("/email/{email}")
+    public TrainerDto findTrainerByEmail(@PathVariable String email) {
+        return trainerService.findTrainerByEmail(email);
     }
 
     @PreAuthorize("permitAll()")

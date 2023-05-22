@@ -1,6 +1,7 @@
 package com.shevelyanchik.fitnessclub.userservice.service;
 
 import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerDto;
+import com.shevelyanchik.fitnessclub.userservice.model.dto.TrainerProfile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,6 +27,8 @@ public interface TrainerService {
      */
     TrainerDto findTrainerById(Long id);
 
+    TrainerDto findTrainerByEmail(String email);
+
     /**
      * Returns all Trainers.
      *
@@ -33,6 +36,14 @@ public interface TrainerService {
      * @return Trainers.
      */
     Page<TrainerDto> findAllTrainers(Pageable pageable);
+
+    /**
+     * Returns all Trainers Profiles.
+     *
+     * @param pageable Pageable that is needed for pagination.
+     * @return Trainers Profiles.
+     */
+    Page<TrainerProfile> findAllTrainerProfiles(Pageable pageable);
 
     /**
      * Returns number of Trainers.
