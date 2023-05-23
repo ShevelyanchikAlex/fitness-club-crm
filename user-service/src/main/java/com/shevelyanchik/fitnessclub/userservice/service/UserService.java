@@ -9,92 +9,100 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * The UserService retrieving information about the users.
  *
- * @version 1.0.1
+ * @version 1.1.2
  */
 public interface UserService {
     /**
-     * Creates new User.
+     * Creates a new user using the provided user DTO.
      *
-     * @param userDto UserDto that contains all information about User.
-     * @return User if userDto is not null and User with same email is not exist, throws ServiceException otherwise.
+     * @param userDto The user DTO containing the user information.
+     * @return The created user DTO.
      */
     UserDto createUser(UserDto userDto);
 
     /**
-     * Updates User.
+     * Updates an existing user with the provided updated user DTO.
      *
-     * @param userDto updated UserDto.
-     * @return UserDto if userDto is valid.
+     * @param updatedUserDto The updated user DTO containing the modified user information.
+     * @return The updated user DTO.
      */
-    UserDto updateUser(UserDto userDto);
+    UserDto updateUser(UserDto updatedUserDto);
 
     /**
-     * If the user exists, this method will return a User that contains information about them.
+     * Updates the status of a user identified by the specified ID.
      *
-     * @param id User id.
-     * @return User if the user exists, throws ServiceException otherwise.
-     */
-    UserDto findUserById(Long id);
-
-    /**
-     * If the user with such email exists, this method will return a User that contains information about them.
-     *
-     * @param email User email.
-     * @return User if the user exists, throws ServiceException otherwise.
-     */
-    UserDto findUserByEmail(String email);
-
-    /**
-     * Finds User with ProfileImage.
-     *
-     * @param email User email.
-     * @return UserResponse.
-     */
-    UserProfile findUserProfileByEmail(String email);
-
-    /**
-     * Returns all Users.
-     *
-     * @param pageable Pageable that is needed for pagination.
-     * @return Users.
-     */
-    Page<UserDto> findAllUsers(Pageable pageable);
-
-    /**
-     * Updates User Status.
-     *
-     * @param id         User id.
-     * @param statusName User status name.
+     * @param id         The ID of the user to update.
+     * @param statusName The new status name to assign to the user.
      */
     void updateUserStatusById(Long id, String statusName);
 
     /**
-     * Updates User role.
+     * Updates the role of a user identified by the specified ID.
      *
-     * @param id       User id.
-     * @param roleName User role name.
+     * @param id       The ID of the user to update.
+     * @param roleName The new role name to assign to the user.
      */
     void updateUserRoleById(Long id, String roleName);
 
     /**
-     * Updates User ProfileImage.
+     * Updates the email of a user identified by the actual email.
      *
-     * @param email        User email.
-     * @param profileImage ProfileImage.
-     * @return UserDto with added ProfileImage.
+     * @param actualEmail  The actual email of the user to update.
+     * @param updatedEmail The updated email to assign to the user.
+     */
+    void updateUserEmailByActualEmail(String actualEmail, String updatedEmail);
+
+    /**
+     * Updates the profile image of a user identified by the email.
+     *
+     * @param email        The email of the user to update.
+     * @param profileImage The new profile image file to assign to the user.
+     * @return The updated user DTO with the modified profile image.
      */
     UserDto updateUserProfileImageByEmail(String email, MultipartFile profileImage);
 
     /**
-     * Checks the existing User with email.
+     * Finds a user by the specified ID.
      *
-     * @param email User email.
-     * @return true if User with this email exist, false otherwise.
+     * @param id The ID of the user to find.
+     * @return The user DTO corresponding to the ID.
+     */
+    UserDto findUserById(Long id);
+
+    /**
+     * Finds a user by the specified email.
+     *
+     * @param email The email of the user to find.
+     * @return The user DTO corresponding to the email.
+     */
+    UserDto findUserByEmail(String email);
+
+    /**
+     * Finds the user profile by the specified email.
+     *
+     * @param email The email of the user to find the profile for.
+     * @return The user profile corresponding to the email.
+     */
+    UserProfile findUserProfileByEmail(String email);
+
+    /**
+     * Retrieves a paginated list of all users.
+     *
+     * @param pageable The pageable information for pagination and sorting.
+     * @return A page of user DTOs.
+     */
+    Page<UserDto> findAllUsers(Pageable pageable);
+
+    /**
+     * Checks if a user with the specified email exists.
+     *
+     * @param email The email to check for existence.
+     * @return True if a user with the email exists, false otherwise.
      */
     boolean existsUserByEmail(String email);
 
     /**
-     * Returns number of Users.
+     * Checks if a user with the specified ID exists.
      *
      * @return Number of Users.
      */
@@ -102,7 +110,8 @@ public interface UserService {
 
 
     /**
-     * Deletes all Users.
+     * Deletes all users.
      */
     void deleteAllUsers();
+
 }
