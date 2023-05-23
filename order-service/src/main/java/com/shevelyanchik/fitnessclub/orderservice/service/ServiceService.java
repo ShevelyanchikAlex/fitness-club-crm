@@ -19,6 +19,14 @@ public interface ServiceService {
     ServiceDto createService(ServiceDto serviceDto);
 
     /**
+     * Updates an existing service with the provided updated service data.
+     *
+     * @param updatedServiceDto The ServiceDto object containing the updated service data.
+     * @return The ServiceDto object representing the updated service.
+     */
+    ServiceDto updateService(ServiceDto updatedServiceDto);
+
+    /**
      * Finds a service by its ID.
      *
      * @param id The ID of the service to find.

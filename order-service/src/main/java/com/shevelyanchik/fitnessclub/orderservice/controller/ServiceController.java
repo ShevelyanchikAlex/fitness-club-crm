@@ -19,11 +19,17 @@ import java.util.List;
 public class ServiceController {
     private final ServiceService serviceService;
 
-    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @PreAuthorize("permitAll()")
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceDto createService(@Valid @RequestBody ServiceDto serviceDto) {
         return serviceService.createService(serviceDto);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
+    @PatchMapping("/update")
+    public ServiceDto updateService(@Valid @RequestBody ServiceDto updatedServiceDto) {
+        return serviceService.updateService(updatedServiceDto);
     }
 
     @PreAuthorize("permitAll()")
