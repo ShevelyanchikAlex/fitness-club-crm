@@ -12,9 +12,8 @@ import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.FileService;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
-import com.shevelyanchik.fitnessclub.userservice.util.UserUtils;
+import com.shevelyanchik.fitnessclub.userservice.util.ProfileUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -35,26 +34,65 @@ public class UserServiceImpl implements UserService {
     private final FileService fileService;
 
 
-    @Transactional
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
 
-    @Transactional
     @Override
-    public UserDto updateUser(UserDto userDto) {
-        UserDto actualUserDto = findUserById(userDto.getId());
-        String updatedEmail = userDto.getEmail();
-        if (!actualUserDto.getEmail().equals(updatedEmail) && existsUserByEmail(updatedEmail)) {
+    @Transactional
+    public UserDto updateUser(UserDto updatedUserDto) {
+        UserDto actualUserDto = findUserById(updatedUserDto.getId());
+        actualUserDto.setName(updatedUserDto.getName());
+        actualUserDto.setSurname(updatedUserDto.getSurname());
+        actualUserDto.setPhoneNumber(updatedUserDto.getPhoneNumber());
+        User preUpdatedUser = userMapper.toEntity(actualUserDto);
+        User updatedUser = userRepository.save(preUpdatedUser);
+        return userMapper.toDto(updatedUser);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserStatusById(Long id, String statusName) {
+        if (!existsUserById(id)) {
+            throw new EntityNotFoundException("User not found with id: " + id);
+        }
+        Status status = Status.getStatusByName(statusName);
+        userRepository.updateUserStatusById(id, status);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserRoleById(Long id, String roleName) {
+        if (!existsUserById(id)) {
+            throw new EntityNotFoundException("User not found with id: " + id);
+        }
+        Role role = Role.getRoleByName(roleName);
+        userRepository.updateUserRoleById(id, role);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserEmailByActualEmail(String actualEmail, String updatedEmail) {
+        if (!existsUserByEmail(actualEmail)) {
+            throw new EntityNotFoundException("User not found with email: " + actualEmail);
+        }
+
+        if (!actualEmail.equals(updatedEmail) && existsUserByEmail(updatedEmail)) {
             throw new ValidationException("User with the same email exists.");
         }
-        actualUserDto.setEmail(updatedEmail);
-        actualUserDto.setName(userDto.getName());
-        actualUserDto.setSurname(userDto.getSurname());
-        actualUserDto.setPhoneNumber(userDto.getPhoneNumber());
+        userRepository.updateUserEmailByActualEmail(actualEmail, updatedEmail);
+    }
+
+    @Override
+    @Transactional
+    public UserDto updateUserProfileImageByEmail(String email, MultipartFile profileImage) {
+        UserDto actualUserDto = findUserByEmail(email);
+        String fileId = fileService.saveFile(profileImage);
+        actualUserDto.setProfileImageId(fileId);
         User preUpdatedUser = userMapper.toEntity(actualUserDto);
         User updatedUser = userRepository.save(preUpdatedUser);
         return userMapper.toDto(updatedUser);
@@ -85,7 +123,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.nonNull(user.getProfileImageId())) {
             filePayload = fileService.findFileById(user.getProfileImageId());
         }
-        return UserUtils.buildUserProfile(user, filePayload);
+        return ProfileUtils.buildUserProfile(user, filePayload);
     }
 
     @Override
@@ -98,42 +136,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public void updateUserStatusById(Long id, String statusName) {
-        try {
-            Status status = Status.getStatusByName(statusName);
-            userRepository.updateUserStatusById(id, status);
-        } catch (EmptyResultDataAccessException ex) {
-            throw new EntityNotFoundException("User not found with id: " + id);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void updateUserRoleById(Long id, String roleName) {
-        try {
-            Role role = Role.getRoleByName(roleName);
-            userRepository.updateUserRoleById(id, role);
-        } catch (EmptyResultDataAccessException ex) {
-            throw new EntityNotFoundException("User not found with id: " + id);
-        }
-    }
-
-    @Override
-    @Transactional
-    public UserDto updateUserProfileImageByEmail(String email, MultipartFile profileImage) {
-        UserDto actualUserDto = findUserByEmail(email);
-        String fileId = fileService.saveFile(profileImage);
-        actualUserDto.setProfileImageId(fileId);
-        User preUpdatedUser = userMapper.toEntity(actualUserDto);
-        User updatedUser = userRepository.save(preUpdatedUser);
-        return userMapper.toDto(updatedUser);
+    @Transactional(readOnly = true)
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsUserByEmail(email);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean existsUserByEmail(String email) {
-        return userRepository.existsUserByEmail(email);
+    public boolean existsUserById(Long id) {
+        return userRepository.existsUserById(id);
     }
 
     @Override

@@ -31,8 +31,15 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @PatchMapping("/update")
-    public UserDto updateUser(@Valid @RequestBody UserDto userDto) {
-        return userService.updateUser(userDto);
+    public UserDto updateUser(@Valid @RequestBody UserDto updatedUserDto) {
+        return userService.updateUser(updatedUserDto);
+    }
+
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    @PatchMapping("/update/{actualEmail}/email")
+    public void updateUserEmail(@PathVariable String actualEmail,
+                                @RequestParam("updatedEmail") String updatedEmail) {
+        userService.updateUserEmailByActualEmail(actualEmail, updatedEmail);
     }
 
     @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")

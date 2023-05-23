@@ -104,7 +104,15 @@ public interface UserService {
     /**
      * Checks if a user with the specified ID exists.
      *
-     * @return Number of Users.
+     * @param id The ID to check for existence.
+     * @return True if a user with the ID exists, false otherwise.
+     */
+    boolean existsUserById(Long id);
+
+    /**
+     * Counts the total number of users.
+     *
+     * @return The count of users.
      */
     Long countUsers();
 
