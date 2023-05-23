@@ -10,7 +10,7 @@ import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapper;
 import com.shevelyanchik.fitnessclub.userservice.persistence.TrainerRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.TrainerService;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
-import com.shevelyanchik.fitnessclub.userservice.util.TrainerUtils;
+import com.shevelyanchik.fitnessclub.userservice.util.ProfileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,13 +31,24 @@ public class TrainerServiceImpl implements TrainerService {
     private final UserService userService;
 
 
-    @Transactional
     @Override
+    @Transactional
     public TrainerDto createTrainer(TrainerDto trainerDto) {
         Trainer trainer = trainerMapper.toEntity(trainerDto);
         Trainer savedTrainer = trainerRepository.save(trainer);
         userService.updateUserRoleById(savedTrainer.getUser().getId(), Role.TRAINER.name());
         return trainerMapper.toDto(savedTrainer);
+    }
+
+    @Override
+    @Transactional
+    public TrainerDto updateTrainer(TrainerDto updatedTrainerDto) {
+        TrainerDto actualTrainerDto = findTrainerById(updatedTrainerDto.getId());
+        actualTrainerDto.setCategory(updatedTrainerDto.getCategory());
+        actualTrainerDto.setKindOfSport(updatedTrainerDto.getKindOfSport());
+        Trainer preUpdatedTrainer = trainerMapper.toEntity(actualTrainerDto);
+        Trainer updatedTrainer = trainerRepository.save(preUpdatedTrainer);
+        return trainerMapper.toDto(updatedTrainer);
     }
 
     @Override
@@ -49,6 +60,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TrainerDto findTrainerByEmail(String email) {
         return trainerRepository.findTrainerByUserEmail(email)
                 .map(trainerMapper::toDto)
@@ -58,19 +70,16 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     @Transactional(readOnly = true)
     public Page<TrainerDto> findAllTrainers(Pageable pageable) {
-        List<TrainerDto> trainerDtoList = trainerRepository
-                .findAll(pageable)
-                .stream()
+        List<TrainerDto> trainerDtoList = trainerRepository.findAll(pageable).stream()
                 .map(trainerMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(trainerDtoList, pageable, trainerRepository.count());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<TrainerProfile> findAllTrainerProfiles(Pageable pageable) {
-        List<TrainerDto> trainerDtoList = trainerRepository
-                .findAll(pageable)
-                .stream()
+        List<TrainerDto> trainerDtoList = trainerRepository.findAll(pageable).stream()
                 .map(trainerMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -78,7 +87,7 @@ public class TrainerServiceImpl implements TrainerService {
         trainerDtoList.forEach(trainerDto -> {
             UserProfile userProfile = userService.findUserProfileByEmail(
                     trainerDto.getUserDto().getEmail());
-            trainerProfileList.add(TrainerUtils.buildTrainerProfile(trainerDto, userProfile));
+            trainerProfileList.add(ProfileUtils.buildTrainerProfile(trainerDto, userProfile));
         });
         return new PageImpl<>(trainerProfileList, pageable, trainerProfileList.size());
     }
@@ -90,6 +99,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    @Transactional
     public void deleteAllTrainers() {
         trainerRepository.deleteAll();
     }

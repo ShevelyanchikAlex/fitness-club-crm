@@ -27,6 +27,12 @@ public class TrainerController {
     }
 
     @PreAuthorize("permitAll()")
+    @PatchMapping("/update")
+    public TrainerDto updateTrainer(@Valid @RequestBody TrainerDto updatedTrainerDto) {
+        return trainerService.updateTrainer(updatedTrainerDto);
+    }
+
+    @PreAuthorize("permitAll()")
     @GetMapping
     public List<TrainerDto> findAllTrainers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {

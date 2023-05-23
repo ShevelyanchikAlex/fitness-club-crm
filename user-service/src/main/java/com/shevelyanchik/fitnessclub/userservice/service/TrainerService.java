@@ -35,6 +35,12 @@ public interface TrainerService {
      */
     TrainerDto findTrainerById(Long id);
 
+    /**
+     * Finds a trainer by the specified email.
+     *
+     * @param email The email of the trainer to find.
+     * @return The trainer DTO corresponding to the email.
+     */
     TrainerDto findTrainerByEmail(String email);
 
     /**
