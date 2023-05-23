@@ -16,6 +16,14 @@ public interface ScheduleService {
     ScheduleDto createSchedule(ScheduleDto scheduleDto);
 
     /**
+     * Updates an existing schedule with the provided updated schedule data.
+     *
+     * @param updatedScheduleDto The ScheduleDto object containing the updated schedule data.
+     * @return The ScheduleDto object representing the updated schedule.
+     */
+    ScheduleDto updateSchedule(ScheduleDto updatedScheduleDto);
+
+    /**
      * Updates the available spots of a schedule identified by its ID.
      *
      * @param id             The ID of the schedule to update.

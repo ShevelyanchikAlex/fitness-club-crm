@@ -35,6 +35,20 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
+    public ScheduleDto updateSchedule(ScheduleDto updatedScheduleDto) {
+        ScheduleDto actualScheduleDto = findScheduleById(updatedScheduleDto.getId());
+        actualScheduleDto.setServiceDto(updatedScheduleDto.getServiceDto());
+        actualScheduleDto.setServiceType(updatedScheduleDto.getServiceType());
+        actualScheduleDto.setAvailableSpots(updatedScheduleDto.getAvailableSpots());
+        actualScheduleDto.setTrainerId(updatedScheduleDto.getTrainerId());
+        actualScheduleDto.setTrainingStartDateTime(updatedScheduleDto.getTrainingStartDateTime());
+        Schedule preUpdatedSchedule = scheduleMapper.toEntity(actualScheduleDto);
+        Schedule updatedSchedule = scheduleRepository.save(preUpdatedSchedule);
+        return scheduleMapper.toDto(updatedSchedule);
+    }
+
+    @Override
+    @Transactional
     public void updateScheduleAvailableSpotsById(Long id, Long availableSpots) {
         try {
             scheduleRepository.updateScheduleAvailableSpotsById(id, availableSpots);
@@ -71,6 +85,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ScheduleDto> findAllSchedulesByTrainerId(Pageable pageable, Long trainerId) {
         List<ScheduleDto> scheduleDtoList = scheduleRepository.findAllSchedulesByTrainerId(pageable, trainerId).stream()
                 .map(scheduleMapper::toDto)
@@ -85,6 +100,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long countSchedulesByTrainerId(Long trainerId) {
         return scheduleRepository.countSchedulesByTrainerId(trainerId);
     }

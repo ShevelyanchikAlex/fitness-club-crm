@@ -27,6 +27,12 @@ public class ScheduleController {
         return scheduleService.createSchedule(scheduleDto);
     }
 
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
+    @PatchMapping("/update")
+    public ScheduleDto updateSchedule(@Valid @RequestBody ScheduleDto updatedSchedule) {
+        return scheduleService.updateSchedule(updatedSchedule);
+    }
+
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @GetMapping
     public List<ScheduleDto> findAllSchedules(@RequestParam(name = "page", defaultValue = "0") Integer page,
