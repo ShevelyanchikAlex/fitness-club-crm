@@ -9,9 +9,9 @@ import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
  */
 public interface EmailConsumerService {
     /**
-     * Consumes EmailEvent.
+     * Consumes an email event and performs the necessary actions.
      *
-     * @param event Email event
+     * @param event The email event to be consumed.
      */
     void consume(EmailEvent event);
 }
