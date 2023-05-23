@@ -9,9 +9,9 @@ import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
  */
 public interface AuthenticationProducerService {
     /**
-     * Sends Message to Topic.
+     * Sends a message using the provided EmailEvent.
      *
-     * @param event Email event
+     * @param event The EmailEvent object containing the message details.
      */
     void sendMessage(EmailEvent event);
 }
