@@ -52,12 +52,12 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public void deleteAllServices() {
-        serviceRepository.deleteAll();
+    public Long countServices() {
+        return serviceRepository.count();
     }
 
     @Override
-    public Long countServices() {
-        return serviceRepository.count();
+    public void deleteAllServices() {
+        serviceRepository.deleteAll();
     }
 }

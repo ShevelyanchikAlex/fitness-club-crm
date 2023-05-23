@@ -64,8 +64,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional(readOnly = true)
     public Page<ScheduleDto> findAllSchedules(Pageable pageable) {
-        List<ScheduleDto> scheduleDtoList = scheduleRepository.findAll(pageable)
-                .stream()
+        List<ScheduleDto> scheduleDtoList = scheduleRepository.findAll(pageable).stream()
                 .map(scheduleMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(scheduleDtoList, pageable, scheduleRepository.count());
@@ -73,17 +72,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Page<ScheduleDto> findAllSchedulesByTrainerId(Pageable pageable, Long trainerId) {
-        List<ScheduleDto> scheduleDtoList = scheduleRepository.findAllByTrainerId(pageable, trainerId)
-                .stream()
+        List<ScheduleDto> scheduleDtoList = scheduleRepository.findAllSchedulesByTrainerId(pageable, trainerId).stream()
                 .map(scheduleMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(scheduleDtoList, pageable, scheduleRepository.count());
-    }
-
-    @Override
-    @Transactional
-    public void deleteAllSchedules() {
-        scheduleRepository.deleteAll();
     }
 
     @Override
@@ -95,6 +87,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Long countSchedulesByTrainerId(Long trainerId) {
         return scheduleRepository.countSchedulesByTrainerId(trainerId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllSchedules() {
+        scheduleRepository.deleteAll();
     }
 
 }

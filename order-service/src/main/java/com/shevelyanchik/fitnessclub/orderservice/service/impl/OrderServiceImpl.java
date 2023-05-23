@@ -55,61 +55,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public OrderDto findOrderById(Long id) {
-        return orderRepository
-                .findById(id)
-                .map(orderMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public OrderResponseDto findOrderByIdWithUsersInfo(Long id) {
-        OrderDto orderDto = orderRepository
-                .findById(id)
-                .map(orderMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
-
-        UserDto userDto = userServiceClient.findUserById(orderDto.getUserId());
-        TrainerDto trainerDto = userServiceClient.findTrainerById(orderDto.getTrainerId());
-        return OrderResponseUtils.createOrderResponseDto(orderDto, userDto, trainerDto);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<OrderDto> findAllOrders(Pageable pageable) {
-        List<OrderDto> requestDtoList = orderRepository
-                .findAll(pageable)
-                .stream()
-                .map(orderMapper::toDto)
-                .collect(Collectors.toList());
-        return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<OrderDto> findAllOrdersByUserId(Pageable pageable, Long userId) {
-        List<OrderDto> requestDtoList = orderRepository
-                .findAllByUserId(pageable, userId)
-                .stream()
-                .map(orderMapper::toDto)
-                .collect(Collectors.toList());
-        return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<OrderDto> findAllOrdersByTrainerId(Pageable pageable, Long trainerId) {
-        List<OrderDto> requestDtoList = orderRepository
-                .findAllByTrainerId(pageable, trainerId)
-                .stream()
-                .map(orderMapper::toDto)
-                .collect(Collectors.toList());
-        return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
-    }
-
-    @Override
     @Transactional
     public void updateOrderStatusById(Long id, String orderStatusName) {
         try {
@@ -121,8 +66,50 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteAll() {
-        orderRepository.deleteAll();
+    @Transactional(readOnly = true)
+    public OrderDto findOrderById(Long id) {
+        return orderRepository.findById(id)
+                .map(orderMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OrderResponseDto findOrderByIdWithUsersInfo(Long id) {
+        OrderDto orderDto = orderRepository.findById(id)
+                .map(orderMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
+
+        UserDto userDto = userServiceClient.findUserById(orderDto.getUserId());
+        TrainerDto trainerDto = userServiceClient.findTrainerById(orderDto.getTrainerId());
+        return OrderResponseUtils.createOrderResponseDto(orderDto, userDto, trainerDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<OrderDto> findAllOrders(Pageable pageable) {
+        List<OrderDto> requestDtoList = orderRepository.findAll(pageable).stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<OrderDto> findAllOrdersByUserId(Pageable pageable, Long userId) {
+        List<OrderDto> requestDtoList = orderRepository.findAllOrdersByUserId(pageable, userId).stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<OrderDto> findAllOrdersByTrainerId(Pageable pageable, Long trainerId) {
+        List<OrderDto> requestDtoList = orderRepository.findAllOrdersByTrainerId(pageable, trainerId).stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(requestDtoList, pageable, orderRepository.count());
     }
 
     @Override
@@ -132,7 +119,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Long countAllOrdersByTrainerId(Long trainerId) {
-        return orderRepository.countAllByTrainerId(trainerId);
+        return orderRepository.countAllOrdersByTrainerId(trainerId);
+    }
+
+    @Override
+    public void deleteAll() {
+        orderRepository.deleteAll();
     }
 
     private void updateScheduleAvailableSpots(Long trainerId, LocalDateTime trainingStartDateTime) {

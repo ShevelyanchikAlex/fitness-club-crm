@@ -16,7 +16,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     Optional<Schedule> findScheduleByTrainerIdAndTrainingStartDateTime(Long trainerId, LocalDateTime trainingStartDateTime);
 
-    Page<Schedule> findAllByTrainerId(Pageable pageable, Long trainerId);
+    Page<Schedule> findAllSchedulesByTrainerId(Pageable pageable, Long trainerId);
 
     @Modifying
     @Query("UPDATE Schedule s SET s.availableSpots = :availableSpots WHERE s.id = :id")
