@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.auth.service;
+package com.shevelyanchik.fitnessclub.auth.service.unit;
 
 import com.shevelyanchik.fitnessclub.auth.client.UserServiceClient;
 import com.shevelyanchik.fitnessclub.auth.dto.AuthenticationRequest;
@@ -8,6 +8,7 @@ import com.shevelyanchik.fitnessclub.auth.dto.user.Status;
 import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
 import com.shevelyanchik.fitnessclub.auth.exception.UnauthorizedException;
 import com.shevelyanchik.fitnessclub.auth.exception.ValidationException;
+import com.shevelyanchik.fitnessclub.auth.service.AuthenticationProducerService;
 import com.shevelyanchik.fitnessclub.auth.service.impl.AuthenticationServiceImpl;
 import com.shevelyanchik.fitnessclub.auth.service.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.Assertions;
