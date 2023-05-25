@@ -2,9 +2,11 @@ package com.shevelyanchik.fitnessclub.orderservice.service;
 
 import com.shevelyanchik.fitnessclub.orderservice.client.UserServiceClient;
 import com.shevelyanchik.fitnessclub.orderservice.constant.OrderStatus;
+import com.shevelyanchik.fitnessclub.orderservice.constant.ServiceType;
 import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;
+import com.shevelyanchik.fitnessclub.orderservice.model.dto.ScheduleDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.TrainerDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.UserDto;
@@ -48,7 +50,7 @@ class OrderServiceTest {
             1L, 1L, EXPECTED_SERVICE_DTO, OrderStatus.IN_PROCESSING);
 
     private static final UserDto EXPECTED_USER_DTO = new UserDto(
-            1L, "Name", "Surname", "passUser1",
+            1L, "Name", "Surname",
             "test@gmail.com", "+375443321233", "USER", "ACTIVE");
 
     private static final TrainerDto EXPECTED_TRAINER_DTO = new TrainerDto(
@@ -69,6 +71,9 @@ class OrderServiceTest {
     private UserServiceClient userServiceClient;
 
     @Mock
+    private ScheduleService scheduleService;
+
+    @Mock
     private OrderProducerService orderProducerService;
 
     @Spy
@@ -83,7 +88,10 @@ class OrderServiceTest {
     void testCreateOrder() {
         //given
         Order expectedOrder = orderMapper.toEntity(EXPECTED_ORDER_DTO);
+        ScheduleDto expectedSchedule = new ScheduleDto(1L, LocalDateTime.now(),
+                new ServiceDto(), 1L, 1L, ServiceType.GROUP);
         BDDMockito.given(orderRepository.save(any())).willReturn(expectedOrder);
+        BDDMockito.given(scheduleService.findScheduleByTrainerIdAndTrainingStartDateTime(any(), any())).willReturn(expectedSchedule);
         //when
         OrderDto actualOrderDto = orderService.createOrder(EXPECTED_ORDER_DTO);
         //then
