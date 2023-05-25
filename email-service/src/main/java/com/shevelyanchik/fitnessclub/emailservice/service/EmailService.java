@@ -9,9 +9,9 @@ import com.shevelyanchik.fitnessclub.emailservice.dto.EmailDetails;
  */
 public interface EmailService {
     /**
-     * Sends Email.
+     * Sends an email using the provided email details.
      *
-     * @param emailDetails Email Details
+     * @param emailDetails The details of the email to be sent.
      */
     void sendEmail(EmailDetails emailDetails);
 }

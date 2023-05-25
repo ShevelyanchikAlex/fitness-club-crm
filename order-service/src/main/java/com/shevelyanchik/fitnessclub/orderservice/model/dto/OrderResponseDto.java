@@ -1,7 +1,6 @@
 package com.shevelyanchik.fitnessclub.orderservice.model.dto;
 
-import com.shevelyanchik.fitnessclub.orderservice.model.domain.OrderStatus;
-import com.shevelyanchik.fitnessclub.orderservice.model.domain.Service;
+import com.shevelyanchik.fitnessclub.orderservice.constant.OrderStatus;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.TrainerDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.UserDto;
 import lombok.AllArgsConstructor;
@@ -21,6 +20,6 @@ public class OrderResponseDto {
     private LocalDateTime trainingStartDateTime;
     private UserDto userDto;
     private TrainerDto trainerDto;
-    private Service service;
+    private ServiceDto serviceDto;
     private OrderStatus orderStatus;
 }

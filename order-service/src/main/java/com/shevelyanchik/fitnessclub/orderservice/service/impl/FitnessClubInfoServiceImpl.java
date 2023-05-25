@@ -1,17 +1,17 @@
 package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 
-import com.shevelyanchik.fitnessclub.orderservice.constant.OrderErrorMessageKey;
-import com.shevelyanchik.fitnessclub.orderservice.model.domain.FitnessClubInfo;
+import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.FitnessClubInfoDto;
+import com.shevelyanchik.fitnessclub.orderservice.model.entity.FitnessClubInfo;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.FitnessClubInfoMapper;
 import com.shevelyanchik.fitnessclub.orderservice.persistence.FitnessClubInfoRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.FitnessClubInfoService;
-import com.shevelyanchik.fitnessclub.orderservice.service.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +23,7 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
     private final FitnessClubInfoRepository fitnessClubInfoRepository;
     private final FitnessClubInfoMapper fitnessClubInfoMapper;
 
+    @Transactional
     @Override
     public FitnessClubInfoDto createFitnessClubInfo(FitnessClubInfoDto fitnessClubInfoDto) {
         FitnessClubInfo entity = fitnessClubInfoMapper.toEntity(fitnessClubInfoDto);
@@ -31,21 +32,28 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public FitnessClubInfoDto findFitnessClubInfoById(Long id) {
         return fitnessClubInfoRepository
                 .findById(id)
                 .map(fitnessClubInfoMapper::toDto)
-                .orElseThrow(() -> new ServiceException(OrderErrorMessageKey.FITNESS_CLUB_INFO_NOT_EXIST));
+                .orElseThrow(() -> new EntityNotFoundException("FitnessClubInfo not found with id: " + id));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<FitnessClubInfoDto> findAllFitnessClubInfos(Pageable pageable) {
         List<FitnessClubInfoDto> fitnessClubInfoDtoList =
                 fitnessClubInfoRepository
-                        .findAll()
+                        .findAll(pageable)
                         .stream()
                         .map(fitnessClubInfoMapper::toDto)
                         .collect(Collectors.toList());
         return new PageImpl<>(fitnessClubInfoDtoList, pageable, fitnessClubInfoRepository.count());
+    }
+
+    @Override
+    public void deleteAllFitnessClubInfos() {
+        fitnessClubInfoRepository.deleteAll();
     }
 }

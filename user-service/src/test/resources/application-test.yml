@@ -1,0 +1,17 @@
+spring:
+  liquibase:
+    enabled: true
+  test:
+    database:
+      replace: none
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:14.6-alpine:///user_service_db_testcontainers
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect

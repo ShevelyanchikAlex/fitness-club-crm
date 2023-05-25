@@ -11,26 +11,31 @@ import org.springframework.data.domain.Pageable;
  */
 public interface FitnessClubInfoService {
     /**
-     * Creates new FitnessClubInfo.
+     * Creates a new fitness club information with the provided data.
      *
-     * @param fitnessClubInfoDto FitnessClubInfoDto that contains all information about FitnessClubInfo.
-     * @return FitnessClubInfo.
+     * @param fitnessClubInfoDto The FitnessClubInfoDto containing the fitness club information.
+     * @return The FitnessClubInfoDto representing the created fitness club information.
      */
     FitnessClubInfoDto createFitnessClubInfo(FitnessClubInfoDto fitnessClubInfoDto);
 
     /**
-     * If the FitnessClubInfo exists, this method will return an FitnessClubInfo that contains information about them.
+     * Finds a fitness club information by its ID.
      *
-     * @param id FitnessClubInfo id.
-     * @return FitnessClubInfo if the FitnessClubInfo exists, throws ServiceException otherwise.
+     * @param id The ID of the fitness club information to find.
+     * @return The FitnessClubInfoDto representing the found fitness club information.
      */
     FitnessClubInfoDto findFitnessClubInfoById(Long id);
 
     /**
-     * Returns FitnessClubInfos.
+     * Retrieves a paginated list of all fitness club information.
      *
-     * @param pageable Pageable that is needed for pagination.
-     * @return FitnessClubInfos.
+     * @param pageable The pageable information for pagination and sorting.
+     * @return A page of fitness club information DTOs.
      */
     Page<FitnessClubInfoDto> findAllFitnessClubInfos(Pageable pageable);
+
+    /**
+     * Deletes all fitness club information.
+     */
+    void deleteAllFitnessClubInfos();
 }

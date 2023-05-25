@@ -1,7 +1,7 @@
 package com.shevelyanchik.fitnessclub.auth.service.security.jwt;
 
 import com.shevelyanchik.fitnessclub.auth.dto.user.Role;
-import com.shevelyanchik.fitnessclub.auth.service.exception.AuthenticationException;
+import com.shevelyanchik.fitnessclub.auth.exception.InvalidAuthenticationTokenException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,9 +18,8 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-    private static final String AUTHORITIES = "authorities";
-    private static final String JWT_TOKEN_INVALID = "jwt.token.invalid";
 
+    private static final String AUTHORITIES = "authorities";
     private final UserDetailsService userDetailsService;
 
     @Value("${security.jwt.token.secret-key}")
@@ -58,7 +57,7 @@ public class JwtTokenProvider {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new AuthenticationException(JWT_TOKEN_INVALID);
+            throw new InvalidAuthenticationTokenException("Auth token is invalid");
         }
     }
 
@@ -72,6 +71,10 @@ public class JwtTokenProvider {
     }
 
     private String getUserName(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }

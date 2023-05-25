@@ -1,125 +1,6 @@
 version: '3.8'
 
 services:
-  user-service:
-    image: fitness-club/user-service:latest
-    container_name: user-service
-    build:
-      context: ./user-service
-    networks:
-      - fitness-club-net
-    expose:
-      - "8080"
-    depends_on:
-      - postgres
-      - consul-service
-      - config-service
-    environment:
-      CONSUL_HOST: consul-service
-      POSTGRES_URL: jdbc:postgresql://postgres:5432/user_service_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: user
-
-  order-service:
-    image: fitness-club/order-service:latest
-    container_name: order-service
-    build:
-      context: ./order-service
-    networks:
-      - fitness-club-net
-    expose:
-      - "8081"
-    depends_on:
-      - postgres
-      - consul-service
-      - config-service
-      - kafka
-    environment:
-      KAFKA_BROKERS: kafka:29092
-      CONSUL_HOST: consul-service
-      POSTGRES_URL: jdbc:postgresql://postgres:5432/order_service_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: user
-
-  auth-service:
-    image: fitness-club/auth-service:latest
-    container_name: auth-service
-    build:
-      context: ./auth-service
-    networks:
-      - fitness-club-net
-    expose:
-      - "8082"
-    depends_on:
-      - consul-service
-      - config-service
-      - kafka
-    environment:
-      KAFKA_BROKERS: kafka:29092
-      CONSUL_HOST: consul-service
-
-  email-service:
-    image: fitness-club/email-service:latest
-    container_name: email-service
-    build:
-      context: ./email-service
-    networks:
-      - fitness-club-net
-    expose:
-      - "8083"
-    depends_on:
-      - consul-service
-      - config-service
-      - kafka
-    environment:
-      KAFKA_BROKERS: kafka:29092
-      CONSUL_HOST: consul-service
-
-  config-service:
-    image: fitness-club/config-service:latest
-    container_name: config-service
-    build:
-      context: ./config-server
-    networks:
-      - fitness-club-net
-    expose:
-      - "8888"
-    depends_on:
-      - consul-service
-    environment:
-      CONSUL_HOST: consul-service
-
-  api-gateway:
-    image: fitness-club/api-gateway:latest
-    container_name: api-gateway
-    build:
-      context: ./api-gateway
-    networks:
-      - fitness-club-net
-    ports:
-      - "8765:8765"
-    depends_on:
-      - consul-service
-    environment:
-      CONSUL_HOST: consul-service
-
-
-  postgres:
-    image: 'postgres:14.6-alpine'
-    container_name: postgres
-    restart: always
-    networks:
-      - fitness-club-net
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_DB: user_service_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: user
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./create-additional-databases.sh:/docker-entrypoint-initdb.d/create-additional-databases.sh
-
   consul-service:
     image: bitnami/consul:1.15.0
     container_name: consul-service
@@ -147,8 +28,10 @@ services:
     restart: always
     networks:
       - fitness-club-net
-    expose:
-      - "9092"
+    #    expose:
+    #      - "9092"
+    ports:
+      - "9092:9092"
     depends_on:
       - zookeeper
     environment:
@@ -178,11 +61,36 @@ services:
       KAFKA_BROKERS: kafka:29092
       SERVER_LISTENPORT: 9000
 
+  redis:
+    container_name: redis
+    image: redis:6-alpine
+    restart: always
+    networks:
+      - fitness-club-net
+    ports:
+      - "6379:6379"
+
+  fitness-club-mongo:
+    image: mongo:6.0.2
+    command: mongod --auth
+    container_name: fitness-club-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: user_db
+    volumes:
+      - fitness-club-mongo-data:/data/db
+    networks:
+      - fitness-club-net
+
 
 volumes:
-  postgres-data:
   zookeeper-data:
   kafka-data:
+  fitness-club-mongo-data:
 
 networks:
   fitness-club-net:
