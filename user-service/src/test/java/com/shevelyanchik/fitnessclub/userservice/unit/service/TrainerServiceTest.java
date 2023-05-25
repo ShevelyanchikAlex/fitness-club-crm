@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.userservice.service;
+package com.shevelyanchik.fitnessclub.userservice.unit.service;
 
 import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.constant.Status;
@@ -11,6 +11,7 @@ import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapperImpl;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapperImpl;
 import com.shevelyanchik.fitnessclub.userservice.persistence.TrainerRepository;
+import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import com.shevelyanchik.fitnessclub.userservice.service.impl.TrainerServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

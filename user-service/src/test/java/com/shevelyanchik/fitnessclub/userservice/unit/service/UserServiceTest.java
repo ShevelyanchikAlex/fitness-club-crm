@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.userservice.service;
+package com.shevelyanchik.fitnessclub.userservice.unit.service;
 
 import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.constant.Status;
