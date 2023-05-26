@@ -11,10 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -67,9 +64,10 @@ class TrainerE2ETest {
         //when
         String token = AuthUtils.login(testRestTemplate);
         HttpHeaders headers = AuthUtils.configAuthHeader(token);
-        HttpEntity<String> request = new HttpEntity<>(headers);
-        ResponseEntity<String> response = testRestTemplate.getForEntity(
-                TRAINER_API_ENDPOINT + "/count", String.class, request);
+        HttpEntity<String> requestHeaders = new HttpEntity<>(headers);
+        ResponseEntity<String> response = testRestTemplate.exchange(
+                TRAINER_API_ENDPOINT + "/count", HttpMethod.GET,
+                requestHeaders, String.class);
         //then
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
