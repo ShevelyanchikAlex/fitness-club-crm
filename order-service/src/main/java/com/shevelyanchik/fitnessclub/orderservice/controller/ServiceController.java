@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,36 +22,35 @@ public class ServiceController {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ServiceDto createService(@Valid @RequestBody ServiceDto serviceDto) {
-        return serviceService.createService(serviceDto);
+    public ResponseEntity<ServiceDto> createService(@Valid @RequestBody ServiceDto serviceDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(serviceService.createService(serviceDto));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
+    @PreAuthorize("permitAll()")
     @PatchMapping("/update")
-    public ServiceDto updateService(@Valid @RequestBody ServiceDto updatedServiceDto) {
-        return serviceService.updateService(updatedServiceDto);
+    public ResponseEntity<ServiceDto> updateService(@Valid @RequestBody ServiceDto updatedServiceDto) {
+        return ResponseEntity.ok(serviceService.updateService(updatedServiceDto));
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping
-    public List<ServiceDto> findAllServices(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                            @RequestParam(name = "size", defaultValue = "10") Integer size) {
+    public ResponseEntity<List<ServiceDto>> findAllServices(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                            @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<ServiceDto> serviceDtoPage = serviceService.findAllServices(PageRequest.of(page, size));
-        return serviceDtoPage.getContent();
+        return ResponseEntity.ok(serviceDtoPage.getContent());
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     @Cacheable(value = "services", key = "#id")
-    public ServiceDto findServiceById(@PathVariable Long id) {
-        return serviceService.findServiceById(id);
+    public ResponseEntity<ServiceDto> findServiceById(@PathVariable Long id) {
+        return ResponseEntity.ok(serviceService.findServiceById(id));
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/count")
-    public Long countServices() {
-        return serviceService.countServices();
+    public ResponseEntity<Long> countServices() {
+        return ResponseEntity.ok(serviceService.countServices());
     }
 
 }

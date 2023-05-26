@@ -6,7 +6,10 @@ import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,19 +23,19 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user-service/users")
 public class UserController {
+
     private final UserService userService;
 
     @PreAuthorize("permitAll()")
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDto));
     }
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @PatchMapping("/update")
-    public UserDto updateUser(@Valid @RequestBody UserDto updatedUserDto) {
-        return userService.updateUser(updatedUserDto);
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto updatedUserDto) {
+        return ResponseEntity.ok(userService.updateUser(updatedUserDto));
     }
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
@@ -56,46 +59,48 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @PostMapping(path = "/update/{email}/profile-image", consumes = {MULTIPART_FORM_DATA_VALUE})
-    public UserDto updateUserProfileImage(@PathVariable String email,
-                                          @RequestParam("profileImage") MultipartFile profileImage) {
-        return userService.updateUserProfileImageByEmail(email, profileImage);
+    public ResponseEntity<UserDto> updateUserProfileImage(@PathVariable String email,
+                                                          @RequestParam("profileImage") MultipartFile profileImage) {
+        return ResponseEntity.ok(userService.updateUserProfileImageByEmail(email, profileImage));
     }
 
     @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @GetMapping
-    public List<UserDto> findAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        Page<UserDto> userPage = userService.findAllUsers(PageRequest.of(page, size));
-        return userPage.getContent();
+    public ResponseEntity<List<UserDto>> findAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("surname").ascending());
+        Page<UserDto> userPage = userService.findAllUsers(pageable);
+        return ResponseEntity.ok(userPage.getContent());
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
-    public UserDto findUserById(@PathVariable Long id) {
-        return userService.findUserById(id);
+    public ResponseEntity<UserDto> findUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.findUserById(id));
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/email/{email}")
-    public UserDto findUserByEmail(@PathVariable String email) {
-        return userService.findUserByEmail(email);
+    public ResponseEntity<UserDto> findUserByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @GetMapping("/{email}/with-profile-image")
-    public UserProfile findUserWithProfileImageByEmail(@PathVariable String email) {
-        return userService.findUserProfileByEmail(email);
+    public ResponseEntity<UserProfile> findUserWithProfileImageByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(userService.findUserProfileByEmail(email));
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/exists-by-email/{email}")
-    public boolean existsUserByEmail(@PathVariable String email) {
-        return userService.existsUserByEmail(email);
+    public ResponseEntity<Boolean> existsUserByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(userService.existsUserByEmail(email));
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/count")
-    public Long countUsers() {
-        return userService.countUsers();
+    public ResponseEntity<Long> countUsers() {
+        return ResponseEntity.ok(userService.countUsers());
     }
+
 }
