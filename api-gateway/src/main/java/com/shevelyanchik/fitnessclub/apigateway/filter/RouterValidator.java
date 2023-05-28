@@ -16,7 +16,9 @@ public final class RouterValidator {
             "/api/v1/user-service/trainers",
             "/api/v1/user-service/trainers/count",
             "/api/v1/order-service/services",
-            "/api/v1/order-service/services/count"
+            "/api/v1/order-service/services/count",
+            "/api/v1/news-service/news/all",
+            "/api/v1/news-service/news/count"
     );
 
     public static boolean isSecuredApiEndpoints(ServerHttpRequest request) {
