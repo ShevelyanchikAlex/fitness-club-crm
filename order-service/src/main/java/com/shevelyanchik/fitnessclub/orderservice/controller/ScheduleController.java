@@ -38,7 +38,7 @@ public class ScheduleController {
     }
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ScheduleDto>> findAllSchedules(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(TRAINING_START_DATETIME_FIELD).descending());

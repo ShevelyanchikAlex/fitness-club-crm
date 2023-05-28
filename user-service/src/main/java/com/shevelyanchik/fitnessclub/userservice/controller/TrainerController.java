@@ -31,14 +31,14 @@ public class TrainerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(trainerService.createTrainer(trainerDto));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @PatchMapping("/update")
     public ResponseEntity<TrainerDto> updateTrainer(@Valid @RequestBody TrainerDto updatedTrainerDto) {
         return ResponseEntity.ok(trainerService.updateTrainer(updatedTrainerDto));
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<TrainerDto>> findAllTrainers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(CATEGORY_FIELD).descending());
@@ -47,7 +47,7 @@ public class TrainerController {
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping("/trainer-profiles")
+    @GetMapping("/trainer-profile/all")
     public ResponseEntity<List<TrainerProfile>> findAllTrainerProfiles(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                        @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(CATEGORY_FIELD).descending());

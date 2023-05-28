@@ -40,8 +40,6 @@ public class TokenFilter extends GenericFilterBean {
 
         try {
             Authentication authentication;
-            log.info("Username: {}", userAuthentication.getUsername());
-            log.info("Authentication: {}", userAuthentication.getAuthorities());
             if (Objects.nonNull(userAuthentication.getUsername()) && Objects.nonNull(userAuthentication.getAuthorities())) {
                 List<SimpleGrantedAuthority> simpleGrantedAuthorities = Arrays.stream(userAuthentication.getAuthorities().split(","))
                         .filter(Permission::existPermissionByName)

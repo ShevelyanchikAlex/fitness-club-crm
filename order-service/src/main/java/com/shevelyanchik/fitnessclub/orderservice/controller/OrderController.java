@@ -29,13 +29,13 @@ public class OrderController {
 
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody OrderDto orderDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(orderDto));
     }
 
     @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<OrderDto>> findAllOrders(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                         @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(CREATED_DATETIME_FIELD).descending());
