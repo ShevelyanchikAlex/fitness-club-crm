@@ -4,7 +4,7 @@ import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundExcept
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.FitnessClubInfoDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.FitnessClubInfo;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.FitnessClubInfoMapper;
-import com.shevelyanchik.fitnessclub.orderservice.persistence.FitnessClubInfoRepository;
+import com.shevelyanchik.fitnessclub.orderservice.repository.FitnessClubInfoRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.FitnessClubInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

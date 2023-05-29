@@ -9,7 +9,7 @@ import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.userservice.model.dto.UserProfile;
 import com.shevelyanchik.fitnessclub.userservice.model.entity.User;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
-import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
+import com.shevelyanchik.fitnessclub.userservice.repository.UserRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.FileService;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import com.shevelyanchik.fitnessclub.userservice.util.ProfileUtils;

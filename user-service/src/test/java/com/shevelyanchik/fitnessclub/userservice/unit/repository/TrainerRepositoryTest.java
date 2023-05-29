@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.userservice.unit.persistence;
+package com.shevelyanchik.fitnessclub.userservice.unit.repository;
 
 import com.shevelyanchik.fitnessclub.userservice.constant.Role;
 import com.shevelyanchik.fitnessclub.userservice.constant.Status;
@@ -10,8 +10,8 @@ import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapper;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapperImpl;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapperImpl;
-import com.shevelyanchik.fitnessclub.userservice.persistence.TrainerRepository;
-import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
+import com.shevelyanchik.fitnessclub.userservice.repository.TrainerRepository;
+import com.shevelyanchik.fitnessclub.userservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

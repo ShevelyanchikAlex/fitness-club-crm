@@ -4,7 +4,7 @@ import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundExcept
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ScheduleDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.Schedule;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ScheduleMapper;
-import com.shevelyanchik.fitnessclub.orderservice.persistence.ScheduleRepository;
+import com.shevelyanchik.fitnessclub.orderservice.repository.ScheduleRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;

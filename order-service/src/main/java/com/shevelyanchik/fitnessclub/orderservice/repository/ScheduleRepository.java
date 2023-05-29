@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.persistence;
+package com.shevelyanchik.fitnessclub.orderservice.repository;
 
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.Schedule;
 import org.springframework.data.domain.Page;

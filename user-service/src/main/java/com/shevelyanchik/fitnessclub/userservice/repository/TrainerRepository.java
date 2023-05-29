@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.userservice.persistence;
+package com.shevelyanchik.fitnessclub.userservice.repository;
 
 import com.shevelyanchik.fitnessclub.userservice.model.entity.Trainer;
 import org.springframework.data.jpa.repository.JpaRepository;

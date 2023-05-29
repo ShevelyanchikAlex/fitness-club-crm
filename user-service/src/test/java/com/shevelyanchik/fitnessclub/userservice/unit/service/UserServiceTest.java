@@ -7,7 +7,7 @@ import com.shevelyanchik.fitnessclub.userservice.model.dto.UserDto;
 import com.shevelyanchik.fitnessclub.userservice.model.entity.User;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapperImpl;
-import com.shevelyanchik.fitnessclub.userservice.persistence.UserRepository;
+import com.shevelyanchik.fitnessclub.userservice.repository.UserRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

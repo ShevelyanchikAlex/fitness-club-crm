@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.service;
+package com.shevelyanchik.fitnessclub.orderservice.unit.service;
 
 import com.shevelyanchik.fitnessclub.orderservice.client.UserServiceClient;
 import com.shevelyanchik.fitnessclub.orderservice.constant.OrderStatus;
@@ -15,7 +15,9 @@ import com.shevelyanchik.fitnessclub.orderservice.model.mapper.OrderMapper;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.OrderMapperImpl;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapper;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapperImpl;
-import com.shevelyanchik.fitnessclub.orderservice.persistence.OrderRepository;
+import com.shevelyanchik.fitnessclub.orderservice.repository.OrderRepository;
+import com.shevelyanchik.fitnessclub.orderservice.service.OrderProducerService;
+import com.shevelyanchik.fitnessclub.orderservice.service.ScheduleService;
 import com.shevelyanchik.fitnessclub.orderservice.service.impl.OrderServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

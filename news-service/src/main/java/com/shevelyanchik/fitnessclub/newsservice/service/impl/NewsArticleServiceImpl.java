@@ -9,7 +9,7 @@ import com.shevelyanchik.fitnessclub.newsservice.model.dto.NewsArticleDto;
 import com.shevelyanchik.fitnessclub.newsservice.model.entity.NewsArticle;
 import com.shevelyanchik.fitnessclub.newsservice.model.mapper.NewsApiArticleMapper;
 import com.shevelyanchik.fitnessclub.newsservice.model.mapper.NewsArticleMapper;
-import com.shevelyanchik.fitnessclub.newsservice.persistence.NewsArticleRepository;
+import com.shevelyanchik.fitnessclub.newsservice.repository.NewsArticleRepository;
 import com.shevelyanchik.fitnessclub.newsservice.service.NewsArticleService;
 import com.shevelyanchik.fitnessclub.newsservice.service.NewsProducerService;
 import com.shevelyanchik.fitnessclub.newsservice.util.NewsEmailEventUtils;

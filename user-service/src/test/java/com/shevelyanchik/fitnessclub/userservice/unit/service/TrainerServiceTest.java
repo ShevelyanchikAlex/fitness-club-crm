@@ -10,7 +10,7 @@ import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapper;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.TrainerMapperImpl;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapper;
 import com.shevelyanchik.fitnessclub.userservice.model.mapper.UserMapperImpl;
-import com.shevelyanchik.fitnessclub.userservice.persistence.TrainerRepository;
+import com.shevelyanchik.fitnessclub.userservice.repository.TrainerRepository;
 import com.shevelyanchik.fitnessclub.userservice.service.UserService;
 import com.shevelyanchik.fitnessclub.userservice.service.impl.TrainerServiceImpl;
 import org.junit.jupiter.api.Assertions;
