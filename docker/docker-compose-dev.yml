@@ -59,9 +59,36 @@ services:
       KAFKA_BROKERS: kafka:29092
       SERVER_LISTENPORT: 9000
 
+  redis:
+    container_name: redis
+    image: redis:6-alpine
+    restart: always
+    networks:
+      - fitness-club-net
+    ports:
+      - "6379:6379"
+
+  fitness-club-mongo:
+    image: mongo:6.0.2
+    command: mongod --auth
+    container_name: fitness-club-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: user_db
+    volumes:
+      - fitness-club-mongo-data:/data/db
+    networks:
+      - fitness-club-net
+
+
 volumes:
   zookeeper-data:
   kafka-data:
+  fitness-club-mongo-data:
 
 networks:
   fitness-club-net:
