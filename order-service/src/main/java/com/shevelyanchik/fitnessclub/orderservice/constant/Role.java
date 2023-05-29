@@ -1,10 +1,12 @@
 package com.shevelyanchik.fitnessclub.orderservice.constant;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
 @Getter
+@RequiredArgsConstructor
 public enum Role {
     GUEST(Set.of(Permission.GUEST_PERMISSION)),
     USER(Set.of(Permission.USER_PERMISSION)),
@@ -13,7 +15,4 @@ public enum Role {
 
     private final Set<Permission> permissions;
 
-    Role(Set<Permission> permissions) {
-        this.permissions = permissions;
-    }
 }

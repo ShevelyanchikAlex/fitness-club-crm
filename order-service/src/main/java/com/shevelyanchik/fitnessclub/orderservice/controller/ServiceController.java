@@ -20,20 +20,20 @@ import java.util.List;
 public class ServiceController {
     private final ServiceService serviceService;
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @PostMapping("/create")
     public ResponseEntity<ServiceDto> createService(@Valid @RequestBody ServiceDto serviceDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceService.createService(serviceDto));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @PatchMapping("/update")
     public ResponseEntity<ServiceDto> updateService(@Valid @RequestBody ServiceDto updatedServiceDto) {
         return ResponseEntity.ok(serviceService.updateService(updatedServiceDto));
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ServiceDto>> findAllServices(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<ServiceDto> serviceDtoPage = serviceService.findAllServices(PageRequest.of(page, size));

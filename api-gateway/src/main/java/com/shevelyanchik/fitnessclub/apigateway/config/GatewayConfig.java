@@ -34,6 +34,10 @@ public class GatewayConfig {
                         .filters(f -> f.filter(authFilter.apply(
                                 new AuthenticationFilter.Config())))
                         .uri("lb://auth-service"))
+                .route("news-service", r -> r.path("/api/v1/news-service/**")
+                        .filters(f -> f.filter(authFilter.apply(
+                                new AuthenticationFilter.Config())))
+                        .uri("lb://news-service"))
                 .build();
     }
 }

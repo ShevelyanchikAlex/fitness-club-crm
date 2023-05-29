@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<UserDto>> findAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("surname").ascending());
