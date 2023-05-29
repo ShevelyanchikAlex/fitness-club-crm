@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,27 +18,28 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/order-service/fitness-club-info")
 public class FitnessClubInfoController {
+
     private final FitnessClubInfoService fitnessClubInfoService;
 
     @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public FitnessClubInfoDto createFitnessClubInfo(@Valid @RequestBody FitnessClubInfoDto fitnessClubInfoDto) {
-        return fitnessClubInfoService.createFitnessClubInfo(fitnessClubInfoDto);
+    public ResponseEntity<FitnessClubInfoDto> createFitnessClubInfo(@Valid @RequestBody FitnessClubInfoDto fitnessClubInfoDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(fitnessClubInfoService.createFitnessClubInfo(fitnessClubInfoDto));
     }
 
     @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @GetMapping
-    public List<FitnessClubInfoDto> findAllFitnessClubInfos(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                            @RequestParam(name = "size", defaultValue = "10") Integer size) {
+    public ResponseEntity<List<FitnessClubInfoDto>> findAllFitnessClubInfos(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                            @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<FitnessClubInfoDto> fitnessClubInfoDtoPage = fitnessClubInfoService.findAllFitnessClubInfos(PageRequest.of(page, size));
-        return fitnessClubInfoDtoPage.getContent();
+        return ResponseEntity.ok(fitnessClubInfoDtoPage.getContent());
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     @Cacheable(value = "fitness-club-info", key = "#id")
-    public FitnessClubInfoDto findFitnessClubInfoById(@PathVariable Long id) {
-        return fitnessClubInfoService.findFitnessClubInfoById(id);
+    public ResponseEntity<FitnessClubInfoDto> findFitnessClubInfoById(@PathVariable Long id) {
+        return ResponseEntity.ok(fitnessClubInfoService.findFitnessClubInfoById(id));
     }
+
 }

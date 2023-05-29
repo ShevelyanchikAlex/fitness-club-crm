@@ -7,7 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,54 +21,60 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/order-service/orders")
 public class OrderController {
+
+    private static final String CREATED_DATETIME_FIELD = "createdDateTime";
+
     private final OrderService orderService;
     private final CircuitBreakerFactory circuitBreakerFactory;
 
+
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto createOrder(@Valid @RequestBody OrderDto orderDto) {
-        return orderService.createOrder(orderDto);
+    @PostMapping("/create")
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody OrderDto orderDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(orderDto));
     }
 
     @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
-    @GetMapping
-    public List<OrderDto> findAllOrders(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                        @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        Page<OrderDto> orderDtoPage = orderService.findAllOrders(PageRequest.of(page, size));
-        return orderDtoPage.getContent();
+    @GetMapping("/all")
+    public ResponseEntity<List<OrderDto>> findAllOrders(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                        @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(CREATED_DATETIME_FIELD).descending());
+        Page<OrderDto> orderDtoPage = orderService.findAllOrders(pageable);
+        return ResponseEntity.ok(orderDtoPage.getContent());
     }
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @GetMapping("/user/{userId}")
-    public List<OrderDto> findAllOrdersByUserId(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                @PathVariable Long userId) {
-        Page<OrderDto> orderDtoPage = orderService.findAllOrdersByUserId(PageRequest.of(page, size), userId);
-        return orderDtoPage.getContent();
+    public ResponseEntity<List<OrderDto>> findAllOrdersByUserId(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                                @PathVariable Long userId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(CREATED_DATETIME_FIELD).descending());
+        Page<OrderDto> orderDtoPage = orderService.findAllOrdersByUserId(pageable, userId);
+        return ResponseEntity.ok(orderDtoPage.getContent());
     }
 
     @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @GetMapping("/trainer/{trainerId}")
-    public List<OrderDto> findAllOrdersByTrainerId(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                   @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                   @PathVariable Long trainerId) {
-        Page<OrderDto> orderDtoPage = orderService.findAllOrdersByTrainerId(PageRequest.of(page, size), trainerId);
-        return orderDtoPage.getContent();
+    public ResponseEntity<List<OrderDto>> findAllOrdersByTrainerId(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                   @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                                   @PathVariable Long trainerId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(CREATED_DATETIME_FIELD).descending());
+        Page<OrderDto> orderDtoPage = orderService.findAllOrdersByTrainerId(pageable, trainerId);
+        return ResponseEntity.ok(orderDtoPage.getContent());
     }
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @GetMapping("/{id}")
-    public OrderDto findOrderById(@PathVariable Long id) {
-        return orderService.findOrderById(id);
+    public ResponseEntity<OrderDto> findOrderById(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.findOrderById(id));
     }
 
     @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @GetMapping("/full-order/{id}")
-    public OrderResponseDto findOrderByIdWithUsersInfo(@PathVariable Long id) {
-        return circuitBreakerFactory.create("full-order").run(
-                () -> orderService.findOrderByIdWithUsersInfo(id),
-                throwable -> new OrderResponseDto());
+    public ResponseEntity<OrderResponseDto> findOrderByIdWithUsersInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(circuitBreakerFactory.create("full-order")
+                .run(() -> orderService.findOrderByIdWithUsersInfo(id),
+                        throwable -> new OrderResponseDto()));
     }
 
     @PreAuthorize("permitAll()")
@@ -76,14 +85,14 @@ public class OrderController {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/count")
-    public Long countAllOrders() {
-        return orderService.countAllOrders();
+    public ResponseEntity<Long> countAllOrders() {
+        return ResponseEntity.ok(orderService.countAllOrders());
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/count/trainerId/{trainerId}")
-    public Long countAllOrdersByTrainerId(@PathVariable Long trainerId) {
-        return orderService.countAllOrdersByTrainerId(trainerId);
+    public ResponseEntity<Long> countAllOrdersByTrainerId(@PathVariable Long trainerId) {
+        return ResponseEntity.ok(orderService.countAllOrdersByTrainerId(trainerId));
     }
 
 }

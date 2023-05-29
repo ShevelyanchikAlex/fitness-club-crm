@@ -8,10 +8,7 @@ import com.shevelyanchik.fitnessclub.auth.dto.user.Status;
 import com.shevelyanchik.fitnessclub.auth.dto.user.UserDto;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -21,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AuthE2ETest {
 
     private static final UserDto EXPECTED_USER_DTO = new UserDto(

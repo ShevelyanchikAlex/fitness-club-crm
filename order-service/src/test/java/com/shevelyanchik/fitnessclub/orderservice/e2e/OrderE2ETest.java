@@ -10,10 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -75,10 +72,11 @@ class OrderE2ETest {
         //when
         String token = AuthUtils.login(testRestTemplate);
         HttpHeaders headers = AuthUtils.configAuthHeader(token);
-        HttpEntity<Long> request = new HttpEntity<>(expectedId, headers);
+        HttpEntity<Long> requestHeaders = new HttpEntity<>(expectedId, headers);
 
-        ResponseEntity<String> response = testRestTemplate.getForEntity(
-                ORDER_API_ENDPOINT + "/{id}", String.class, request);
+        ResponseEntity<String> response = testRestTemplate.exchange(
+                ORDER_API_ENDPOINT + "/{id}", HttpMethod.GET,
+                requestHeaders, String.class, expectedId);
         //then
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
@@ -98,10 +96,11 @@ class OrderE2ETest {
         //when
         String token = AuthUtils.login(testRestTemplate);
         HttpHeaders headers = AuthUtils.configAuthHeader(token);
-        HttpEntity<Long> request = new HttpEntity<>(expectedCount, headers);
+        HttpEntity<Long> requestHeaders = new HttpEntity<>(expectedCount, headers);
 
-        ResponseEntity<String> response = testRestTemplate.getForEntity(
-                ORDER_API_ENDPOINT + "/count", String.class, request);
+        ResponseEntity<String> response = testRestTemplate.exchange(
+                ORDER_API_ENDPOINT + "/count", HttpMethod.GET,
+                requestHeaders, String.class);
         //then
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
