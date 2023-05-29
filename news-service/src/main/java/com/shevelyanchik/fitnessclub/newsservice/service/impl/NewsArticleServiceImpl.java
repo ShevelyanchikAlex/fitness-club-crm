@@ -1,6 +1,7 @@
 package com.shevelyanchik.fitnessclub.newsservice.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.shevelyanchik.fitnessclub.kafkaconfig.dto.EmailEvent;
 import com.shevelyanchik.fitnessclub.newsservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.newsservice.exception.ValidationException;
 import com.shevelyanchik.fitnessclub.newsservice.model.dto.NewsApiResponse;
@@ -10,6 +11,8 @@ import com.shevelyanchik.fitnessclub.newsservice.model.mapper.NewsApiArticleMapp
 import com.shevelyanchik.fitnessclub.newsservice.model.mapper.NewsArticleMapper;
 import com.shevelyanchik.fitnessclub.newsservice.persistence.NewsArticleRepository;
 import com.shevelyanchik.fitnessclub.newsservice.service.NewsArticleService;
+import com.shevelyanchik.fitnessclub.newsservice.service.NewsProducerService;
+import com.shevelyanchik.fitnessclub.newsservice.util.NewsEmailEventUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +39,7 @@ public class NewsArticleServiceImpl implements NewsArticleService {
     private final NewsArticleMapper newsArticleMapper;
     private final NewsApiArticleMapper newsApiArticleMapper;
     private final WebClient webClient;
+    private final NewsProducerService newsProducerService;
 
     @Value("${news-api.url}")
     private String newsApiUrl;
@@ -48,11 +52,13 @@ public class NewsArticleServiceImpl implements NewsArticleService {
             NewsArticleRepository newsArticleRepository,
             NewsArticleMapper newsArticleMapper,
             NewsApiArticleMapper newsApiArticleMapper,
-            WebClient.Builder webClientBuilder) {
+            WebClient.Builder webClientBuilder,
+            NewsProducerService newsProducerService) {
         this.newsArticleRepository = newsArticleRepository;
         this.newsArticleMapper = newsArticleMapper;
         this.newsApiArticleMapper = newsApiArticleMapper;
         this.webClient = webClientBuilder.build();
+        this.newsProducerService = newsProducerService;
     }
 
     @Override
@@ -60,7 +66,11 @@ public class NewsArticleServiceImpl implements NewsArticleService {
     public NewsArticleDto createNewsArticle(NewsArticleDto newsArticleDto) {
         NewsArticle newsArticle = newsArticleMapper.toEntity(newsArticleDto);
         NewsArticle savedNewsArticle = newsArticleRepository.save(newsArticle);
-        return newsArticleMapper.toDto(savedNewsArticle);
+        NewsArticleDto savedNewsArticleDto = newsArticleMapper.toDto(savedNewsArticle);
+
+        EmailEvent emailEvent = NewsEmailEventUtils.createEmailEvent(savedNewsArticleDto);
+        newsProducerService.sendMessage(emailEvent);
+        return savedNewsArticleDto;
     }
 
     @Override
