@@ -23,6 +23,8 @@ public class NewsArticleDto {
     @NotBlank
     private String author;
 
+    private String url;
+
     private String imageUrl;
 
     private LocalDateTime createdDateTime;

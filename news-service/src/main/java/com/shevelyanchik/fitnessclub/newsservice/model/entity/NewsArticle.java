@@ -26,6 +26,9 @@ public class NewsArticle {
     @Column(name = "author")
     private String author;
 
+    @Column(name = "url")
+    private String url;
+
     @Column(name = "image_url")
     private String imageUrl;
 

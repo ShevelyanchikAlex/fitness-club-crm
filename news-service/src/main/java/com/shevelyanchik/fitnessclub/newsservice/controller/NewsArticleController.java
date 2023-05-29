@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,10 +35,20 @@ public class NewsArticleController {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/all")
-    public ResponseEntity<List<NewsArticleDto>> findAllNewsArticles(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                                    @RequestParam(name = "size", defaultValue = "10") Integer size) {
+    public ResponseEntity<List<NewsArticleDto>> findAllNewsArticles(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<NewsArticleDto> newsArticleDtoPage = newsArticleService.findAllNewsArticles(PageRequest.of(page, size));
         return ResponseEntity.ok(newsArticleDtoPage.getContent());
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
+    @GetMapping("/news-api")
+    public Flux<NewsArticleDto> findNewsFromNewsApiByCategory(
+            @RequestParam(name = "category", defaultValue = "health") String category,
+            @RequestParam(name = "daysOffset", defaultValue = "20") Long daysOffset,
+            @RequestParam(name = "country", defaultValue = "us") String country) {
+        return newsArticleService.findNewsFromNewsApiByCategory(category, daysOffset, country);
     }
 
     @PreAuthorize("permitAll()")

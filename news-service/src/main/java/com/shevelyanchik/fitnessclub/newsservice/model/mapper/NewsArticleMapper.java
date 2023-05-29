@@ -6,7 +6,9 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface NewsArticleMapper {
+
     NewsArticleDto toDto(NewsArticle newsArticle);
 
     NewsArticle toEntity(NewsArticleDto newsArticleDto);
+
 }

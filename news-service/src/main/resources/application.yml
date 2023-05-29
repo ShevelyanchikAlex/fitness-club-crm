@@ -25,6 +25,10 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+news-api:
+  api-key: 0f0f49abdcc248bc905620645f0abd6d
+  url: https://newsapi.org/v2/top-headlines?apiKey={apiKey}&category={category}&from={date}&country={country}
+
 logging:
   level:
     org.springframework.web: ERROR
