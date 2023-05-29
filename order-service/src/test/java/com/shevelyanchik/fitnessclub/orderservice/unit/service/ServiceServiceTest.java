@@ -1,11 +1,11 @@
-package com.shevelyanchik.fitnessclub.orderservice.service;
+package com.shevelyanchik.fitnessclub.orderservice.unit.service;
 
 import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.Service;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapper;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapperImpl;
-import com.shevelyanchik.fitnessclub.orderservice.persistence.ServiceRepository;
+import com.shevelyanchik.fitnessclub.orderservice.repository.ServiceRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.impl.ServiceServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

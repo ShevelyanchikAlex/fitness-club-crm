@@ -1,9 +1,9 @@
 server:
-  port: ${PORT:8081}
+  port: ${PORT:8084}
 
 spring:
   application:
-    name: order-service
+    name: news-service
   cloud:
     consul:
       host: ${CONSUL_HOST:localhost}
@@ -12,7 +12,8 @@ spring:
     enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5433/order_service_db}
+
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5433/news_service_db}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:user}
   jpa:
@@ -28,20 +29,13 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-  cache:
-    type: redis
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-    cache-names:
-      fitness-club-info: fitness-club-info
-      services: services
 
+news-api:
+  api-key: 0f0f49abdcc248bc905620645f0abd6d
+  url: https://newsapi.org/v2/top-headlines?apiKey={apiKey}&category={category}&from={date}&country={country}
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.springframework.web: ERROR
     com.shevelyanchik: DEBUG
     root: INFO

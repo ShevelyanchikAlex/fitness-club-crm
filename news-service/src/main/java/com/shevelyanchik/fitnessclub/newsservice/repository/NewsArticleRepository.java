@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.newsservice.persistence;
+package com.shevelyanchik.fitnessclub.newsservice.repository;
 
 import com.shevelyanchik.fitnessclub.newsservice.model.entity.NewsArticle;
 import org.springframework.data.jpa.repository.JpaRepository;

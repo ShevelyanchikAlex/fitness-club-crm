@@ -11,7 +11,7 @@ import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.TrainerDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.user.UserDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.Order;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.OrderMapper;
-import com.shevelyanchik.fitnessclub.orderservice.persistence.OrderRepository;
+import com.shevelyanchik.fitnessclub.orderservice.repository.OrderRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderProducerService;
 import com.shevelyanchik.fitnessclub.orderservice.service.OrderService;
 import com.shevelyanchik.fitnessclub.orderservice.service.ScheduleService;

@@ -8,8 +8,8 @@ spring:
     consul:
       config:
         enabled: false
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
     gateway:
       discovery:
         locator:

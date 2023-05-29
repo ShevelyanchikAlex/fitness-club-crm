@@ -3,7 +3,7 @@ package com.shevelyanchik.fitnessclub.orderservice.service.impl;
 import com.shevelyanchik.fitnessclub.orderservice.exception.EntityNotFoundException;
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapper;
-import com.shevelyanchik.fitnessclub.orderservice.persistence.ServiceRepository;
+import com.shevelyanchik.fitnessclub.orderservice.repository.ServiceRepository;
 import com.shevelyanchik.fitnessclub.orderservice.service.ServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

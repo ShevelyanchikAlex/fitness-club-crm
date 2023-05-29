@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.persistence;
+package com.shevelyanchik.fitnessclub.orderservice.repository;
 
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.FitnessClubInfo;
 import org.springframework.data.jpa.repository.JpaRepository;

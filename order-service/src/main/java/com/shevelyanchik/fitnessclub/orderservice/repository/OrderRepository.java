@@ -1,4 +1,4 @@
-package com.shevelyanchik.fitnessclub.orderservice.persistence;
+package com.shevelyanchik.fitnessclub.orderservice.repository;
 
 import com.shevelyanchik.fitnessclub.orderservice.constant.OrderStatus;
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.Order;

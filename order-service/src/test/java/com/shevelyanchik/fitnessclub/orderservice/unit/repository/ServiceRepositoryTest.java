@@ -1,9 +1,10 @@
-package com.shevelyanchik.fitnessclub.orderservice.persistence;
+package com.shevelyanchik.fitnessclub.orderservice.unit.repository;
 
 import com.shevelyanchik.fitnessclub.orderservice.model.dto.ServiceDto;
 import com.shevelyanchik.fitnessclub.orderservice.model.entity.Service;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapper;
 import com.shevelyanchik.fitnessclub.orderservice.model.mapper.ServiceMapperImpl;
+import com.shevelyanchik.fitnessclub.orderservice.repository.ServiceRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
