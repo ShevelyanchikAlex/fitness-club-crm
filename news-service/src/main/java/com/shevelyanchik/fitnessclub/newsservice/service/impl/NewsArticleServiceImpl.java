@@ -80,6 +80,7 @@ public class NewsArticleServiceImpl implements NewsArticleService {
         actualNewsArticleDto.setTitle(updatedNewsArticleDto.getTitle());
         actualNewsArticleDto.setAuthor(updatedNewsArticleDto.getAuthor());
         actualNewsArticleDto.setContent(updatedNewsArticleDto.getContent());
+        actualNewsArticleDto.setUrl(updatedNewsArticleDto.getUrl());
         actualNewsArticleDto.setImageUrl(updatedNewsArticleDto.getImageUrl());
         NewsArticle preUpdatedNewsArticle = newsArticleMapper.toEntity(actualNewsArticleDto);
         NewsArticle updatedNewsArticle = newsArticleRepository.save(preUpdatedNewsArticle);
@@ -104,6 +105,7 @@ public class NewsArticleServiceImpl implements NewsArticleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Flux<NewsArticleDto> findNewsFromNewsApiByCategory(String category, Long daysOffset, String country) {
         LocalDate startDate = LocalDate.now().minusDays(daysOffset);
         String formattedDate = startDate.format(DATE_FORMATTER);
