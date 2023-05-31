@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * The UserService retrieving information about the users.
+ * The UserService interface provides methods for managing users.
  *
  * @version 1.1.2
  */

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * The OrderService provides the ability to create new Order and retrieving information about them.
+ * The OrderService interface provides methods for managing orders.
  *
  * @version 1.0.1
  */

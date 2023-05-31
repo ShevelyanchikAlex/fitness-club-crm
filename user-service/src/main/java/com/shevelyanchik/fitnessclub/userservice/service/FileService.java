@@ -4,7 +4,7 @@ import com.shevelyanchik.fitnessclub.userservice.model.dto.FilePayload;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * A service interface for managing files.
+ * A FileService interface provides methods for managing files.
  *
  * @version 1.0.1
  */

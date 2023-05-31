@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * The FitnessClubInfoService provides the ability to create new FitnessClubInfo and retrieving information about them.
+ * The FitnessClubInfoService interface provides methods for managing fitness club infos.
  *
  * @version 1.0.1
  */
