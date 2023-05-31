@@ -85,6 +85,14 @@ public interface OrderService {
     Long countAllOrdersByTrainerId(Long trainerId);
 
     /**
+     * Counts the total number of orders associated with a specific user ID.
+     *
+     * @param userId The ID of the user to count orders for.
+     * @return The count of orders for the specified user.
+     */
+    Long countAllOrdersByUserId(Long userId);
+
+    /**
      * Deletes all orders.
      */
     void deleteAll();

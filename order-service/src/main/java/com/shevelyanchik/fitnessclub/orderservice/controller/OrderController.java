@@ -77,22 +77,28 @@ public class OrderController {
                         throwable -> new OrderResponseDto()));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @PatchMapping("/update/{id}/order-status")
     public void updateOrderStatusById(@PathVariable Long id, @RequestParam("status") String status) {
         orderService.updateOrderStatusById(id, status);
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @GetMapping("/count")
     public ResponseEntity<Long> countAllOrders() {
         return ResponseEntity.ok(orderService.countAllOrders());
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAuthority('TRAINER_PERMISSION')")
     @GetMapping("/count/trainerId/{trainerId}")
     public ResponseEntity<Long> countAllOrdersByTrainerId(@PathVariable Long trainerId) {
         return ResponseEntity.ok(orderService.countAllOrdersByTrainerId(trainerId));
+    }
+
+    @PreAuthorize("hasAuthority('USER_PERMISSION')")
+    @GetMapping("/count/userId/{userId}")
+    public ResponseEntity<Long> countAllOrdersByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(orderService.countAllOrdersByUserId(userId));
     }
 
 }
