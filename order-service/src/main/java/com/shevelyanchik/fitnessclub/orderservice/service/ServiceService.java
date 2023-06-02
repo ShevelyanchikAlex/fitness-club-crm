@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * The ServiceService provides the ability to create new fitness-club's Service and retrieving information about them.
+ * The ServiceService interface provides methods for managing services.
  *
  * @version 1.0.1
  */

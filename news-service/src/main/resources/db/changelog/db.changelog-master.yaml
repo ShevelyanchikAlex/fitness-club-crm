@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-news_article-table.sql
   - include:
       file: db/changelog/changeset/add-url.sql
+  - include:
+      file: db/changelog/changeset/change-image_url-def-val.sql

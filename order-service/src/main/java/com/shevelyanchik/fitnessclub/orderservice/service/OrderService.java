@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * The OrderService provides the ability to create new Order and retrieving information about them.
+ * The OrderService interface provides methods for managing orders.
  *
  * @version 1.0.1
  */
@@ -83,6 +83,14 @@ public interface OrderService {
      * @return The count of orders for the specified trainer.
      */
     Long countAllOrdersByTrainerId(Long trainerId);
+
+    /**
+     * Counts the total number of orders associated with a specific user ID.
+     *
+     * @param userId The ID of the user to count orders for.
+     * @return The count of orders for the specified user.
+     */
+    Long countAllOrdersByUserId(Long userId);
 
     /**
      * Deletes all orders.

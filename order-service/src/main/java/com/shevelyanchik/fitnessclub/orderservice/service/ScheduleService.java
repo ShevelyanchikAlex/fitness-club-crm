@@ -6,6 +6,11 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 
+/**
+ * The ScheduleService interface provides methods for managing schedules.
+ *
+ * @version 1.0.1
+ */
 public interface ScheduleService {
     /**
      * Creates a new schedule with the provided schedule data.

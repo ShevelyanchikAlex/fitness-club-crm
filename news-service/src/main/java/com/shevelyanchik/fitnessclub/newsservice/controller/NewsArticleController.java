@@ -5,6 +5,8 @@ import com.shevelyanchik.fitnessclub.newsservice.service.NewsArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,13 +40,14 @@ public class NewsArticleController {
     public ResponseEntity<List<NewsArticleDto>> findAllNewsArticles(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        Page<NewsArticleDto> newsArticleDtoPage = newsArticleService.findAllNewsArticles(PageRequest.of(page, size));
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDateTime").descending());
+        Page<NewsArticleDto> newsArticleDtoPage = newsArticleService.findAllNewsArticles(pageable);
         return ResponseEntity.ok(newsArticleDtoPage.getContent());
     }
 
     @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
     @GetMapping("/news-api")
-    public Flux<NewsArticleDto> findNewsFromNewsApiByCategory(
+    public Flux<NewsArticleDto> findNewsArticlesFromNewsApi(
             @RequestParam(name = "category", defaultValue = "health") String category,
             @RequestParam(name = "daysOffset", defaultValue = "20") Long daysOffset,
             @RequestParam(name = "country", defaultValue = "us") String country) {
@@ -53,7 +56,7 @@ public class NewsArticleController {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
-    public ResponseEntity<NewsArticleDto> findNewsArticleDtoById(@PathVariable Long id) {
+    public ResponseEntity<NewsArticleDto> findNewsArticleById(@PathVariable Long id) {
         return ResponseEntity.ok(newsArticleService.findNewsArticleById(id));
     }
 

@@ -69,8 +69,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional(readOnly = true)
     public ScheduleDto findScheduleByTrainerIdAndTrainingStartDateTime(
             Long trainerId, LocalDateTime trainingStartDateTime) {
-        return scheduleRepository.findScheduleByTrainerIdAndTrainingStartDateTime(
-                        trainerId, trainingStartDateTime)
+        return scheduleRepository.findScheduleByTrainerIdAndTrainingStartDateTime(trainerId, trainingStartDateTime)
                 .map(scheduleMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Schedule not found with trainerId: " + trainerId));
     }

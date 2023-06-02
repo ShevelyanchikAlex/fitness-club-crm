@@ -46,8 +46,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     @Transactional(readOnly = true)
     public ServiceDto findServiceById(Long id) {
-        return serviceRepository
-                .findById(id)
+        return serviceRepository.findById(id)
                 .map(serviceMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Service not found with id: " + id));
     }
@@ -55,9 +54,7 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     @Transactional(readOnly = true)
     public Page<ServiceDto> findAllServices(Pageable pageable) {
-        List<ServiceDto> serviceDtoList = serviceRepository
-                .findAll(pageable)
-                .stream()
+        List<ServiceDto> serviceDtoList = serviceRepository.findAll(pageable).stream()
                 .map(serviceMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(serviceDtoList, pageable, serviceRepository.count());

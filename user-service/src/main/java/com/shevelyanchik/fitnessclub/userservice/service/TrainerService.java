@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * The TrainerService retrieving information about the trainers.
+ * The TrainerService interface provides methods for managing trainers.
  *
  * @version 1.1.1
  */

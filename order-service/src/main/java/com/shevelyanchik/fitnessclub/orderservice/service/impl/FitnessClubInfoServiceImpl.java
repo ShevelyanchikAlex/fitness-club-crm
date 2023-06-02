@@ -34,8 +34,7 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
     @Override
     @Transactional(readOnly = true)
     public FitnessClubInfoDto findFitnessClubInfoById(Long id) {
-        return fitnessClubInfoRepository
-                .findById(id)
+        return fitnessClubInfoRepository.findById(id)
                 .map(fitnessClubInfoMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("FitnessClubInfo not found with id: " + id));
     }
@@ -43,12 +42,9 @@ public class FitnessClubInfoServiceImpl implements FitnessClubInfoService {
     @Override
     @Transactional(readOnly = true)
     public Page<FitnessClubInfoDto> findAllFitnessClubInfos(Pageable pageable) {
-        List<FitnessClubInfoDto> fitnessClubInfoDtoList =
-                fitnessClubInfoRepository
-                        .findAll(pageable)
-                        .stream()
-                        .map(fitnessClubInfoMapper::toDto)
-                        .collect(Collectors.toList());
+        List<FitnessClubInfoDto> fitnessClubInfoDtoList = fitnessClubInfoRepository.findAll(pageable).stream()
+                .map(fitnessClubInfoMapper::toDto)
+                .collect(Collectors.toList());
         return new PageImpl<>(fitnessClubInfoDtoList, pageable, fitnessClubInfoRepository.count());
     }
 

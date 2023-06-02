@@ -113,16 +113,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long countAllOrders() {
         return orderRepository.count();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long countAllOrdersByTrainerId(Long trainerId) {
         return orderRepository.countAllOrdersByTrainerId(trainerId);
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Long countAllOrdersByUserId(Long userId) {
+        return orderRepository.countAllOrdersByUserId(userId);
+    }
+
+    @Override
+    @Transactional
     public void deleteAll() {
         orderRepository.deleteAll();
     }
