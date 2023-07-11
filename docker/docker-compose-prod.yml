@@ -1,115 +1,136 @@
 version: '3.8'
 
 services:
-  user-service:
-    image: fitness-club/user-service:latest
-    container_name: user-service
+  user-service-prod:
+    image: fitness-club/user-service:prod-1.2
+    container_name: user-service-prod
     build:
-      context: ./user-service
+      context: ../user-service
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     expose:
       - "8080"
     depends_on:
-      - postgres
-      - consul-service
-      - config-service
+      - postgres-prod
+      - consul-service-prod
+      - config-service-prod
     environment:
-      CONSUL_HOST: consul-service
+      CONSUL_HOST: consul-service-prod
       POSTGRES_URL: jdbc:postgresql://postgres:5432/user_service_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: user
 
-  order-service:
-    image: fitness-club/order-service:latest
-    container_name: order-service
+  order-service-prod:
+    image: fitness-club/order-service:prod-1.2
+    container_name: order-service-prod
     build:
-      context: ./order-service
+      context: ../order-service
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     expose:
       - "8081"
     depends_on:
-      - postgres
-      - consul-service
-      - config-service
-      - kafka
+      - postgres-prod
+      - consul-service-prod
+      - config-service-prod
+      - kafka-prod
     environment:
       KAFKA_BROKERS: kafka:29092
-      CONSUL_HOST: consul-service
+      CONSUL_HOST: consul-service-prod
       POSTGRES_URL: jdbc:postgresql://postgres:5432/order_service_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: user
 
-  auth-service:
-    image: fitness-club/auth-service:latest
-    container_name: auth-service
+  news-service-prod:
+    image: fitness-club/news-service:prod-1.2
+    container_name: news-service-prod
     build:
-      context: ./auth-service
+      context: ../news-service
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
+    expose:
+      - "8084"
+    depends_on:
+      - postgres-prod
+      - consul-service-prod
+      - config-service-prod
+      - kafka-prod
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      CONSUL_HOST: consul-service-prod
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/news_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: user
+
+  auth-service-prod:
+    image: fitness-club/auth-service:prod-1.2
+    container_name: auth-service-prod
+    build:
+      context: ../auth-service
+    networks:
+      - fitness-club-net-prod
     expose:
       - "8082"
     depends_on:
-      - consul-service
-      - config-service
-      - kafka
+      - consul-service-prod
+      - config-service-prod
+      - kafka-prod
     environment:
       KAFKA_BROKERS: kafka:29092
-      CONSUL_HOST: consul-service
+      CONSUL_HOST: consul-service-prod
 
-  email-service:
-    image: fitness-club/email-service:latest
-    container_name: email-service
+  email-service-prod:
+    image: fitness-club/email-service:prod-1.2
+    container_name: email-service-prod
     build:
-      context: ./email-service
+      context: ../email-service
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     expose:
       - "8083"
     depends_on:
-      - consul-service
-      - config-service
-      - kafka
+      - consul-service-prod
+      - config-service-prod
+      - kafka-prod
     environment:
       KAFKA_BROKERS: kafka:29092
-      CONSUL_HOST: consul-service
+      CONSUL_HOST: consul-service-prod
 
-  config-service:
-    image: fitness-club/config-service:latest
-    container_name: config-service
+  config-service-prod:
+    image: fitness-club/config-service:prod-1.2
+    container_name: config-service-prod
     build:
-      context: ./config-server
+      context: ../config-server
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     expose:
       - "8888"
     depends_on:
-      - consul-service
+      - consul-service-prod
     environment:
-      CONSUL_HOST: consul-service
+      CONSUL_HOST: consul-service-prod
 
-  api-gateway:
-    image: fitness-club/api-gateway:latest
-    container_name: api-gateway
+  api-gateway-prod:
+    image: fitness-club/api-gateway:prod-1.2
+    container_name: api-gateway-prod
     build:
-      context: ./api-gateway
+      context: ../api-gateway
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     ports:
       - "8765:8765"
     depends_on:
-      - consul-service
+      - consul-service-prod
     environment:
-      CONSUL_HOST: consul-service
+      CONSUL_HOST: consul-service-prod
 
 
-  postgres:
+  postgres-prod:
     image: 'postgres:14.6-alpine'
-    container_name: postgres
+    container_name: postgres-prod
     restart: always
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     ports:
       - "5432:5432"
     environment:
@@ -117,40 +138,40 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: user
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./create-additional-databases.sh:/docker-entrypoint-initdb.d/create-additional-databases.sh
+      - postgres-data-prod:/var/lib/postgresql/data
+      - ./db/create-additional-prod-databases-v1.2.sh:/docker-entrypoint-initdb.d/create-additional-prod-databases-v1.2.sh
 
-  consul-service:
+  consul-service-prod:
     image: bitnami/consul:1.15.0
-    container_name: consul-service
+    container_name: consul-service-prod
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     ports:
       - '8500:8500'
 
-  zookeeper:
+  zookeeper-prod:
     image: bitnami/zookeeper:3.8.0
-    container_name: zookeeper
+    container_name: zookeeper-prod
     restart: always
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     expose:
       - "2181"
     environment:
       ALLOW_ANONYMOUS_LOGIN: yes
     volumes:
-      - zookeeper-data:/bitnami/zookeeper
+      - zookeeper-data-prod:/bitnami/zookeeper
 
-  kafka:
+  kafka-prod:
     image: bitnami/kafka:3.3.1
-    container_name: kafka
+    container_name: kafka-prod
     restart: always
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     expose:
       - "9092"
     depends_on:
-      - zookeeper
+      - zookeeper-prod
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -162,35 +183,35 @@ services:
       KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: true
       KAFKA_CFG_DELETE_TOPIC_ENABLE: true
     volumes:
-      - kafka-data:/bitnami/kafka
+      - kafka-data-prod:/bitnami/kafka
 
-  kowl:
+  kowl-prod:
     image: quay.io/cloudhut/kowl:master-59f68da
-    container_name: kowl
+    container_name: kowl-prod
     restart: always
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     ports:
       - "9000:9000"
     depends_on:
-      - kafka
+      - kafka-prod
     environment:
       KAFKA_BROKERS: kafka:29092
       SERVER_LISTENPORT: 9000
 
-  redis:
-    container_name: redis
+  redis-prod:
+    container_name: redis-prod
     image: redis:6-alpine
     restart: always
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
     ports:
       - "6379:6379"
 
-  fitness-club-mongo:
+  fitness-club-mongo-prod:
     image: mongo:6.0.2
     command: mongod --auth
-    container_name: fitness-club-mongo
+    container_name: fitness-club-mongo-prod
     restart: always
     ports:
       - "27017:27017"
@@ -199,16 +220,16 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
       MONGO_INITDB_DATABASE: user_db
     volumes:
-      - fitness-club-mongo-data:/data/db
+      - fitness-club-mongo-data-prod:/data/db
     networks:
-      - fitness-club-net
+      - fitness-club-net-prod
 
 
 volumes:
-  postgres-data:
-  zookeeper-data:
-  kafka-data:
-  fitness-club-mongo-data:
+  postgres-data-prod:
+  zookeeper-data-prod:
+  kafka-data-prod:
+  fitness-club-mongo-data-prod:
 
 networks:
-  fitness-club-net:
+  fitness-club-net-prod:

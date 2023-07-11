@@ -100,7 +100,7 @@ services:
       POSTGRES_PASSWORD: user
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./create-additional-test-databases.sh:/docker-entrypoint-initdb.d/create-additional-test-databases.sh
+      - ./db/create-additional-test-databases.sh:/docker-entrypoint-initdb.d/create-additional-test-databases.sh
 
   consul-service:
     image: bitnami/consul:1.15.0
