@@ -9,12 +9,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -99,6 +101,16 @@ public class OrderController {
     @GetMapping("/count/userId/{userId}")
     public ResponseEntity<Long> countAllOrdersByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(orderService.countAllOrdersByUserId(userId));
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_PERMISSION')")
+    @GetMapping("/count/created-date-time/between")
+    public ResponseEntity<Long> countAllOrdersByCreatedDateTimeBetween(
+            @RequestParam(value = "startDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime startDateTime,
+            @RequestParam("endDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime endDateTime) {
+        return ResponseEntity.ok(orderService.countAllOrdersByCreatedDateTimeBetween(startDateTime, endDateTime));
     }
 
 }

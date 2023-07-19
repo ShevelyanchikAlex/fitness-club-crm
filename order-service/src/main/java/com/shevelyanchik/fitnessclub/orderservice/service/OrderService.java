@@ -5,6 +5,8 @@ import com.shevelyanchik.fitnessclub.orderservice.model.dto.OrderResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
+
 /**
  * The OrderService interface provides methods for managing orders.
  *
@@ -91,6 +93,15 @@ public interface OrderService {
      * @return The count of orders for the specified user.
      */
     Long countAllOrdersByUserId(Long userId);
+
+    /**
+     * Counts the total number of orders created within the specified time period.
+     *
+     * @param startDateTime The start time of the time period to consider for counting orders.
+     * @param endDateTime   The end time of the time period to consider for counting orders.
+     * @return The number of orders created between the startTime and endTime.
+     */
+    Long countAllOrdersByCreatedDateTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
 
     /**
      * Deletes all orders.
