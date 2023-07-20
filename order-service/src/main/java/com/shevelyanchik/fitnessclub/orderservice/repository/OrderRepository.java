@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
@@ -23,5 +25,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Long countAllOrdersByTrainerId(Long trainerId);
 
     Long countAllOrdersByUserId(Long userId);
+
+    Long countAllOrdersByCreatedDateTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
 
 }

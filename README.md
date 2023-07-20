@@ -1,11 +1,11 @@
-# Fitness Club Service
+# Fitness Club CRM
 
 ## Description
 
 This project aims to address the complexities associated with managing the operations of a Fitness Club. It is designed
 to cater to both sports organizations seeking a streamlined system for managing activities and users who require a
 simple and convenient platform to register for training sessions and provide feedback to trainers. By implementing the
-Fitness Club Service, organizations can automate club management processes, enhance customer interactions, improve
+Fitness Club CRM, organizations can automate club management processes, enhance customer interactions, improve
 customer service quality, and ultimately boost profitability.
 
 ## Abilities
@@ -43,7 +43,7 @@ The project offers the following capabilities to different user roles:
 
 ***
 
-## Project Architecture
+## Architecture
 
 The project was implemented according to microservice architecture.
 
@@ -61,15 +61,25 @@ It has the following microservices:
 
 ![Architecture](fitness-club-architecture.jpg)
 
+## Requirements
+
+For building and running the application you need:
+
+* [Java JDK 15+](https://www.oracle.com/java/technologies/javase/jdk15-archive-downloads.html)
+* [Gradle v6.0+](https://gradle.org/releases/)
+* [Git](https://git-scm.com/downloads)
+* [Docker](https://www.docker.com/)
+* [Minikube](https://kubernetes.io/ru/docs/tasks/tools/install-minikube/) (Additional)
+
 ## Get Started
 
-### Clone the repository
+### Cloning
 
 ```console
-$ git clone https://github.com/ShevelyanchikAlex/fitness-club-service.git
+$ git clone https://github.com/ShevelyanchikAlex/fitness-club-crm.git
 ```
 
-### Build the Project
+### Building
 
 Being in the root directory:
 
@@ -77,7 +87,7 @@ Being in the root directory:
 $ gradle clean build
 ```
 
-### Run the Project
+### Running
 
 The project includes **docker-compose** for -prod, -dev, -test versions.
 

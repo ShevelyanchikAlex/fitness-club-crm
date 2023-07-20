@@ -131,6 +131,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Long countAllOrdersByCreatedDateTimeBetween(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return orderRepository.countAllOrdersByCreatedDateTimeBetween(startDateTime, endDateTime);
+    }
+
+    @Override
     @Transactional
     public void deleteAll() {
         orderRepository.deleteAll();
